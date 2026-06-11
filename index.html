@@ -373,6 +373,90 @@
       flex-wrap:wrap;
       margin-top:8px;
     }
+    .manual-exam-tag {
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding-right:5px;
+    }
+    .manual-exam-remove {
+      border:0;
+      border-radius:999px;
+      min-width:22px;
+      height:22px;
+      padding:0 6px;
+      background:#fee2e2;
+      color:#991b1b;
+      font-weight:950;
+      cursor:pointer;
+      line-height:1;
+    }
+    .manual-exam-remove:hover { filter:brightness(.96); transform:translateY(-1px); }
+    .multi-select-box {
+      width:100%;
+      min-height:220px;
+      border:1px solid #cfe2f2;
+      border-radius:16px;
+      background:#ffffff;
+      padding:10px;
+      color:#172033;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+    }
+    .multi-select-box option {
+      padding:8px 10px;
+      border-radius:8px;
+      margin:2px 0;
+    }
+    .multi-select-hint {
+      display:flex;
+      gap:8px;
+      align-items:flex-start;
+      border:1px solid #d8e8f6;
+      border-radius:14px;
+      background:#f7fbff;
+      padding:10px 12px;
+      margin:10px 0;
+      color:#40566f;
+      line-height:1.4;
+    }
+    .panel-route-note {
+      border:1px solid #cfe2f2;
+      border-radius:16px;
+      background:linear-gradient(135deg,#ffffff 0%,#f1f9ff 100%);
+      padding:12px 14px;
+      margin:12px 0;
+      line-height:1.45;
+    }
+    .panel-route-note b { color:#075a9f; }
+
+
+    .exam-impediment-panel {
+      border:1px solid #fed7aa;
+      border-radius:16px;
+      background:#fff7ed;
+      padding:12px;
+      margin-top:10px;
+      color:#7c2d12;
+      box-shadow:0 8px 18px rgba(249,115,22,.08);
+    }
+    .exam-impediment-panel textarea {
+      background:#ffffff;
+      border-color:#fdba74;
+      margin-top:8px;
+    }
+    .exam-blocked-note {
+      display:grid;
+      gap:6px;
+      margin-top:8px;
+      padding:10px;
+      border:1px solid #fed7aa;
+      border-radius:14px;
+      background:#fff7ed;
+      color:#7c2d12;
+      line-height:1.35;
+    }
+    .tag.blocked { background:#fff7ed; color:#9a3412; border:1px solid #fdba74; }
+    tr.exam-blocked-row td { background:#fff7ed; }
 
     .tv-panel {
       min-height:650px;
@@ -1213,6 +1297,13 @@
         panel:'segundo',
         stations:['Sala Audiometria 1','Sala Audiometria 2','Sala Acuidade Visual','Sala Espirometria','Sala ECG - Eletrocardiograma','Sala EEG - Eletroencefalograma','Sala Raio X','Sala Psicossocial 1','Sala Psicossocial 2','Sala Exames Laboratoriais 1','Sala Exames Laboratoriais 2','Sala Exams Laboratoriais 3']
       },
+      exames_nao_realizados: {
+        label:'Exames Ocupacionais Não Realizados',
+        subtitle:'Consulta de exames não realizados, motivo do impedimento e liberação para nova tentativa após resolução.',
+        floor:'Controle interno',
+        panel:'segundo',
+        stations:['Sala Audiometria 1','Sala Audiometria 2','Sala Acuidade Visual','Sala Espirometria','Sala ECG - Eletrocardiograma','Sala EEG - Eletroencefalograma','Sala Raio X','Sala Psicossocial 1','Sala Psicossocial 2','Sala Exames Laboratoriais 1','Sala Exames Laboratoriais 2','Sala Exams Laboratoriais 3']
+      },
       triagem: {
         label:'Triagem / Anamnese',
         subtitle:'Fila de ASO para anamnese antes do médico ocupacional.',
@@ -1228,11 +1319,11 @@
         stations:['Sala Médico Ocupacional 1','Sala Médico Ocupacional 2','Sala Médico Ocupacional 3','Sala Médico Ocupacional 4']
       },
       exames_pf: {
-        label:'Exames PF / Ultrassom',
-        subtitle:'Exames de Pessoa Física: laboratorial, ultrassonografia, audiometria, ECG, EEG e raio X.',
-        floor:'Painel TV 1º andar',
+        label:'Exames PF',
+        subtitle:'Exames de Pessoa Física: laboratorial, ultrassonografia, audiometria, ECG, EEG, Raio X e Psicologia.',
+        floor:'Painel TV',
         panel:'primeiro',
-        stations:['Exames Laboratoriais PF','Ultrassonografia','Audiometria PF','ECG PF','EEG PF','Raio X PF']
+        stations:['Sala Exames Laboratoriais 1','Sala Exames Laboratoriais 2','Sala Exames Laboratoriais 3','Sala Ultrassonografia','Sala Audiometria 1','Sala Audiometria 2','Sala ECG Eletrocardiograma','Sala EEG Eletroencefalograma','Sala Raio X','Sala Psicologia']
       },
       odonto: {
         label:'Odontologia',
@@ -1300,7 +1391,7 @@
         'Pé'
       ]
     };
-    const pfExams = ['Exames Laboratoriais PF','Ultrassonografia','Audiometria PF','ECG PF','EEG PF','Raio X PF'];
+    const pfExams = ['Exames Laboratoriais PF','Ultrassonografia','Audiometria PF','ECG PF','EEG PF','Raio X PF','Psicologia PF'];
     const especialidades = ['Clínico Geral','Ginecologista','Ortopedista','Oftalmologista','Otorrinolaringologista','Nutricionista','Psicologia','Cardiologista'];
     const statusLabels = {
       waiting:'Aguardando',
@@ -1379,6 +1470,34 @@
     }
     function queueLabel(queue) { return queueDefs[queue]?.label || queue || '-'; }
     function queuePanel(queue) { return queueDefs[queue]?.panel || 'geral'; }
+    function pfPanelFromName(value) {
+      const n = normalizeText(value);
+      if (n.includes('raio x')) return 'terreo';
+      if (n.includes('audiometria') || n.includes('laboratorial') || n.includes('laboratoriais')) return 'segundo';
+      return 'primeiro';
+    }
+    function panelLabel(panel) {
+      return panel === 'terreo' ? 'Painel TV Térreo' : panel === 'segundo' ? 'Painel TV 2º andar' : panel === 'primeiro' ? 'Painel TV 1º andar' : 'Painel Geral';
+    }
+    function ticketPanel(t, local='') {
+      if (!t) return 'geral';
+      if (t.queue === 'exames_pf') {
+        const byLocal = pfPanelFromName(local);
+        if (local && byLocal !== 'primeiro') return byLocal;
+        const pending = (t.pfExams || []).filter(e => e.status !== 'realizado').map(e => e.name);
+        if (pending.some(name => pfPanelFromName(name) === 'terreo')) return 'terreo';
+        if (pending.some(name => pfPanelFromName(name) === 'segundo')) return 'segundo';
+        return 'primeiro';
+      }
+      return queuePanel(t.queue);
+    }
+    function ticketVisibleInPanel(t, panel) {
+      if (panel === 'geral') return true;
+      if (t?.queue !== 'exames_pf') return queuePanel(t?.queue) === panel;
+      const pending = (t.pfExams || []).filter(e => e.status !== 'realizado').map(e => e.name);
+      if (!pending.length) return ticketPanel(t) === panel;
+      return pending.some(name => pfPanelFromName(name) === panel);
+    }
     function personLabel(ticket) { return ticket.nome ? ticket.nome : 'Ficha ainda não nomeada'; }
     function waitMinutes(ticket) {
       const start = new Date(ticket.waitStart || ticket.createdAt).getTime();
@@ -1583,11 +1702,13 @@
       const term = (document.getElementById('queueSearch')?.value || '').toLowerCase().trim();
       const view = document.getElementById('statusView')?.value || 'active';
       const station = getSelectedStation();
-      return state.tickets
-        .filter(t => t.queue === queue)
-        .filter(t => includeAll || statusMatchesView(t.status, view))
+      const base = queue === 'exames_nao_realizados'
+        ? state.tickets.filter(t => hasNonRealizedOccExam(t))
+        : state.tickets.filter(t => t.queue === queue);
+      return base
+        .filter(t => queue === 'exames_nao_realizados' ? (view === 'active' || view === 'all' ? true : statusMatchesView(t.status, view)) : (includeAll || statusMatchesView(t.status, view)))
         .filter(t => stationMatchesTicket(t, station))
-        .filter(t => !term || [t.senha,t.nome,t.cpf,t.empresa,t.servico,t.categoria,t.statusText].some(v => String(v || '').toLowerCase().includes(term)))
+        .filter(t => !term || [t.senha,t.nome,t.cpf,t.empresa,t.servico,t.categoria,t.statusText].some(v => String(v || '').toLowerCase().includes(term)) || nonRealizedOccExams(t).some(e => [e.name,e.motivoNaoRealizado].some(v => String(v || '').toLowerCase().includes(term))))
         .sort((a,b) => compareTicketsForQueue(a, b, queue));
     }
     function statusMatchesView(status, view) {
@@ -1611,6 +1732,12 @@
     }
     function pendingLabExams(t) {
       return (t.exams || []).filter(e => e.status !== 'realizado' && isLaboratoryExamName(e.name));
+    }
+    function nonRealizedOccExams(t) {
+      return (t.exams || []).filter(e => e.status === 'nao_realizado');
+    }
+    function hasNonRealizedOccExam(t) {
+      return nonRealizedOccExams(t).length > 0;
     }
     function pendingPfLabExams(t) {
       return (t.pfExams || []).filter(e => e.status !== 'realizado' && isLaboratoryExamName(e.name));
@@ -1641,6 +1768,13 @@
     function stationMatchesTicket(t, station) {
       if (!station) return true;
       const s = normalizeText(station);
+      if (activeQueue === 'exames_nao_realizados') {
+        const pending = nonRealizedOccExams(t).map(e => normalizeText(e.name));
+        const aliases = [s];
+        if (s.includes('psicossocial')) aliases.push('avaliacao psicossocial');
+        if (s.includes('laboratoriais')) aliases.push('exames laboratoriais');
+        return pending.some(name => aliases.some(alias => name.includes(alias) || alias.includes(name)));
+      }
       if (activeQueue === 'exames_ocup') {
         const pending = (t.exams || []).filter(e => e.status !== 'realizado').map(e => normalizeText(e.name));
         const aliases = [s];
@@ -1650,7 +1784,15 @@
       }
       if (activeQueue === 'exames_pf') {
         const pending = (t.pfExams || []).filter(e => e.status !== 'realizado').map(e => normalizeText(e.name));
-        return pending.some(name => name.includes(s) || s.includes(name));
+        const aliases = [s];
+        if (s.includes('laboratoriais')) aliases.push('exames laboratoriais pf', 'laboratorial pf', 'laboratoriais pf');
+        if (s.includes('ultrassonografia')) aliases.push('ultrassonografia');
+        if (s.includes('audiometria')) aliases.push('audiometria pf');
+        if (s.includes('ecg')) aliases.push('ecg pf', 'ecg eletrocardiograma');
+        if (s.includes('eeg')) aliases.push('eeg pf', 'eeg eletroencefalograma');
+        if (s.includes('raio x')) aliases.push('raio x pf', 'raio x');
+        if (s.includes('psicologia')) aliases.push('psicologia pf', 'psicologia');
+        return pending.some(name => aliases.some(alias => name.includes(alias) || alias.includes(name)));
       }
       if (activeQueue === 'especialidades') {
         return normalizeText(t.especialidade).includes(s) || s.includes(normalizeText(t.especialidade));
@@ -1682,7 +1824,9 @@
     function renderQueueMenu() {
       const menu = document.getElementById('queueMenu');
       menu.innerHTML = Object.entries(queueDefs).map(([key, q]) => {
-        const count = state.tickets.filter(t => t.queue === key && !['completed','canceled'].includes(t.status)).length;
+        const count = key === 'exames_nao_realizados'
+          ? state.tickets.filter(t => hasNonRealizedOccExam(t)).length
+          : state.tickets.filter(t => t.queue === key && !['completed','canceled'].includes(t.status)).length;
         return `<button class="${activeQueue===key?'active':''}" onclick="setActiveQueue('${key}')"><span>${escapeHTML(q.label)}<br><small class="muted">${escapeHTML(q.floor)}</small></span><span class="queue-count">${count}</span></button>`;
       }).join('');
     }
@@ -1723,12 +1867,14 @@
       const hasLabPriority = hasPendingLaboratoryExam(t);
       const cls = `${t.priority ? 'priority' : ''} ${hasLabPriority ? 'lab-priority-ticket' : ''} ${t.status}`;
       const examsPending = (t.exams || []).filter(e => e.status !== 'realizado').length;
+      const occNotDone = nonRealizedOccExams(t).length;
       const pfPending = (t.pfExams || []).filter(e => e.status !== 'realizado').length;
       const statusTag = t.status === 'waiting' ? 'dark' : t.status === 'called' ? 'warn' : t.status === 'in_service' ? 'ok' : t.status === 'absent' ? 'warn' : 'ok';
       const details = [];
       if (t.nome) details.push(`Nome: ${escapeHTML(t.nome)}`);
       if (t.empresa) details.push(`Empresa: ${escapeHTML(t.empresa)}`);
       if (examsPending) details.push(`${examsPending} exame(s) ocupacional(is) pendente(s)`);
+      if (occNotDone) details.push(`${occNotDone} exame(s) ocupacional(is) não realizado(s)`);
       if (pfPending) details.push(`${pfPending} exame(s) PF pendente(s)`);
       if (hasLabPriority) details.push('Prioridade automática para exame laboratorial');
       if (t.temAso) details.push(t.asoMesmoDia ? 'ASO no mesmo dia' : 'ASO com retorno');
@@ -1753,7 +1899,7 @@
           </div>
           ${details.length ? `<div class="small muted">${details.join(' • ')}</div>` : ''}
           <div class="ticket-actions">
-            <button class="btn secondary" onclick="selectTicket('${t.id}')">Detalhar</button>
+            <button class="btn secondary" onclick="selectTicket('${t.id}')">${selectedTicketId === t.id ? 'Ocultar detalhes' : 'Detalhar'}</button>
             <button class="btn" onclick="chamarTicket('${t.id}', escolherLocalChamada())">Chamar</button>
             <button class="btn success" onclick="iniciarAtendimento('${t.id}')">Atender</button>
             <button class="btn warning" onclick="marcarAusente('${t.id}')">Ausente</button>
@@ -1762,7 +1908,10 @@
         </article>`;
     }
 
-    function selectTicket(id) { selectedTicketId = id; renderTicketForm(); }
+    function selectTicket(id) {
+      selectedTicketId = selectedTicketId === id ? null : id;
+      renderOperacao();
+    }
     function iniciarAtendimento(id) {
       const t = getTicket(id);
       if (!t) return;
@@ -1811,7 +1960,7 @@
       addHistory(t, `Ficha chamada para ${local}.`);
       const call = {
         id:uid(), ticketId:t.id, senha:t.senha, nome:t.nome, servico:t.servico, categoria:t.categoria,
-        priority:t.priority, queue:t.queue, panel:queuePanel(t.queue), local, at:nowISO()
+        priority:t.priority, queue:t.queue, panel:ticketPanel(t, local), local, at:nowISO()
       };
       state.calls.unshift(call);
       state.calls = state.calls.slice(0,80);
@@ -1946,6 +2095,7 @@
       if (activeQueue === 'recepcao_1') return formRecepcao1(t);
       if (activeQueue === 'recepcao_2') return formRecepcao2(t);
       if (activeQueue === 'exames_ocup') return formExamesOcup(t);
+      if (activeQueue === 'exames_nao_realizados') return formExamesNaoRealizados(t);
       if (activeQueue === 'triagem') return formTriagem(t);
       if (activeQueue === 'medico_ocup') return formMedico(t);
       if (activeQueue === 'exames_pf') return formExamesPF(t);
@@ -2041,7 +2191,7 @@
         <select onchange="updateField('${t.id}','especialidade',this.value)">${especialidadeOptions}</select>
         <div class="toolbar">
           <button class="btn" onclick="transferTicket('${t.id}','odonto','Encaminhado para Odontologia.')">Odontologia</button>
-          <button class="btn" onclick="preparePfExamsAndTransfer('${t.id}','exames_pf','Encaminhado para Exames PF / Ultrassom.')">Exames PF / Ultrassom</button>
+          <button class="btn" onclick="preparePfExamsAndTransfer('${t.id}','exames_pf','Encaminhado para Exames PF.')">Exames PF</button>
           <button class="btn" onclick="transferTicket('${t.id}','especialidades','Encaminhado para Especialidades Médicas.')">Especialidade médica</button>
           <button class="btn success" onclick="completeTicket('${t.id}','Atendimento finalizado na Recepção 1º andar.')">Finalizar atendimento PF</button>
         </div>`;
@@ -2053,17 +2203,51 @@
     function formExamesOcup(t) {
       const pending = (t.exams || []).filter(e => e.status !== 'realizado');
       const labPending = pending.filter(e => isLaboratoryExamName(e.name)).length;
+      const nonRealized = nonRealizedOccExams(t);
       const orderedExams = [...(t.exams || [])].sort((a,b) => Number(isLaboratoryExamName(b.name)) - Number(isLaboratoryExamName(a.name)) || String(a.name).localeCompare(String(b.name), 'pt-BR'));
       const labBanner = labPending ? `<div class="lab-priority-banner"><span>🧪</span><div><strong>Prioridade laboratorial nesta ficha.</strong><br><span class="small">Os exames laboratoriais aparecem primeiro na lista e esta ficha é priorizada na fila de Exames Ocupacionais após os atendimentos preferenciais.</span></div></div>` : '';
-      const all = orderedExams.map(e => `<tr class="${isLaboratoryExamName(e.name) ? 'lab-priority-row' : ''}"><td>${escapeHTML(e.name)} ${isLaboratoryExamName(e.name) ? '<span class="tag lab-priority">Prioritário</span>' : ''}</td><td>${escapeHTML(e.status)}</td><td>${e.status !== 'realizado' ? `<button class="btn secondary" onclick="realizarExame('${t.id}','${escapeHTML(e.name)}')">Realizar</button>` : '<span class="tag ok">OK</span>'}</td></tr>`).join('');
+      const notDoneBanner = nonRealized.length ? `<div class="exam-impediment-panel"><strong>Exame(s) não realizado(s): ${nonRealized.length}</strong><br><span class="small">Consulte os motivos na fila Exames Ocupacionais Não Realizados. Após resolver o impedimento, use o botão Adicionar à fila novamente.</span></div>` : '';
+      const doneBanner = orderedExams.length && !pending.length ? `<div class="lab-priority-banner"><span>✅</span><div><strong>Exames concluídos.</strong><br><span class="small">Todos os exames selecionados foram marcados como realizados. Use o botão Finalizar Exames para concluir a etapa.</span></div></div>` : '';
+      const all = orderedExams.map(e => {
+        const safeName = escapeHTML(e.name);
+        const statusTag = e.status === 'realizado' ? '<span class="tag ok">Realizado</span>' : e.status === 'nao_realizado' ? '<span class="tag blocked">Não realizado</span>' : '<span class="tag warn">Pendente</span>';
+        const motivoBoxId = `motivo_${t.id}_${normalizeText(e.name).replace(/[^a-z0-9]+/g, '_')}`;
+        const motivoAberto = t.exameNaoRealizadoAberto === e.name;
+        const motivoAtual = escapeHTML(e.motivoNaoRealizado || '');
+        let action = '';
+        if (e.status === 'realizado') {
+          action = '<span class="tag ok">OK</span>';
+        } else if (e.status === 'nao_realizado') {
+          action = `<div class="exam-blocked-note"><div><b>Motivo:</b> ${motivoAtual || 'Não informado'}</div><div class="small muted">Registrado em ${e.naoRealizadoAt ? fmtTime(e.naoRealizadoAt) : 'data não informada'}</div><div class="toolbar" style="margin:6px 0 0"><button class="btn secondary" onclick="reativarExameOcupacional('${t.id}','${safeName}')">Adicionar à fila novamente</button></div></div>`;
+        } else {
+          action = `<div class="toolbar" style="margin:0"><button class="btn secondary" onclick="realizarExame('${t.id}','${safeName}')">Realizar</button><button class="btn warning" onclick="abrirMotivoNaoRealizado('${t.id}','${safeName}')">Não Realizado</button></div>`;
+          if (motivoAberto) {
+            action += `<div class="exam-impediment-panel"><label class="small">Motivo do não atendimento / impedimento</label><textarea id="${motivoBoxId}" placeholder="Informe o motivo pelo qual o exame não foi realizado...">${motivoAtual}</textarea><div class="toolbar" style="margin-bottom:0"><button class="btn warning" onclick="salvarExameNaoRealizado('${t.id}','${safeName}',document.getElementById('${motivoBoxId}').value)">Salvar não realizado</button><button class="btn secondary" onclick="cancelarMotivoNaoRealizado('${t.id}')">Cancelar</button></div></div>`;
+          }
+        }
+        return `<tr class="${e.status === 'nao_realizado' ? 'exam-blocked-row' : isLaboratoryExamName(e.name) ? 'lab-priority-row' : ''}"><td>${safeName} ${isLaboratoryExamName(e.name) ? '<span class="tag lab-priority">Prioritário</span>' : ''}</td><td>${statusTag}</td><td>${action}</td></tr>`;
+      }).join('');
       return `
         <h3>Realização de Exames Ocupacionais</h3>
-        <p class="subtitle">Após cada exame, a ficha permanece na fila até concluir todos os exames pendentes. Depois segue para triagem se houver ASO.</p>
+        <p class="subtitle">Após cada exame, a ficha permanece na fila até concluir todos os exames pendentes. Quando houver impedimento, registre como Não Realizado com o motivo.</p>
         ${labBanner}
+        ${notDoneBanner}
+        ${doneBanner}
         <table><thead><tr><th>Exame</th><th>Status</th><th>Ação</th></tr></thead><tbody>${all || '<tr><td colspan="3">Nenhum exame cadastrado.</td></tr>'}</tbody></table>
         <div class="toolbar">
-          <button class="btn success" ${pending.length?'disabled':''} onclick="posExamesOcupacionais('${t.id}')">Concluir etapa de exames</button>
+          <button class="btn success" ${pending.length?'disabled':''} onclick="posExamesOcupacionais('${t.id}')">Finalizar Exames</button>
           <button class="btn secondary" onclick="transferTicket('${t.id}','recepcao_2','Retorno para Recepção 2º andar por ajuste de exames.')">Retornar Recepção 2º andar</button>
+        </div>`;
+    }
+    function formExamesNaoRealizados(t) {
+      const rows = nonRealizedOccExams(t).map(e => `<tr class="exam-blocked-row"><td>${escapeHTML(e.name)}</td><td>${escapeHTML(e.motivoNaoRealizado || 'Não informado')}</td><td>${e.naoRealizadoAt ? fmtTime(e.naoRealizadoAt) : '-'}</td><td><button class="btn secondary" onclick="reativarExameOcupacional('${t.id}','${escapeHTML(e.name)}')">Adicionar à fila novamente</button></td></tr>`).join('');
+      return `
+        <h3>Exames Ocupacionais Não Realizados</h3>
+        <p class="subtitle">Consulte os exames impedidos/não realizados. Após resolver o impedimento, adicione o exame novamente à fila de Exames Ocupacionais.</p>
+        <table><thead><tr><th>Exame</th><th>Motivo</th><th>Registro</th><th>Ação</th></tr></thead><tbody>${rows || '<tr><td colspan="4">Esta ficha não possui exames não realizados.</td></tr>'}</tbody></table>
+        <div class="toolbar">
+          <button class="btn secondary" onclick="transferTicket('${t.id}','exames_ocup','Retorno para Exames Ocupacionais para nova tentativa de realização.')">Abrir fila de Exames Ocupacionais</button>
+          <button class="btn secondary" onclick="transferTicket('${t.id}','recepcao_2','Retorno para Recepção 2º andar após análise de impedimento.')">Retornar Recepção 2º andar</button>
         </div>`;
     }
     function formTriagem(t) {
@@ -2089,19 +2273,20 @@
         </div>`;
     }
     function formExamesPF(t) {
-      const checks = pfExams.map(ex => `<label class="check-item"><input type="checkbox" ${hasPfExam(t, ex) ? 'checked' : ''} onchange="togglePfExam('${t.id}','${escapeHTML(ex)}',this.checked)">${escapeHTML(ex)} ${isLaboratoryExamName(ex) ? '<span class="tag lab-priority">Prioridade automática</span>' : ''}</label>`).join('');
+      const checks = pfExams.map(ex => pfExamOptionHtml(t, ex)).join('');
       const orderedPfExams = [...(t.pfExams || [])].sort((a,b) => Number(isLaboratoryExamName(b.name)) - Number(isLaboratoryExamName(a.name)) || String(a.name).localeCompare(String(b.name), 'pt-BR'));
-      const rows = orderedPfExams.map(e => `<tr class="${isLaboratoryExamName(e.name) ? 'lab-priority-row' : ''}"><td>${escapeHTML(e.name)} ${isLaboratoryExamName(e.name) ? '<span class="tag lab-priority">Prioritário</span>' : ''}</td><td>${escapeHTML(e.status)}</td><td>${e.status !== 'realizado' ? `<button class="btn secondary" onclick="realizarPfExame('${t.id}','${escapeHTML(e.name)}')">Realizar</button>` : '<span class="tag ok">OK</span>'}</td></tr>`).join('');
+      const rows = orderedPfExams.map(e => `<tr class="${isLaboratoryExamName(e.name) ? 'lab-priority-row' : ''}"><td>${escapeHTML(e.name)} ${isLaboratoryExamName(e.name) ? '<span class="tag lab-priority">Prioritário</span>' : ''}</td><td><span class="tag blue">${escapeHTML(pfExamRoom(e.name))}</span></td><td>${escapeHTML(e.status)}</td><td>${e.status !== 'realizado' ? `<button class="btn secondary" onclick="realizarPfExame('${t.id}','${escapeHTML(e.name)}')">Realizar</button>` : '<span class="tag ok">OK</span>'}</td></tr>`).join('');
       const pending = (t.pfExams || []).filter(e => e.status !== 'realizado').length;
       const labBanner = pendingPfLabExams(t).length ? `<div class="lab-priority-banner"><span>🧪</span><div><strong>Prioridade laboratorial nesta ficha.</strong><br><span class="small">A ficha é priorizada na fila de Exames PF após os atendimentos preferenciais.</span></div></div>` : '';
+      const doneBanner = (t.pfExams || []).length && !pending ? `<div class="lab-priority-banner"><span>✅</span><div><strong>Exames PF concluídos.</strong><br><span class="small">Todos os exames selecionados foram marcados como realizados. Use o botão Finalizar Exames PF para concluir o atendimento.</span></div></div>` : '';
       return `
-        <h3>Exames PF / Ultrassom</h3>
-        <p class="subtitle">Selecione os exames PF necessários e registre a realização.</p>
+        <h3>Registrar Exames PF</h3>
         ${labBanner}
+        ${doneBanner}
         <div class="check-grid">${checks}</div>
-        <div style="overflow:auto;margin-top:12px"><table><thead><tr><th>Exame</th><th>Status</th><th>Ação</th></tr></thead><tbody>${rows || '<tr><td colspan="3">Nenhum exame PF selecionado.</td></tr>'}</tbody></table></div>
+        <div style="overflow:auto;margin-top:12px"><table><thead><tr><th>Exame</th><th>Sala sugerida</th><th>Status</th><th>Ação</th></tr></thead><tbody>${rows || '<tr><td colspan="4">Nenhum exame PF selecionado.</td></tr>'}</tbody></table></div>
         <div class="toolbar">
-          <button class="btn success" ${pending?'disabled':''} onclick="completeTicket('${t.id}','Exames PF concluídos e atendimento finalizado.')">Finalizar exames PF</button>
+          <button class="btn success" ${pending?'disabled':''} onclick="completeTicket('${t.id}','Exames PF concluídos e atendimento finalizado.')">Finalizar Exames PF</button>
           <button class="btn secondary" onclick="transferTicket('${t.id}','recepcao_1','Retorno para Recepção 1º andar após exames PF.')">Retornar recepção</button>
         </div>`;
     }
@@ -2241,13 +2426,206 @@
       saveState(); renderTicketForm(); renderOperacao();
       toast(`${name} adicionado à ficha.`);
     }
-    function hasPfExam(t, name) { return (t.pfExams || []).some(e => e.name === name); }
+    function isPfGroupedExam(group, name) {
+      return name === group || String(name || '').startsWith(`${group} - `);
+    }
+    const pfExamGroups = {
+      'Exames Laboratoriais PF': [
+        'Hemograma Completo',
+        'Glicemia em Jejum',
+        'Hemoglobina Glicada',
+        'Colesterol Total',
+        'HDL Colesterol',
+        'LDL Colesterol',
+        'VLDL Colesterol',
+        'Triglicerídeos',
+        'Ureia',
+        'Creatinina',
+        'Ácido Úrico',
+        'TGO / AST',
+        'TGP / ALT',
+        'Gama GT',
+        'Fosfatase Alcalina',
+        'Bilirrubina Total e Frações',
+        'Proteínas Totais e Frações',
+        'Sódio',
+        'Potássio',
+        'Cálcio',
+        'Magnésio',
+        'Ferro Sérico',
+        'Ferritina',
+        'Vitamina D',
+        'Vitamina B12',
+        'TSH',
+        'T4 Livre',
+        'PSA Total',
+        'PSA Livre',
+        'EAS - Sumário de Urina',
+        'Urocultura',
+        'Parasitológico de Fezes',
+        'Sangue Oculto nas Fezes',
+        'VDRL',
+        'HIV 1 e 2',
+        'Hepatite B - HBsAg',
+        'Hepatite C - Anti-HCV',
+        'Tipo Sanguíneo e Fator RH',
+        'Beta HCG'
+      ],
+      'Raio X PF': [
+        'Tórax PA',
+        'Tórax PA e Perfil',
+        'Tórax OIT',
+        'Seios da Face',
+        'Face',
+        'Crânio',
+        'Coluna Cervical',
+        'Coluna Cervical AP e Perfil',
+        'Coluna Torácica',
+        'Coluna Lombar',
+        'Coluna Lombo-Sacra',
+        'Coluna Total',
+        'Ombro Direito',
+        'Ombro Esquerdo',
+        'Braço',
+        'Cotovelo',
+        'Antebraço',
+        'Punho',
+        'Mão',
+        'Dedos da Mão',
+        'Bacia',
+        'Quadril Direito',
+        'Quadril Esquerdo',
+        'Coxa',
+        'Joelho Direito',
+        'Joelho Esquerdo',
+        'Perna',
+        'Tornozelo',
+        'Pé',
+        'Calcâneo'
+      ]
+    };
+    function hasPfExam(t, name) {
+      if (pfExamGroups[name]) return (t.pfExams || []).some(e => isPfGroupedExam(name, e.name));
+      return (t.pfExams || []).some(e => e.name === name);
+    }
+    function pfGroupedExamName(group, option) { return `${group} - ${option}`; }
+    function pfGroupInputId(ticketId, group) { return `pf-${ticketId}-${group}`.replace(/[^a-z0-9_-]/gi, '-'); }
+    function selectedPfGroupedExamNames(t, group) {
+      return (t.pfExams || [])
+        .filter(e => String(e.name || '').startsWith(`${group} - `))
+        .map(e => e.name.replace(`${group} - `, ''));
+    }
+    function pfExamRoom(name) {
+      const n = normalizeText(name);
+      if (n.includes('laboratorial') || n.includes('laboratoriais')) return 'Sala Exames Laboratoriais 1, 2 ou 3 — Painel TV 2º andar';
+      if (n.includes('ultrassonografia')) return 'Sala Ultrassonografia — Painel TV 1º andar';
+      if (n.includes('audiometria')) return 'Sala Audiometria 1 ou 2 — Painel TV 2º andar';
+      if (n.includes('ecg')) return 'Sala ECG Eletrocardiograma — Painel TV 1º andar';
+      if (n.includes('eeg')) return 'Sala EEG Eletroencefalograma — Painel TV 1º andar';
+      if (n.includes('raio x')) return 'Sala Raio X — Painel TV Térreo';
+      if (n.includes('psicologia')) return 'Sala Psicologia — Painel TV 1º andar';
+      return 'Sala Exames PF — Painel TV 1º andar';
+    }
+    function pfExamOptionHtml(t, name) {
+      if (pfExamGroups[name]) return `
+        <label class="check-item"><input type="checkbox" ${hasPfExam(t, name) ? 'checked' : ''} onchange="togglePfExam('${t.id}','${escapeHTML(name)}',this.checked)">${escapeHTML(name)} ${isLaboratoryExamName(name) ? '<span class="tag lab-priority">Prioridade automática</span>' : ''}</label>
+        ${hasPfExam(t, name) ? pfGroupedExamSelectorHtml(t, name) : ''}`;
+      return `<label class="check-item"><input type="checkbox" ${hasPfExam(t, name) ? 'checked' : ''} onchange="togglePfExam('${t.id}','${escapeHTML(name)}',this.checked)">${escapeHTML(name)} ${isLaboratoryExamName(name) ? '<span class="tag lab-priority">Prioridade automática</span>' : ''}</label>`;
+    }
+    function pfGroupedExamSelectorHtml(t, group) {
+      const selected = selectedPfGroupedExamNames(t, group);
+      const inputId = pfGroupInputId(t.id, group);
+      const selectedSummary = selected.length
+        ? `<div class="selected-exam-summary">${selected.map((item, index) => `<span class="tag blue manual-exam-tag">${escapeHTML(item)} <button class="manual-exam-remove" type="button" title="Excluir exame" onclick="removeCustomPfGroupedExam('${t.id}','${escapeHTML(group)}',${index})">×</button></span>`).join('')}</div>`
+        : '<div class="small muted" style="margin-top:8px">Nenhum exame manual adicionado ainda.</div>';
+      return `<div class="nested-exam-panel">
+        <h4>${escapeHTML(group)}</h4>
+        <div class="custom-exam-row">
+          <label style="flex:1 1 260px;margin:0"><span class="small muted">Adicionar exame manualmente</span><input id="${inputId}" placeholder="Digite o nome do exame"></label>
+          <button class="btn secondary" type="button" onclick="addCustomPfGroupedExam('${t.id}','${escapeHTML(group)}',document.getElementById('${inputId}').value)">Adicionar</button>
+        </div>
+        ${selectedSummary}
+      </div>`;
+    }
+    function setPfGroupedExamSelection(id, group, values) {
+      const t = getTicket(id); if (!t) return;
+      const selected = Array.isArray(values) ? values.map(v => String(v || '').trim()).filter(Boolean) : [];
+      t.pfExams = t.pfExams || [];
+      const existing = new Map(t.pfExams.map(e => [e.name, e]));
+      t.pfExams = t.pfExams.filter(e => !isPfGroupedExam(group, e.name));
+      if (selected.length) {
+        selected.forEach(option => {
+          const fullName = pfGroupedExamName(group, option);
+          t.pfExams.push(existing.get(fullName) || makePfExamRecord(fullName));
+        });
+      } else {
+        t.pfExams.push(existing.get(group) || makePfExamRecord(group));
+      }
+      addHistory(t, selected.length ? `${group}: ${selected.length} exame(s) específico(s) selecionado(s).` : `${group}: exames específicos limpos; grupo mantido sem exame específico.`);
+      atualizarConclusaoExames(t);
+      saveState(); renderTicketForm(); renderOperacao(); renderTV();
+    }
+    function togglePfGroupedExam(id, group, option, checked) {
+      const t = getTicket(id); if (!t) return;
+      t.pfExams = t.pfExams || [];
+      const fullName = pfGroupedExamName(group, option);
+      if (checked && !hasPfExam(t, fullName)) {
+        t.pfExams = t.pfExams.filter(e => e.name !== group);
+        t.pfExams.push(makePfExamRecord(fullName));
+      }
+      if (!checked) {
+        t.pfExams = t.pfExams.filter(e => e.name !== fullName);
+        const stillHasSpecific = t.pfExams.some(e => String(e.name || '').startsWith(`${group} - `));
+        if (!stillHasSpecific && !hasPfExam(t, group)) t.pfExams.push(makePfExamRecord(group));
+      }
+      addHistory(t, checked ? `Exame PF específico adicionado: ${fullName}.` : `Exame PF específico removido: ${fullName}.`);
+      atualizarConclusaoExames(t);
+      saveState(); renderTicketForm(); renderOperacao();
+    }
+    function addCustomPfGroupedExam(id, group, value) {
+      const raw = String(value || '').trim();
+      if (!raw) return toast('Informe o nome do exame antes de adicionar.');
+      const t = getTicket(id); if (!t) return;
+      t.pfExams = t.pfExams || [];
+      const fullName = pfGroupedExamName(group, raw);
+      if (!hasPfExam(t, fullName)) {
+        t.pfExams = t.pfExams.filter(e => e.name !== group);
+        t.pfExams.push(makePfExamRecord(fullName));
+        addHistory(t, `Exame PF específico adicionado: ${fullName}.`);
+      }
+      atualizarConclusaoExames(t);
+      saveState(); renderTicketForm(); renderOperacao();
+      toast(`${raw} adicionado à ficha.`);
+    }
+    function removeCustomPfGroupedExam(id, group, optionIndex) {
+      const t = getTicket(id); if (!t) return;
+      const selected = selectedPfGroupedExamNames(t, group);
+      const option = selected[Number(optionIndex)];
+      if (!option) return;
+      const fullName = pfGroupedExamName(group, option);
+      t.pfExams = (t.pfExams || []).filter(e => e.name !== fullName);
+      const stillHasSpecific = (t.pfExams || []).some(e => String(e.name || '').startsWith(`${group} - `));
+      if (!stillHasSpecific && !hasPfExam(t, group)) t.pfExams.push(makePfExamRecord(group));
+      addHistory(t, `Exame PF manual excluído: ${fullName}.`);
+      atualizarConclusaoExames(t);
+      saveState(); renderTicketForm(); renderOperacao(); renderTV();
+      toast(`${option} excluído da ficha.`);
+    }
     function togglePfExam(id, name, checked) {
       const t = getTicket(id); if (!t) return;
       t.pfExams = t.pfExams || [];
-      if (checked && !hasPfExam(t, name)) t.pfExams.push(makePfExamRecord(name));
-      if (!checked) t.pfExams = t.pfExams.filter(e => e.name !== name);
+      if (pfExamGroups[name]) {
+        if (checked) {
+          if (!hasPfExam(t, name)) t.pfExams.push(makePfExamRecord(name));
+        } else {
+          t.pfExams = t.pfExams.filter(e => !isPfGroupedExam(name, e.name));
+        }
+      } else {
+        if (checked && !hasPfExam(t, name)) t.pfExams.push(makePfExamRecord(name));
+        if (!checked) t.pfExams = t.pfExams.filter(e => e.name !== name);
+      }
       addHistory(t, checked ? `Exame PF adicionado: ${name}.` : `Exame PF removido: ${name}.`);
+      atualizarConclusaoExames(t);
       saveState(); renderTicketForm(); renderOperacao();
     }
 
@@ -2271,15 +2649,77 @@
       }
       completeTicket(id, 'Sem ASO e sem exames pendentes. Atendimento ocupacional finalizado.');
     }
+    function atualizarConclusaoExames(t) {
+      if (!t) return;
+      const occ = Array.isArray(t.exams) ? t.exams : [];
+      const pf = Array.isArray(t.pfExams) ? t.pfExams : [];
+      if (occ.length) {
+        t.examesConcluidos = occ.every(e => e.status === 'realizado');
+        if (t.examesConcluidos && !['completed','canceled'].includes(t.status)) {
+          t.statusText = 'Exames concluídos. Aguardando finalização da etapa.';
+        }
+      } else {
+        t.examesConcluidos = false;
+      }
+      if (pf.length) {
+        t.pfExamesConcluidos = pf.every(e => e.status === 'realizado');
+        if (t.pfExamesConcluidos && !['completed','canceled'].includes(t.status)) {
+          t.statusText = 'Exames PF concluídos. Aguardando finalização.';
+        }
+      } else {
+        t.pfExamesConcluidos = false;
+      }
+    }
+
     function realizarExame(id, name) {
       const t = getTicket(id); if (!t) return;
       const exam = (t.exams || []).find(e => e.name === name);
       if (exam) {
         exam.status = 'realizado';
         exam.doneAt = nowISO();
+        exam.motivoNaoRealizado = '';
+        exam.naoRealizadoAt = '';
+        if (t.exameNaoRealizadoAberto === name) t.exameNaoRealizadoAberto = '';
         addHistory(t, `Exame realizado: ${name}.`);
+        atualizarConclusaoExames(t);
         saveState(); renderAll(); toast(`Exame realizado: ${name}.`);
       }
+    }
+    function abrirMotivoNaoRealizado(id, name) {
+      const t = getTicket(id); if (!t) return;
+      t.exameNaoRealizadoAberto = name;
+      saveState(); renderTicketForm();
+    }
+    function cancelarMotivoNaoRealizado(id) {
+      const t = getTicket(id); if (!t) return;
+      t.exameNaoRealizadoAberto = '';
+      saveState(); renderTicketForm();
+    }
+    function salvarExameNaoRealizado(id, name, motivo) {
+      const t = getTicket(id); if (!t) return;
+      const exam = (t.exams || []).find(e => e.name === name);
+      if (!exam) return;
+      const texto = String(motivo || '').trim();
+      if (!texto) return toast('Informe o motivo do exame não realizado.');
+      exam.status = 'nao_realizado';
+      exam.motivoNaoRealizado = texto;
+      exam.naoRealizadoAt = nowISO();
+      exam.doneAt = '';
+      t.exameNaoRealizadoAberto = '';
+      t.statusText = `Exame não realizado: ${name}. Motivo registrado.`;
+      addHistory(t, `Exame não realizado: ${name}. Motivo: ${texto}`);
+      atualizarConclusaoExames(t);
+      saveState(); renderAll(); toast(`Motivo registrado para ${name}.`);
+    }
+    function reativarExameOcupacional(id, name) {
+      const t = getTicket(id); if (!t) return;
+      const exam = (t.exams || []).find(e => e.name === name);
+      if (!exam) return;
+      exam.status = 'pendente';
+      exam.liberadoParaNovaTentativaAt = nowISO();
+      addHistory(t, `Impedimento resolvido. Exame adicionado novamente à fila: ${name}.`);
+      atualizarConclusaoExames(t);
+      transferTicket(id, 'exames_ocup', `Exame liberado para nova tentativa: ${name}.`);
     }
     function posExamesOcupacionais(id) {
       const t = getTicket(id); if (!t) return;
@@ -2310,6 +2750,7 @@
         exam.status = 'realizado';
         exam.doneAt = nowISO();
         addHistory(t, `Exame PF realizado: ${name}.`);
+        atualizarConclusaoExames(t);
         saveState(); renderAll(); toast(`Exame PF realizado: ${name}.`);
       }
     }
@@ -2387,9 +2828,9 @@
       const tv = document.getElementById('tvContent');
       if (!activeTv) {
         const cards = [
-          ['terreo','Painel TV Térreo','Recepção Térreo 1, 2 e 3. Ocupacional inicial e resultado de exames.'],
-          ['primeiro','Painel TV 1º andar','Pessoa Física, odontologia, exames PF, ultrassom, especialidades e pagamento.'],
-          ['segundo','Painel TV 2º andar','Retorno ocupacional, exames ocupacionais, triagem e médico ocupacional.'],
+          ['terreo','Painel TV Térreo','Recepção Térreo 1, 2 e 3, resultado de exames e chamadas de Raio X PF.'],
+          ['primeiro','Painel TV 1º andar','Pessoa Física, odontologia, ultrassom, ECG, EEG, psicologia, especialidades e pagamento.'],
+          ['segundo','Painel TV 2º andar','Retorno ocupacional, exames ocupacionais, triagem, médico ocupacional, Laboratório PF e Audiometria PF.'],
           ['geral','Painel Geral','Visualização integrada de todas as chamadas.']
         ];
         tv.innerHTML = `
@@ -2449,7 +2890,7 @@
       startClock();
     }
     function nextTicketsByPanel(panel, limit=8) {
-      return state.tickets.filter(t => t.status === 'waiting' && (panel === 'geral' || queuePanel(t.queue) === panel))
+      return state.tickets.filter(t => t.status === 'waiting' && ticketVisibleInPanel(t, panel))
         .sort((a,b) => Number(b.priority) - Number(a.priority) || new Date(a.waitStart || a.createdAt) - new Date(b.waitStart || b.createdAt))
         .slice(0, limit);
     }
@@ -2774,7 +3215,7 @@
         ['Retorno Ocupacional','Totem','ROC','Recepção 2º andar','Classificar atendimento','ASO/Triagem/Médico ou Exames','Finalização'],
         ['Resultado de Exames','Totem','ERE/EREP','Recepção Térreo','Consultar Genesis X / Arquivo de Exames','Entregar resultado','Finalização'],
         ['Pessoa Física — Dentista','Totem','ODT/ODTP','Recepção 1º andar','Odontologia','Pagamento, se necessário','Finalização'],
-        ['Pessoa Física — Exames/Ultrassom','Totem','PFE/USG','Recepção 1º andar','Exames PF / Ultrassom','Finalização'],
+        ['Pessoa Física — Exames PF','Totem','PFE/USG','Recepção 1º andar','Exames PF','Registro dos exames','Finalização'],
         ['Pessoa Física — Especialidades','Totem','ESP/ESPP','Recepção 1º andar','Especialidade médica','Finalização']
       ];
       document.getElementById('flowBoard').innerHTML = flows.map(([title, ...steps]) => `
