@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PAPA FILA | SESI Saúde</title>
-<style>
+<script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=tl3CM07576WJuO2b6Tcn8F2UYC_3rAMzaAv-JNb-PBzyA0paTLGtE7Kxlau1o26b_DVATd0VbvllHLniY5jWGBb9nlhCEXBB7_lipsxlNqK2qESIZVA8PndKLLYB4bKMGZigqXvVj8qjxEf9gYD89S4qOrS5wYe5hMJWIDeOnFvTznNIfH9IEbmjnd-2ERtQqOhCo0Ol8T4WP0OUYJ559-R7jbgxfHpcul5SEJfJFZJ9TC90LfbZF8djwojVG71N35Y9flDK2PfTI06ESSrbAz1Gvk7L-gLHso0s-jn7YYx1Hlpm-Tm6Q0Z5DXXiz0vK_QnXgLoY-4y6-jtRcO1d9HtUloq9iTbkioAeFPW-DLs" charset="UTF-8"></script><style>
     :root {
       --azul:#0b76c8;
       --azul-2:#2b9be6;
@@ -201,6 +201,24 @@
     .tag.warn { background:#fff5e0; color:#975500; }
     .tag.dark { background:#eef1f5; color:#273143; }
     .tag.blue { background:var(--azul-3); color:var(--azul); }
+    .tag.lab-priority { background:#ecfeff; color:#0369a1; border:1px solid #bae6fd; }
+    .ticket.lab-priority-ticket:not(.priority)::before { background:#0284c7; }
+    .lab-priority-banner {
+      grid-column:1 / -1;
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      border:1px solid #bae6fd;
+      border-radius:16px;
+      background:linear-gradient(135deg, #ecfeff 0%, #f0f9ff 100%);
+      color:#075985;
+      padding:12px 14px;
+      margin:10px 0;
+      line-height:1.4;
+      box-shadow:0 8px 18px rgba(2,132,199,.08);
+    }
+    .lab-priority-banner strong { color:#0369a1; }
+    tr.lab-priority-row td { background:#f0f9ff; }
 
     .metric {
       position:relative;
@@ -970,7 +988,7 @@
         subtitle:'Fila técnica para exames ocupacionais, com chamada por sala e controle de pendências.',
         floor:'Painel TV 2º andar',
         panel:'segundo',
-        stations:['Sala Audiometria 1','Sala Audiometria 2','Sala Acuidade Visual','Sala Espirometria','Sala ECG - Eletrocardiograma','Sala EEG - Eletroencefalograma','Sala Raio X','Sala Psicossocial 1','Sala Psicossocial 2','Sala Exames Laboratoriais 1','Sala Exames Laboratoriais 2','Sala Exams Laboratoriais 3']
+        stations:['Sala Audiometria 1','Sala Audiometria 2','Sala Acuidade Visual','Sala Espirometria','Sala ECG - Eletrocardiograma','Sala EEG - Eletroencefalograma','Sala Raio X','Sala Psicossocial 1','Sala Psicossocial 2','Sala Exames Laboratoriais 1','Sala Exames Laboratoriais 2','Sala Exames Laboratoriais 3']
       },
       triagem: {
         label:'Triagem / Anamnese',
@@ -1346,12 +1364,7 @@
         .filter(t => includeAll || statusMatchesView(t.status, view))
         .filter(t => stationMatchesTicket(t, station))
         .filter(t => !term || [t.senha,t.nome,t.cpf,t.empresa,t.servico,t.categoria,t.statusText].some(v => String(v || '').toLowerCase().includes(term)))
-        .sort((a,b) => {
-          const ap = a.priority ? 1 : 0;
-          const bp = b.priority ? 1 : 0;
-          if (bp !== ap) return bp - ap;
-          return new Date(a.waitStart || a.createdAt) - new Date(b.waitStart || b.createdAt);
-        });
+        .sort((a,b) => compareTicketsForQueue(a, b, queue));
     }
     function statusMatchesView(status, view) {
       if (view === 'all') return true;
@@ -1367,6 +1380,39 @@
     }
     function normalizeText(value) {
       return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+    function isLaboratoryExamName(name) {
+      const n = normalizeText(name);
+      return n.includes('exames laboratoriais') || n.includes('laboratorial') || n.includes('laboratoriais');
+    }
+    function pendingLabExams(t) {
+      return (t.exams || []).filter(e => e.status !== 'realizado' && isLaboratoryExamName(e.name));
+    }
+    function pendingPfLabExams(t) {
+      return (t.pfExams || []).filter(e => e.status !== 'realizado' && isLaboratoryExamName(e.name));
+    }
+    function hasPendingLaboratoryExam(t) {
+      return pendingLabExams(t).length > 0 || pendingPfLabExams(t).length > 0;
+    }
+    function labPriorityScore(t, queue) {
+      if (queue === 'exames_ocup') return pendingLabExams(t).length;
+      if (queue === 'exames_pf') return pendingPfLabExams(t).length;
+      return 0;
+    }
+    function compareTicketsForQueue(a, b, queue) {
+      const ap = a.priority ? 1 : 0;
+      const bp = b.priority ? 1 : 0;
+      if (bp !== ap) return bp - ap;
+      const labA = labPriorityScore(a, queue);
+      const labB = labPriorityScore(b, queue);
+      if (labB !== labA) return labB - labA;
+      return new Date(a.waitStart || a.createdAt) - new Date(b.waitStart || b.createdAt);
+    }
+    function makeExamRecord(name) {
+      return {name, status:'pendente', labPriority:isLaboratoryExamName(name), addedAt:nowISO()};
+    }
+    function makePfExamRecord(name) {
+      return {name, status:'pendente', labPriority:isLaboratoryExamName(name), addedAt:nowISO()};
     }
     function stationMatchesTicket(t, station) {
       if (!station) return true;
@@ -1392,7 +1438,7 @@
       return state.tickets
         .filter(t => t.queue === queue && t.status === 'waiting')
         .filter(t => stationMatchesTicket(t, station))
-        .sort((a,b) => Number(b.priority) - Number(a.priority) || new Date(a.waitStart || a.createdAt) - new Date(b.waitStart || b.createdAt))[0];
+        .sort((a,b) => compareTicketsForQueue(a, b, queue))[0];
     }
 
     function renderMetrics(targetId) {
@@ -1450,7 +1496,8 @@
     }
 
     function ticketCard(t) {
-      const cls = `${t.priority ? 'priority' : ''} ${t.status}`;
+      const hasLabPriority = hasPendingLaboratoryExam(t);
+      const cls = `${t.priority ? 'priority' : ''} ${hasLabPriority ? 'lab-priority-ticket' : ''} ${t.status}`;
       const examsPending = (t.exams || []).filter(e => e.status !== 'realizado').length;
       const pfPending = (t.pfExams || []).filter(e => e.status !== 'realizado').length;
       const statusTag = t.status === 'waiting' ? 'dark' : t.status === 'called' ? 'warn' : t.status === 'in_service' ? 'ok' : t.status === 'absent' ? 'warn' : 'ok';
@@ -1459,6 +1506,7 @@
       if (t.empresa) details.push(`Empresa: ${escapeHTML(t.empresa)}`);
       if (examsPending) details.push(`${examsPending} exame(s) ocupacional(is) pendente(s)`);
       if (pfPending) details.push(`${pfPending} exame(s) PF pendente(s)`);
+      if (hasLabPriority) details.push('Prioridade automática para exame laboratorial');
       if (t.temAso) details.push(t.asoMesmoDia ? 'ASO no mesmo dia' : 'ASO com retorno');
       return `
         <article class="ticket ${cls}">
@@ -1470,6 +1518,7 @@
             </div>
             <div class="pill-row" style="justify-content:flex-end">
               <span class="tag ${t.priority?'priority':''}">${t.priority?'Preferencial':'Comum'}</span>
+              ${hasLabPriority ? '<span class="tag lab-priority">🧪 Lab prioritário</span>' : ''}
               <span class="tag ${statusTag}">${statusLabels[t.status] || t.status}</span>
             </div>
           </div>
@@ -1779,10 +1828,14 @@
 
     function formExamesOcup(t) {
       const pending = (t.exams || []).filter(e => e.status !== 'realizado');
-      const all = (t.exams || []).map(e => `<tr><td>${escapeHTML(e.name)}</td><td>${escapeHTML(e.status)}</td><td>${e.status !== 'realizado' ? `<button class="btn secondary" onclick="realizarExame('${t.id}','${escapeHTML(e.name)}')">Realizar</button>` : '<span class="tag ok">OK</span>'}</td></tr>`).join('');
+      const labPending = pending.filter(e => isLaboratoryExamName(e.name)).length;
+      const orderedExams = [...(t.exams || [])].sort((a,b) => Number(isLaboratoryExamName(b.name)) - Number(isLaboratoryExamName(a.name)) || String(a.name).localeCompare(String(b.name), 'pt-BR'));
+      const labBanner = labPending ? `<div class="lab-priority-banner"><span>🧪</span><div><strong>Prioridade laboratorial nesta ficha.</strong><br><span class="small">Os exames laboratoriais aparecem primeiro na lista e esta ficha é priorizada na fila de Exames Ocupacionais após os atendimentos preferenciais.</span></div></div>` : '';
+      const all = orderedExams.map(e => `<tr class="${isLaboratoryExamName(e.name) ? 'lab-priority-row' : ''}"><td>${escapeHTML(e.name)} ${isLaboratoryExamName(e.name) ? '<span class="tag lab-priority">Prioritário</span>' : ''}</td><td>${escapeHTML(e.status)}</td><td>${e.status !== 'realizado' ? `<button class="btn secondary" onclick="realizarExame('${t.id}','${escapeHTML(e.name)}')">Realizar</button>` : '<span class="tag ok">OK</span>'}</td></tr>`).join('');
       return `
         <h3>Realização de Exames Ocupacionais</h3>
         <p class="subtitle">Após cada exame, a ficha permanece na fila até concluir todos os exames pendentes. Depois segue para triagem se houver ASO.</p>
+        ${labBanner}
         <table><thead><tr><th>Exame</th><th>Status</th><th>Ação</th></tr></thead><tbody>${all || '<tr><td colspan="3">Nenhum exame cadastrado.</td></tr>'}</tbody></table>
         <div class="toolbar">
           <button class="btn success" ${pending.length?'disabled':''} onclick="posExamesOcupacionais('${t.id}')">Concluir etapa de exames</button>
@@ -1812,12 +1865,15 @@
         </div>`;
     }
     function formExamesPF(t) {
-      const checks = pfExams.map(ex => `<label class="check-item"><input type="checkbox" ${hasPfExam(t, ex) ? 'checked' : ''} onchange="togglePfExam('${t.id}','${escapeHTML(ex)}',this.checked)">${escapeHTML(ex)}</label>`).join('');
-      const rows = (t.pfExams || []).map(e => `<tr><td>${escapeHTML(e.name)}</td><td>${escapeHTML(e.status)}</td><td>${e.status !== 'realizado' ? `<button class="btn secondary" onclick="realizarPfExame('${t.id}','${escapeHTML(e.name)}')">Realizar</button>` : '<span class="tag ok">OK</span>'}</td></tr>`).join('');
+      const checks = pfExams.map(ex => `<label class="check-item"><input type="checkbox" ${hasPfExam(t, ex) ? 'checked' : ''} onchange="togglePfExam('${t.id}','${escapeHTML(ex)}',this.checked)">${escapeHTML(ex)} ${isLaboratoryExamName(ex) ? '<span class="tag lab-priority">Prioridade automática</span>' : ''}</label>`).join('');
+      const orderedPfExams = [...(t.pfExams || [])].sort((a,b) => Number(isLaboratoryExamName(b.name)) - Number(isLaboratoryExamName(a.name)) || String(a.name).localeCompare(String(b.name), 'pt-BR'));
+      const rows = orderedPfExams.map(e => `<tr class="${isLaboratoryExamName(e.name) ? 'lab-priority-row' : ''}"><td>${escapeHTML(e.name)} ${isLaboratoryExamName(e.name) ? '<span class="tag lab-priority">Prioritário</span>' : ''}</td><td>${escapeHTML(e.status)}</td><td>${e.status !== 'realizado' ? `<button class="btn secondary" onclick="realizarPfExame('${t.id}','${escapeHTML(e.name)}')">Realizar</button>` : '<span class="tag ok">OK</span>'}</td></tr>`).join('');
       const pending = (t.pfExams || []).filter(e => e.status !== 'realizado').length;
+      const labBanner = pendingPfLabExams(t).length ? `<div class="lab-priority-banner"><span>🧪</span><div><strong>Prioridade laboratorial nesta ficha.</strong><br><span class="small">A ficha é priorizada na fila de Exames PF após os atendimentos preferenciais.</span></div></div>` : '';
       return `
         <h3>Exames PF / Ultrassom</h3>
         <p class="subtitle">Selecione os exames PF necessários e registre a realização.</p>
+        ${labBanner}
         <div class="check-grid">${checks}</div>
         <div style="overflow:auto;margin-top:12px"><table><thead><tr><th>Exame</th><th>Status</th><th>Ação</th></tr></thead><tbody>${rows || '<tr><td colspan="3">Nenhum exame PF selecionado.</td></tr>'}</tbody></table></div>
         <div class="toolbar">
@@ -1875,8 +1931,9 @@
     function occupationalExamOptionHtml(t, name) {
       if (occupationalExamGroups[name]) {
         const checked = hasGroupedExam(t, name);
+        const labBadge = name === 'Exames Laboratoriais' ? ' <span class="tag lab-priority">Prioridade automática</span>' : '';
         return `
-          <label class="check-item"><input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleExamGroup('${t.id}','${escapeHTML(name)}',this.checked)">${escapeHTML(name)}</label>
+          <label class="check-item"><input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleExamGroup('${t.id}','${escapeHTML(name)}',this.checked)">${escapeHTML(name)}${labBadge}</label>
           ${checked ? groupedExamSelectorHtml(t, name) : ''}`;
       }
       return `<label class="check-item"><input type="checkbox" ${hasExam(t, name) ? 'checked' : ''} onchange="toggleExam('${t.id}','${escapeHTML(name)}',this.checked)">${escapeHTML(name)}</label>`;
@@ -1888,10 +1945,14 @@
       const selectedTags = selected.length
         ? `<div class="selected-exam-summary">${selected.map(name => `<span class="tag ok">${escapeHTML(name.replace(group + ' - ', ''))}</span>`).join('')}</div>`
         : `<p class="small muted" style="margin:6px 0 0">Nenhum exame específico selecionado ainda. Se necessário, selecione um ou mais itens abaixo.</p>`;
+      const labPriorityInfo = group === 'Exames Laboratoriais'
+        ? `<div class="lab-priority-banner"><span>🧪</span><div><strong>Priorização automática ativada.</strong><br><span class="small">Ao encaminhar para Exames Ocupacionais, esta ficha fica acima das fichas comuns dentro da fila laboratorial, respeitando atendimentos preferenciais.</span></div></div>`
+        : '';
       return `
         <div class="nested-exam-panel">
           <h4>${escapeHTML(group)}</h4>
           <p class="subtitle">Selecione um ou mais exames. A ficha será encaminhada para a fila correta mantendo cada exame pendente separado.</p>
+          ${labPriorityInfo}
           ${selectedTags}
           <div class="check-grid">
             ${options.map(option => {
@@ -1911,7 +1972,7 @@
     function toggleExam(id, name, checked) {
       const t = getTicket(id); if (!t) return;
       t.exams = t.exams || [];
-      if (checked && !hasExam(t, name)) t.exams.push({name, status:'pendente'});
+      if (checked && !hasExam(t, name)) t.exams.push(makeExamRecord(name));
       if (!checked) t.exams = t.exams.filter(e => e.name !== name);
       addHistory(t, checked ? `Exame adicionado: ${name}.` : `Exame removido: ${name}.`);
       saveState(); renderTicketForm(); renderOperacao();
@@ -1920,7 +1981,7 @@
       const t = getTicket(id); if (!t) return;
       t.exams = t.exams || [];
       if (checked) {
-        if (!hasGroupedExam(t, group)) t.exams.push({name:group, status:'pendente'});
+        if (!hasGroupedExam(t, group)) t.exams.push(makeExamRecord(group));
         addHistory(t, `Grupo de exames aberto: ${group}.`);
       } else {
         const removed = selectedGroupedExamNames(t, group);
@@ -1935,7 +1996,7 @@
       const name = groupedExamName(group, option);
       if (checked) {
         t.exams = t.exams.filter(e => e.name !== group);
-        if (!hasExam(t, name)) t.exams.push({name, status:'pendente'});
+        if (!hasExam(t, name)) t.exams.push(makeExamRecord(name));
       } else {
         t.exams = t.exams.filter(e => e.name !== name);
       }
@@ -1950,7 +2011,7 @@
       const name = groupedExamName(group, option);
       t.exams = t.exams.filter(e => e.name !== group);
       if (!hasExam(t, name)) {
-        t.exams.push({name, status:'pendente'});
+        t.exams.push(makeExamRecord(name));
         addHistory(t, `Exame adicionado: ${name}.`);
       }
       saveState(); renderTicketForm(); renderOperacao();
@@ -1960,7 +2021,7 @@
     function togglePfExam(id, name, checked) {
       const t = getTicket(id); if (!t) return;
       t.pfExams = t.pfExams || [];
-      if (checked && !hasPfExam(t, name)) t.pfExams.push({name, status:'pendente'});
+      if (checked && !hasPfExam(t, name)) t.pfExams.push(makePfExamRecord(name));
       if (!checked) t.pfExams = t.pfExams.filter(e => e.name !== name);
       addHistory(t, checked ? `Exame PF adicionado: ${name}.` : `Exame PF removido: ${name}.`);
       saveState(); renderTicketForm(); renderOperacao();
@@ -1969,8 +2030,10 @@
     function enviarFluxoOcupacional(id) {
       const t = getTicket(id); if (!t) return;
       const pendingExams = (t.exams || []).filter(e => e.status !== 'realizado').length;
+      const pendingLabs = pendingLabExams(t).length;
       if (pendingExams > 0) {
-        transferTicket(id, 'exames_ocup', `Encaminhado para Exames Ocupacionais com ${pendingExams} exame(s) pendente(s).`);
+        const labNote = pendingLabs ? ` Exame(s) laboratorial(is) com prioridade automática: ${pendingLabs}.` : '';
+        transferTicket(id, 'exames_ocup', `Encaminhado para Exames Ocupacionais com ${pendingExams} exame(s) pendente(s).${labNote}`);
         return;
       }
       if (t.temAso) {
@@ -2011,8 +2074,8 @@
     function preparePfExamsAndTransfer(id, queue, note) {
       const t = getTicket(id); if (!t) return;
       if (!t.pfExams || !t.pfExams.length) {
-        if (t.tipo === 'ultrassom_pf') t.pfExams = [{name:'Ultrassonografia', status:'pendente'}];
-        else t.pfExams = [{name:'Exames Laboratoriais PF', status:'pendente'}];
+        if (t.tipo === 'ultrassom_pf') t.pfExams = [makePfExamRecord('Ultrassonografia')];
+        else t.pfExams = [makePfExamRecord('Exames Laboratoriais PF')];
       }
       transferTicket(id, queue, note);
     }
