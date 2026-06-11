@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PAPA FILA | SESI Saúde</title>
-<script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=tl3CM07576WJuO2b6Tcn8F2UYC_3rAMzaAv-JNb-PBzyA0paTLGtE7Kxlau1o26b_DVATd0VbvllHLniY5jWGBb9nlhCEXBB7_lipsxlNqK2qESIZVA8PndKLLYB4bKMGZigqXvVj8qjxEf9gYD89S4qOrS5wYe5hMJWIDeOnFvTznNIfH9IEbmjnd-2ERtQqOhCo0Ol8T4WP0OUYJ559-R7jbgxfHpcul5SEJfJFZJ9TC90LfbZF8djwojVG71N35Y9flDK2PfTI06ESSrbAz1Gvk7L-gLHso0s-jn7YYx1Hlpm-Tm6Q0Z5DXXiz0vK_QnXgLoY-4y6-jtRcO1d9HtUloq9iTbkioAeFPW-DLs" charset="UTF-8"></script><style>
+<style>
     :root {
       --azul:#0b76c8;
       --azul-2:#2b9be6;
@@ -791,6 +791,118 @@
       .btn-icon { width:42px; height:42px; font-size:1.55rem; }
     }
 
+
+
+    /* =========================================================
+       Dashboard gerencial — gestão à vista e decisões estratégicas
+       ========================================================= */
+    .dashboard-hero {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:18px;
+      background:
+        radial-gradient(circle at 12% 15%, rgba(43,155,230,.16), transparent 28%),
+        linear-gradient(135deg, #ffffff 0%, #f1f9ff 100%);
+    }
+    .dashboard-hero h2 {
+      color:#075a9f;
+      font-size:clamp(1.8rem, 3.2vw, 2.65rem);
+      margin-bottom:6px;
+      letter-spacing:-.03em;
+    }
+    .dashboard-actions { display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+    .dashboard-filters .toolbar { align-items:flex-end; }
+    .dashboard-filters label { margin:0; min-width:180px; flex:1 1 180px; }
+    .dashboard-filters label span { display:block; margin-bottom:6px; }
+    .dashboard-grid { display:grid; gap:14px; margin:18px 0; }
+    .kpi-grid { grid-template-columns:repeat(6, minmax(0, 1fr)); }
+    @media (max-width:1200px) { .kpi-grid { grid-template-columns:repeat(3, minmax(0, 1fr)); } }
+    @media (max-width:760px) { .kpi-grid { grid-template-columns:1fr; } .dashboard-hero { flex-direction:column; align-items:flex-start; } }
+    .dashboard-kpi {
+      position:relative;
+      overflow:hidden;
+      border:1px solid #d8e8f6;
+      border-radius:22px;
+      background:linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+      box-shadow:0 12px 28px rgba(15,23,42,.07);
+      padding:16px;
+      min-height:128px;
+    }
+    .dashboard-kpi::after {
+      content:'';
+      position:absolute;
+      width:90px;
+      height:90px;
+      border-radius:999px;
+      top:-36px;
+      right:-32px;
+      background:rgba(43,155,230,.10);
+    }
+    .dashboard-kpi span { display:block; color:#5b6f86; font-weight:850; font-size:.86rem; }
+    .dashboard-kpi strong { display:block; color:#075a9f; font-size:2.1rem; line-height:1; margin:12px 0 6px; }
+    .dashboard-kpi small { color:#6b7f95; line-height:1.35; }
+    .dashboard-section-grid { margin-top:18px; }
+    .dash-bar-list { display:grid; gap:12px; }
+    .dash-bar-row { display:grid; gap:7px; }
+    .dash-bar-head { display:flex; justify-content:space-between; gap:12px; font-weight:850; color:#183a59; }
+    .dash-bar-track {
+      height:12px;
+      border-radius:999px;
+      background:#e7f1fa;
+      overflow:hidden;
+      border:1px solid #d6e7f4;
+    }
+    .dash-bar-fill {
+      height:100%;
+      width:0%;
+      border-radius:999px;
+      background:linear-gradient(90deg, #0b76c8, #2b9be6);
+    }
+    .dash-bar-fill.warn { background:linear-gradient(90deg, #f97316, #ffba08); }
+    .dash-bar-fill.danger { background:linear-gradient(90deg, #e30613, #ff6b72); }
+    .dash-bar-fill.ok { background:linear-gradient(90deg, #0f7b58, #16a074); }
+    .dashboard-empty {
+      border:1px dashed #bdd0e4;
+      border-radius:18px;
+      padding:20px;
+      text-align:center;
+      color:#64748b;
+      background:#fbfdff;
+    }
+    .sla-panel { display:grid; gap:12px; }
+    .sla-card {
+      border:1px solid #d8e8f6;
+      border-radius:18px;
+      padding:14px;
+      background:#fbfdff;
+    }
+    .sla-card strong { color:#075a9f; font-size:1.55rem; display:block; }
+    .alert-list, .quality-list, .best-practices { display:grid; gap:10px; }
+    .alert-item, .quality-item, .best-practices div {
+      border:1px solid #d8e8f6;
+      border-radius:16px;
+      background:#fbfdff;
+      padding:12px 14px;
+      line-height:1.45;
+    }
+    .alert-item.warn { border-color:#fed7aa; background:#fff7ed; color:#9a5200; }
+    .alert-item.danger { border-color:#fecdd3; background:#fff1f2; color:#9f1239; }
+    .alert-item.ok { border-color:#bbf7d0; background:#f0fdf4; color:#166534; }
+    .quality-score {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      border:1px solid #d8e8f6;
+      border-radius:18px;
+      background:#ffffff;
+      padding:12px 14px;
+      margin-bottom:12px;
+    }
+    .quality-score strong { color:#075a9f; font-size:2rem; }
+
     .print-area { display:none; }
     .no-print {}
 
@@ -934,6 +1046,116 @@
         <div class="flow-board" id="flowBoard"></div>
       </div>
     </section>
+    <section class="tab" id="tab-dashboard">
+      <div class="dashboard-hero card">
+        <div>
+          <span class="app-kicker">Gestão estratégica</span>
+          <h2>Dashboard Gerencial</h2>
+          <p class="subtitle">Visão executiva dos atendimentos armazenados no Papa Fila para acompanhamento de demanda, gargalos, SLA, priorização laboratorial e qualidade dos dados.</p>
+        </div>
+        <div class="dashboard-actions">
+          <button class="btn secondary" onclick="renderDashboard()">Atualizar dashboard</button>
+          <button class="btn" onclick="exportarDashboardCSV()">Exportar CSV</button>
+        </div>
+      </div>
+
+      <div class="card dashboard-filters">
+        <div class="card-title">
+          <div>
+            <h2>Filtros de análise</h2>
+            <p class="subtitle">Use os filtros para analisar períodos, filas, serviços e status específicos sem alterar os dados originais.</p>
+          </div>
+        </div>
+        <div class="toolbar">
+          <label><span>Data inicial</span><input type="date" id="dashboardDataInicial" onchange="renderDashboard()"></label>
+          <label><span>Data final</span><input type="date" id="dashboardDataFinal" onchange="renderDashboard()"></label>
+          <label><span>Fila</span><select id="dashboardFila" onchange="renderDashboard()"></select></label>
+          <label><span>Status</span><select id="dashboardStatus" onchange="renderDashboard()">
+            <option value="">Todos os status</option>
+            <option value="waiting">Aguardando</option>
+            <option value="called">Chamado</option>
+            <option value="in_service">Em atendimento</option>
+            <option value="absent">Ausente</option>
+            <option value="completed">Finalizado</option>
+            <option value="canceled">Cancelado</option>
+          </select></label>
+          <label><span>Buscar</span><input id="dashboardBusca" placeholder="Serviço, senha, nome, empresa ou fila" oninput="renderDashboard()"></label>
+        </div>
+      </div>
+
+      <div class="dashboard-grid kpi-grid" id="dashboardKpis"></div>
+
+      <div class="grid grid-2 dashboard-section-grid">
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <h2>Gargalos por fila</h2>
+              <p class="subtitle">Mostra onde há mais fichas em aberto para apoiar decisões de alocação de equipe.</p>
+            </div>
+          </div>
+          <div id="dashboardGargalos"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <h2>Distribuição por serviço</h2>
+              <p class="subtitle">Ajuda a entender a demanda mais frequente e planejar capacidade por tipo de atendimento.</p>
+            </div>
+          </div>
+          <div id="dashboardServicos"></div>
+        </div>
+      </div>
+
+      <div class="grid grid-2 dashboard-section-grid">
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <h2>Indicadores de SLA e prioridade</h2>
+              <p class="subtitle">Acompanhe tempo de espera, preferenciais, laboratoriais e ausências.</p>
+            </div>
+          </div>
+          <div id="dashboardSla"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <h2>Qualidade dos dados</h2>
+              <p class="subtitle">Boas práticas de gestão exigem cadastro completo para análise confiável e tomada de decisão.</p>
+            </div>
+          </div>
+          <div id="dashboardQualidade"></div>
+        </div>
+      </div>
+
+      <div class="grid grid-2 dashboard-section-grid">
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <h2>Alertas estratégicos</h2>
+              <p class="subtitle">Sinais para tratamento imediato pela coordenação e gestão da operação.</p>
+            </div>
+          </div>
+          <div id="dashboardAlertas"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <h2>Boas práticas aplicadas</h2>
+              <p class="subtitle">Práticas recomendadas para acompanhamento dos dados armazenados no atendimento.</p>
+            </div>
+          </div>
+          <div class="best-practices">
+            <div><b>Gestão por indicadores:</b> acompanhar volume, tempo médio, SLA, ausências e gargalos diariamente.</div>
+            <div><b>Gestão à vista:</b> usar indicadores simples e objetivos para orientar decisões rápidas por turno e por andar.</div>
+            <div><b>Priorização inteligente:</b> manter preferenciais em primeiro lugar e exames laboratoriais destacados por impacto no fluxo.</div>
+            <div><b>Qualidade de dados:</b> reduzir fichas sem nome, CPF, serviço ou empresa para melhorar relatórios e rastreabilidade.</div>
+            <div><b>LGPD e minimização:</b> usar dados pessoais apenas quando necessário e preferir análises agregadas para a gestão.</div>
+            <div><b>Melhoria contínua:</b> revisar gargalos, metas e capacidade semanalmente, usando os dados exportados como evidência.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <div class="toast" id="toast"></div>
@@ -953,7 +1175,8 @@
       ['tab-tv','Painel TV'],
       ['tab-operacao','Operação de Filas'],
       ['tab-acompanhamento','Acompanhamento'],
-      ['tab-fluxos','Fluxos Configurados']
+      ['tab-fluxos','Fluxos Configurados'],
+      ['tab-dashboard','Dashboard']
     ];
 
 
@@ -988,7 +1211,7 @@
         subtitle:'Fila técnica para exames ocupacionais, com chamada por sala e controle de pendências.',
         floor:'Painel TV 2º andar',
         panel:'segundo',
-        stations:['Sala Audiometria 1','Sala Audiometria 2','Sala Acuidade Visual','Sala Espirometria','Sala ECG - Eletrocardiograma','Sala EEG - Eletroencefalograma','Sala Raio X','Sala Psicossocial 1','Sala Psicossocial 2','Sala Exames Laboratoriais 1','Sala Exames Laboratoriais 2','Sala Exames Laboratoriais 3']
+        stations:['Sala Audiometria 1','Sala Audiometria 2','Sala Acuidade Visual','Sala Espirometria','Sala ECG - Eletrocardiograma','Sala EEG - Eletroencefalograma','Sala Raio X','Sala Psicossocial 1','Sala Psicossocial 2','Sala Exames Laboratoriais 1','Sala Exames Laboratoriais 2','Sala Exams Laboratoriais 3']
       },
       triagem: {
         label:'Triagem / Anamnese',
@@ -1212,6 +1435,7 @@
       renderTV();
       renderDash();
       renderFluxos();
+      renderDashboard();
       if (autoPrint) imprimirSenha(ticket.id);
       return ticket;
     }
@@ -1600,7 +1824,7 @@
     }
     function textoChamada(t, local) {
       const id = t.nome ? `Paciente ${t.nome}` : `Senha ${t.senha.replace('-', ' ')}`;
-      return `${id}. Por Gentileza, dirigir-se a ${local}.`;
+      return `${id}. Por favor, dirigir-se a ${local}.`;
     }
     function tocarSinalSonoro() {
       try {
@@ -2369,6 +2593,181 @@
       document.getElementById('callHistory').innerHTML = sortedCalls.length ? sortedCalls.slice(0,20).map(c => { const d = callDisplay(c); return `<div class="timeline-item"><b>${escapeHTML(d.primary)} — ${escapeHTML(d.local)}</b><br><span>${d.nome ? 'Senha ' + escapeHTML(d.senha) + ' • ' : ''}${escapeHTML(d.servico || c.servico)} • ${fmtDate(c.at)}</span></div>`; }).join('') : '<div class="empty">Nenhuma chamada registrada.</div>';
     }
 
+
+
+    function dashboardFilteredTickets() {
+      const start = document.getElementById('dashboardDataInicial')?.value || '';
+      const end = document.getElementById('dashboardDataFinal')?.value || '';
+      const queue = document.getElementById('dashboardFila')?.value || '';
+      const status = document.getElementById('dashboardStatus')?.value || '';
+      const term = normalizeText(document.getElementById('dashboardBusca')?.value || '').trim();
+      return state.tickets.filter(t => {
+        const d = todayDate(t.createdAt || nowISO());
+        if (start && d < start) return false;
+        if (end && d > end) return false;
+        if (queue && t.queue !== queue) return false;
+        if (status && t.status !== status) return false;
+        if (term) {
+          const bag = [t.senha, t.nome, t.cpf, t.empresa, t.servico, t.categoria, t.statusText, queueLabel(t.queue)].map(normalizeText).join(' ');
+          if (!bag.includes(term)) return false;
+        }
+        return true;
+      });
+    }
+
+    function ensureDashboardFilters() {
+      const sel = document.getElementById('dashboardFila');
+      if (!sel) return;
+      const current = sel.value;
+      sel.innerHTML = '<option value="">Todas as filas</option>' + Object.entries(queueDefs).map(([key, q]) => `<option value="${escapeHTML(key)}">${escapeHTML(q.label)}</option>`).join('');
+      if ([...sel.options].some(o => o.value === current)) sel.value = current;
+    }
+
+    function elapsedMinutesForDashboard(t) {
+      const start = new Date(t.createdAt || t.waitStart || nowISO()).getTime();
+      const isClosed = ['completed','canceled'].includes(t.status);
+      const end = isClosed ? new Date(t.updatedAt || t.createdAt || nowISO()).getTime() : Date.now();
+      return Math.max(0, Math.round((end - start) / 60000));
+    }
+
+    function avgNumber(values) {
+      const nums = values.filter(v => Number.isFinite(v));
+      if (!nums.length) return 0;
+      return nums.reduce((sum, v) => sum + v, 0) / nums.length;
+    }
+
+    function pctNumber(value, total) {
+      if (!total) return 0;
+      return Math.round((value / total) * 100);
+    }
+
+    function groupCount(items, getKey) {
+      return items.reduce((acc, item) => {
+        const key = getKey(item) || 'Não informado';
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+      }, {});
+    }
+
+    function topEntries(grouped, limit=8) {
+      return Object.entries(grouped).sort((a,b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, limit);
+    }
+
+    function renderDashBars(containerId, entries, options={}) {
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      if (!entries.length) {
+        el.innerHTML = '<div class="dashboard-empty">Sem dados para os filtros selecionados.</div>';
+        return;
+      }
+      const max = Math.max(...entries.map(e => Number(e[1]) || 0), 1);
+      el.innerHTML = `<div class="dash-bar-list">${entries.map(([label, value]) => {
+        const percent = Math.max(3, Math.round((value / max) * 100));
+        const fillClass = options.fillClass || '';
+        return `<div class="dash-bar-row"><div class="dash-bar-head"><span>${escapeHTML(label)}</span><span>${value}</span></div><div class="dash-bar-track"><div class="dash-bar-fill ${fillClass}" style="width:${percent}%"></div></div></div>`;
+      }).join('')}</div>`;
+    }
+
+    function renderDashboard() {
+      ensureDashboardFilters();
+      const rows = dashboardFilteredTickets();
+      const total = rows.length;
+      const completed = rows.filter(t => t.status === 'completed').length;
+      const open = rows.filter(t => !['completed','canceled'].includes(t.status)).length;
+      const priority = rows.filter(t => t.priority).length;
+      const lab = rows.filter(t => hasPendingLaboratoryExam(t) || (t.exams || []).some(e => isLaboratoryExamName(e.name)) || (t.pfExams || []).some(e => isLaboratoryExamName(e.name))).length;
+      const absent = rows.filter(t => t.status === 'absent').length;
+      const avgWait = Math.round(avgNumber(rows.map(elapsedMinutesForDashboard)));
+      const slaTarget = 20;
+      const withinSla = rows.filter(t => elapsedMinutesForDashboard(t) <= slaTarget).length;
+      const slaPct = pctNumber(withinSla, total);
+      const qualityFields = rows.flatMap(t => [t.senha, t.servico, t.queue, t.status, t.createdAt, t.priority ? 'prioridade' : 'comum']);
+      const requiredFilled = rows.reduce((sum, t) => sum + [t.senha, t.servico, t.queue, t.status, t.createdAt].filter(Boolean).length, 0);
+      const requiredTotal = Math.max(rows.length * 5, 1);
+      const qualityScore = rows.length ? pctNumber(requiredFilled, requiredTotal) : 0;
+
+      const kpis = [
+        ['Atendimentos', total, 'Total de fichas no período filtrado'],
+        ['Em aberto', open, 'Fichas que ainda exigem ação da operação'],
+        ['Finalizados', completed, `${pctNumber(completed, total)}% do total analisado`],
+        ['Preferenciais', priority, `${pctNumber(priority, total)}% do volume`],
+        ['Laboratoriais', lab, 'Fichas com exames laboratoriais identificados'],
+        ['Espera média', `${avgWait} min`, `Meta sugerida: até ${slaTarget} min`]
+      ];
+      const kpiEl = document.getElementById('dashboardKpis');
+      if (kpiEl) kpiEl.innerHTML = kpis.map(([label, value, hint]) => `<div class="dashboard-kpi"><span>${escapeHTML(label)}</span><strong>${escapeHTML(value)}</strong><small>${escapeHTML(hint)}</small></div>`).join('');
+
+      const openByQueue = groupCount(rows.filter(t => !['completed','canceled'].includes(t.status)), t => queueLabel(t.queue));
+      renderDashBars('dashboardGargalos', topEntries(openByQueue, 8), {fillClass:'warn'});
+
+      const byService = groupCount(rows, t => t.servico || t.categoria || 'Não informado');
+      renderDashBars('dashboardServicos', topEntries(byService, 8));
+
+      const slaEl = document.getElementById('dashboardSla');
+      if (slaEl) {
+        const statusCounts = topEntries(groupCount(rows, t => statusLabels[t.status] || t.status || 'Não informado'), 8);
+        slaEl.innerHTML = `
+          <div class="sla-panel">
+            <div class="sla-card"><span>Atendimentos dentro da meta de espera</span><strong>${slaPct}%</strong><small>${withinSla} de ${total} ficha(s) com até ${slaTarget} minuto(s)</small></div>
+            <div class="sla-card"><span>Ausências registradas</span><strong>${absent}</strong><small>${pctNumber(absent, total)}% do volume filtrado</small></div>
+            <div class="sla-card"><span>Prioridade laboratorial</span><strong>${lab}</strong><small>Use este dado para dimensionar coleta, sala e chamada técnica.</small></div>
+            <div class="dash-bar-list">${statusCounts.map(([label, value]) => `<div class="dash-bar-row"><div class="dash-bar-head"><span>${escapeHTML(label)}</span><span>${value}</span></div><div class="dash-bar-track"><div class="dash-bar-fill ok" style="width:${Math.max(4, pctNumber(value, Math.max(...statusCounts.map(e => e[1]),1)))}%"></div></div></div>`).join('')}</div>
+          </div>`;
+      }
+
+      const unnamed = rows.filter(t => !t.nome).length;
+      const noCpf = rows.filter(t => !t.cpf).length;
+      const noCompany = rows.filter(t => ['Atendimento Ocupacional','Retorno Ocupacional'].includes(t.categoria) && !t.empresa).length;
+      const noService = rows.filter(t => !t.servico).length;
+      const qualityEl = document.getElementById('dashboardQualidade');
+      if (qualityEl) {
+        qualityEl.innerHTML = `
+          <div class="quality-score"><div><b>Índice de completude operacional</b><br><span class="muted">Campos essenciais preenchidos para análise gerencial.</span></div><strong>${qualityScore}%</strong></div>
+          <div class="quality-list">
+            <div class="quality-item"><b>Sem nome:</b> ${unnamed} ficha(s). Boa prática: nomear a ficha assim que a recepção iniciar o atendimento.</div>
+            <div class="quality-item"><b>Sem CPF:</b> ${noCpf} ficha(s). Boa prática: usar CPF quando necessário para rastreabilidade e evitar duplicidade.</div>
+            <div class="quality-item"><b>Ocupacionais sem empresa:</b> ${noCompany} ficha(s). Boa prática: preencher empresa/contrato para análise de demanda por cliente.</div>
+            <div class="quality-item"><b>Sem serviço:</b> ${noService} ficha(s). Boa prática: classificar corretamente para medir capacidade por área.</div>
+          </div>`;
+      }
+
+      const alerts = [];
+      if (open > 12) alerts.push(['warn', `Há ${open} ficha(s) em aberto. Avaliar reforço de equipe ou redistribuição por fila.`]);
+      if (avgWait > slaTarget) alerts.push(['danger', `Tempo médio de espera em ${avgWait} min, acima da meta de ${slaTarget} min. Verificar gargalos e salas críticas.`]);
+      if (lab > 0) alerts.push(['warn', `${lab} ficha(s) com exames laboratoriais. Confirmar priorização de coleta e acompanhamento técnico.`]);
+      if (absent > 0) alerts.push(['warn', `${absent} ausência(s) registrada(s). Avaliar rechamada e comunicação visual/sonora.`]);
+      if (qualityScore < 85 && total > 0) alerts.push(['danger', `Completude dos dados em ${qualityScore}%. Padronizar preenchimento para melhorar relatórios.`]);
+      if (!alerts.length) alerts.push(['ok', 'Sem alertas críticos para os filtros selecionados. Manter acompanhamento periódico.']);
+      const alertEl = document.getElementById('dashboardAlertas');
+      if (alertEl) alertEl.innerHTML = `<div class="alert-list">${alerts.map(([type, msg]) => `<div class="alert-item ${type}">${escapeHTML(msg)}</div>`).join('')}</div>`;
+    }
+
+    function exportarDashboardCSV() {
+      const rows = dashboardFilteredTickets();
+      const headers = ['senha','nome','cpf','empresa','servico','categoria','fila','status','prioridade','laboratorial','espera_min','criado_em','atualizado_em'];
+      const csvRows = [headers.join(';')].concat(rows.map(t => [
+        t.senha,
+        t.nome || '',
+        t.cpf || '',
+        t.empresa || '',
+        t.servico || '',
+        t.categoria || '',
+        queueLabel(t.queue),
+        statusLabels[t.status] || t.status || '',
+        t.priority ? 'Preferencial' : 'Comum',
+        hasPendingLaboratoryExam(t) ? 'Sim' : 'Não',
+        elapsedMinutesForDashboard(t),
+        fmtDate(t.createdAt),
+        fmtDate(t.updatedAt)
+      ].map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(';')));
+      const blob = new Blob([csvRows.join('\n')], {type:'text/csv;charset=utf-8'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `dashboard-papa-fila-sesi-saude-${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
     function renderFluxos() {
       const flows = [
         ['Atendimento Ocupacional Inicial','Totem','ATO/ATOP','Recepção Térreo','Recepção 2º andar','Exames ou Triagem/ASO','Médico Ocupacional','Finalização'],
@@ -2449,6 +2848,7 @@
       renderTV();
       renderDash();
       renderFluxos();
+      renderDashboard();
     }
 
     renderTabs();
