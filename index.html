@@ -6,16 +6,16 @@
   <title>PAPA FILA | SESI Saúde</title>
 <style>
     :root {
-      --azul:#006bb6;
-      --azul-2:#1a86d9;
-      --azul-3:#edf8ff;
+      --azul:#0b76c8;
+      --azul-2:#2b9be6;
+      --azul-3:#eef8ff;
       --vermelho:#e30613;
       --verde:#0f7b58;
       --verde-2:#e8f7f1;
       --amarelo:#ffba08;
       --laranja:#f97316;
-      --cinza:#f3f7fb;
-      --cinza-2:#dfe9f4;
+      --cinza:#f6f9fc;
+      --cinza-2:#d9e8f5;
       --cinza-3:#edf3f8;
       --texto:#172033;
       --muted:#64748b;
@@ -24,8 +24,7 @@
       --sombra-2:0 8px 22px rgba(15,23,42,.08);
       --radius:20px;
       --radius-sm:13px;
-      --tv-bg:#08345f;
-      /* Azul principal clareado para melhorar a suavidade visual. */
+      --tv-bg:#07345f;
     }
 
     * { box-sizing:border-box; }
@@ -35,7 +34,7 @@
       font-family: Arial, Helvetica, sans-serif;
       color:var(--texto);
       background:
-        radial-gradient(circle at top left, rgba(26,134,217,.14), transparent 34%),
+        radial-gradient(circle at top left, rgba(0,108,196,.16), transparent 34%),
         linear-gradient(135deg, #f5f9ff 0%, #eef5fb 48%, #ffffff 100%);
     }
 
@@ -55,7 +54,7 @@
       top:0;
       z-index:50;
       color:white;
-      background:linear-gradient(135deg, var(--azul), #0876bd 62%, #075b95);
+      background:linear-gradient(135deg, var(--azul), #075a9f 62%, #064477);
       box-shadow:var(--sombra);
     }
     .topbar {
@@ -78,7 +77,7 @@
       font-size:1.2rem;
       font-weight:900;
       letter-spacing:1px;
-      box-shadow:inset 0 -5px 0 rgba(0,107,182,.15);
+      box-shadow:inset 0 -5px 0 rgba(0,75,147,.15);
       flex:0 0 auto;
     }
     .brand h1 { font-size:1.34rem; margin-bottom:4px; line-height:1.18; }
@@ -92,7 +91,7 @@
       font-weight:850;
       background:var(--azul);
       color:white;
-      box-shadow:0 8px 20px rgba(0,107,182,.18);
+      box-shadow:0 8px 20px rgba(0,75,147,.18);
       transition:.18s ease;
       display:inline-flex;
       align-items:center;
@@ -183,7 +182,7 @@
       outline:none;
     }
     textarea { min-height:86px; resize:vertical; }
-    input:focus, select:focus, textarea:focus { border-color:var(--azul-2); box-shadow:0 0 0 4px rgba(26,134,217,.12); }
+    input:focus, select:focus, textarea:focus { border-color:var(--azul-2); box-shadow:0 0 0 4px rgba(0,108,196,.12); }
 
     .tag {
       display:inline-flex;
@@ -221,12 +220,13 @@
       width:96px;
       height:96px;
       border-radius:50%;
-      background:rgba(26,134,217,.10);
+      background:rgba(0,108,196,.10);
     }
     .metric strong { display:block; color:var(--azul); font-size:2.05rem; margin-top:7px; }
     .metric span { color:var(--muted); font-weight:750; }
 
     .totem-screen {
+      position:relative;
       min-height:620px;
       border:1px solid #d6e4f2;
       border-radius:32px;
@@ -363,13 +363,38 @@
       color:white;
       background:
         radial-gradient(circle at top left, rgba(255,255,255,.12), transparent 32%),
-        linear-gradient(135deg, #08345f 0%, #006bb6 62%, #075b95 100%);
+        linear-gradient(135deg, #07345f 0%, #0b76c8 62%, #07335d 100%);
       box-shadow:var(--sombra);
       overflow:hidden;
     }
     .tv-panel.fullscreen-mode { position:fixed; inset:0; z-index:9999; border-radius:0; min-height:100vh; overflow:auto; padding:34px; }
     body.tv-fullscreen-active header, body.tv-fullscreen-active .tabs, body.tv-fullscreen-active main > section:not(#tab-tv) { display:none !important; }
     body.tv-fullscreen-active main { padding:0; }
+
+    .totem-fullscreen-controls {
+      position:absolute;
+      top:18px;
+      right:18px;
+      z-index:10;
+      display:flex;
+      gap:8px;
+      justify-content:flex-end;
+    }
+    .totem-screen.fullscreen-mode {
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      border-radius:0;
+      min-height:100vh;
+      overflow:auto;
+      padding:34px;
+    }
+    body.totem-fullscreen-active header,
+    body.totem-fullscreen-active .tabs,
+    body.totem-fullscreen-active main > section:not(#tab-totem) { display:none !important; }
+    body.totem-fullscreen-active main { padding:0; }
+    body.totem-fullscreen-active #tab-totem { display:block !important; }
+    body.totem-fullscreen-active .totem-box { max-width:1180px; }
     .tv-top { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-bottom:18px; }
     .tv-top h2 { font-size:clamp(1.8rem,3.4vw,3.2rem); margin:0 0 5px; }
     .tv-top p { color:rgba(255,255,255,.80); margin:0; line-height:1.4; }
@@ -468,7 +493,7 @@
       overflow:visible;
     }
     .sesi-logo img { display:block; width:100%; height:auto; }
-    .brand-logo { width:190px; max-width:46vw; }
+    .brand-logo { width:210px; max-width:44vw; }
     .totem-logo, .tv-logo, .receipt-logo, .print-logo { display:none !important; }
     .app-kicker {
       display:inline-flex;
@@ -493,7 +518,7 @@
     .card:hover, .metric:hover, .ticket:hover { transform:translateY(-2px); box-shadow:0 16px 32px rgba(15,23,42,.10); }
     .totem-screen {
       background:
-        radial-gradient(circle at 18% 12%, rgba(26,134,217,.14), transparent 32%),
+        radial-gradient(circle at 18% 12%, rgba(0,108,196,.16), transparent 32%),
         radial-gradient(circle at 82% 10%, rgba(227,6,19,.10), transparent 28%),
         linear-gradient(140deg, #ffffff 0%, #eef7ff 52%, #ffffff 100%);
     }
@@ -502,7 +527,7 @@
       overflow:hidden;
       min-height:116px;
       border:1px solid rgba(255,255,255,.24);
-      box-shadow:0 18px 36px rgba(0,107,182,.18);
+      box-shadow:0 18px 36px rgba(0,75,147,.18);
     }
     .totem-options .btn.big::after {
       content:'';
@@ -514,7 +539,7 @@
       border-radius:999px;
       background:rgba(255,255,255,.18);
     }
-    .totem-options .btn.big:hover { transform:translateY(-3px); box-shadow:0 24px 44px rgba(0,107,182,.24); }
+    .totem-options .btn.big:hover { transform:translateY(-3px); box-shadow:0 24px 44px rgba(0,75,147,.24); }
     .totem-options .btn.big .small { opacity:.88; font-weight:700; }
     .queue-menu button:hover { transform:translateX(2px); border-color:var(--azul-2); background:#f7fbff; }
     .ticket-actions .btn { min-height:38px; }
@@ -522,7 +547,7 @@
       background:
         radial-gradient(circle at top left, rgba(255,255,255,.16), transparent 30%),
         radial-gradient(circle at 78% 6%, rgba(227,6,19,.18), transparent 22%),
-        linear-gradient(135deg, #07345f 0%, #006bb6 58%, #075b95 100%);
+        linear-gradient(135deg, #062b4f 0%, #0b76c8 58%, #064477 100%);
     }
     .tv-top > div:first-child {
       display:flex;
@@ -541,6 +566,212 @@
       letter-spacing:.08em;
     }
     .toast { border:1px solid rgba(255,255,255,.18); }
+
+
+
+    /* =========================================================
+       Melhoria de experiência do usuário — visual mais leve,
+       botões mais claros e melhor leitura para recepção/totem/TV
+       ========================================================= */
+    body {
+      background:
+        radial-gradient(circle at 8% 8%, rgba(43,155,230,.20), transparent 30%),
+        radial-gradient(circle at 92% 10%, rgba(227,6,19,.08), transparent 24%),
+        linear-gradient(135deg, #f8fbff 0%, #edf7ff 48%, #ffffff 100%);
+    }
+
+    header {
+      background:linear-gradient(135deg, #0b76c8 0%, #075a9f 58%, #064477 100%);
+    }
+
+    .topbar { padding:16px 24px; }
+    .brand h1 { font-size:1.25rem; }
+    .brand p { font-size:.94rem; }
+    .brand-logo { filter:drop-shadow(0 10px 18px rgba(4,69,120,.18)); }
+
+    .tabs {
+      padding-top:10px;
+      padding-bottom:10px;
+      gap:10px;
+    }
+    .tab-btn {
+      min-height:42px;
+      background:#ffffff;
+      border-color:#cfe2f2;
+      color:#0b4f88;
+      box-shadow:0 4px 12px rgba(15,23,42,.05);
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background:linear-gradient(135deg, var(--azul), var(--azul-2));
+      border-color:transparent;
+      box-shadow:0 9px 18px rgba(11,118,200,.20);
+    }
+
+    .btn {
+      min-height:42px;
+      border-radius:14px;
+      box-shadow:0 10px 20px rgba(11,118,200,.18);
+    }
+    .btn.secondary {
+      background:#ffffff;
+      color:#0b4f88;
+      border-color:#cfe2f2;
+    }
+    .btn.ghost { background:rgba(255,255,255,.18); }
+    .btn:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    .tab-btn:focus-visible {
+      outline:4px solid rgba(43,155,230,.28);
+      outline-offset:2px;
+    }
+
+    .card {
+      background:linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(250,253,255,.96) 100%);
+      border-color:#d8e8f6;
+      box-shadow:0 12px 30px rgba(15,23,42,.07);
+    }
+    .card-title h2 { color:#103b63; }
+    .subtitle { color:#5b6f86; }
+
+    .totem-screen {
+      min-height:calc(100vh - 190px);
+      border:none;
+      border-radius:34px;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 16% 10%, rgba(43,155,230,.20), transparent 31%),
+        radial-gradient(circle at 84% 12%, rgba(227,6,19,.08), transparent 26%),
+        linear-gradient(145deg, #ffffff 0%, #f2f9ff 55%, #ffffff 100%);
+      box-shadow:0 24px 55px rgba(15,23,42,.10);
+    }
+    .totem-screen::before {
+      content:'';
+      position:absolute;
+      inset:18px;
+      border:1px solid rgba(11,118,200,.08);
+      border-radius:28px;
+      pointer-events:none;
+    }
+    .totem-box { position:relative; z-index:1; }
+    .totem-title {
+      letter-spacing:-.04em;
+      color:#075a9f;
+      margin-bottom:12px;
+    }
+    .totem-subtitle {
+      font-size:1.2rem;
+      color:#5d7187;
+      margin-bottom:30px;
+    }
+    .app-kicker {
+      background:#e7f4ff;
+      color:#075a9f;
+      border:1px solid #cce8fb;
+      box-shadow:0 8px 20px rgba(11,118,200,.08);
+    }
+
+    .totem-options { gap:18px; }
+    .totem-options .btn.big {
+      min-height:142px;
+      padding:22px 18px;
+      font-size:1.18rem;
+      border-radius:28px;
+      background:linear-gradient(150deg, #0b76c8 0%, #2b9be6 100%);
+      box-shadow:0 22px 42px rgba(11,118,200,.22);
+    }
+    .totem-options .btn.big .small {
+      font-size:.92rem;
+      line-height:1.35;
+      margin-top:4px;
+    }
+    .btn-icon {
+      display:grid;
+      place-items:center;
+      width:48px;
+      height:48px;
+      margin-bottom:8px;
+      border-radius:18px;
+      background:rgba(255,255,255,.18);
+      font-size:1.8rem;
+      line-height:1;
+    }
+    .totem-options .btn.big.success {
+      background:linear-gradient(150deg, #0f7b58 0%, #16a074 100%);
+      box-shadow:0 22px 42px rgba(15,123,88,.20);
+    }
+    .totem-options .btn.big.danger {
+      background:linear-gradient(150deg, #e30613 0%, #ff4b55 100%);
+      box-shadow:0 22px 42px rgba(227,6,19,.18);
+    }
+    .totem-options .btn.big.warning {
+      background:linear-gradient(150deg, #f97316 0%, #ffa53b 100%);
+      box-shadow:0 22px 42px rgba(249,115,22,.20);
+    }
+
+    .totem-fullscreen-controls .btn {
+      box-shadow:0 8px 18px rgba(15,23,42,.10);
+      background:#ffffff;
+      border-color:#cfe2f2;
+    }
+    .totem-screen.fullscreen-mode {
+      min-height:100vh;
+      border-radius:0;
+      padding:46px;
+    }
+    body.totem-fullscreen-active .totem-title { font-size:clamp(2.6rem,5.4vw,4.5rem); }
+    body.totem-fullscreen-active .totem-options .btn.big { min-height:165px; }
+
+    input, select, textarea {
+      min-height:42px;
+      border-color:#cbddea;
+      background:#ffffff;
+    }
+    label { color:#1f3f5d; }
+
+    .ticket {
+      border-color:#d8e8f6;
+      border-radius:20px;
+      background:linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    }
+    .ticket::before { width:7px; background:linear-gradient(180deg, var(--azul), var(--azul-2)); }
+    .senha { color:#075a9f; }
+    .tag { background:#eef6fd; color:#0b4f88; }
+    .tag.blue { background:#e7f4ff; color:#075a9f; }
+
+    .metric {
+      border-color:#d8e8f6;
+      background:linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+    }
+    .metric strong { color:#075a9f; }
+
+    .nested-exam-panel {
+      border-color:#cfe2f2;
+      background:linear-gradient(180deg, #ffffff 0%, #f3f9ff 100%);
+    }
+
+    .tv-panel {
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.18), transparent 31%),
+        radial-gradient(circle at 78% 6%, rgba(227,6,19,.14), transparent 23%),
+        linear-gradient(135deg, #07345f 0%, #0b76c8 58%, #064477 100%);
+    }
+    .called-box {
+      border-color:rgba(255,255,255,.30);
+      box-shadow:0 20px 44px rgba(0,0,0,.18);
+    }
+
+    @media (max-width:700px) {
+      main { padding:14px; }
+      .topbar { padding:14px; }
+      .brand { align-items:flex-start; gap:10px; }
+      .brand-logo { width:170px; max-width:55vw; }
+      .totem-screen { border-radius:24px; padding:22px 14px; }
+      .totem-fullscreen-controls { top:12px; right:12px; }
+      .totem-options .btn.big { min-height:118px; }
+      .btn-icon { width:42px; height:42px; font-size:1.55rem; }
+    }
 
     .print-area { display:none; }
     .no-print {}
@@ -576,7 +807,10 @@
 
   <main>
     <section class="tab active" id="tab-totem">
-      <div class="totem-screen">
+      <div class="totem-screen" id="totemScreen">
+        <div class="totem-fullscreen-controls no-print">
+          <button class="btn secondary" id="totemFullscreenBtn" onclick="alternarTelaCheiaTotem()">Tela cheia</button>
+        </div>
         <div class="totem-box" id="totemBox"></div>
       </div>
     </section>
@@ -974,6 +1208,7 @@
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
       if (id !== 'tab-tv') sairTelaCheiaTv(false);
+      if (id !== 'tab-totem') sairTelaCheiaTotem(false);
       if (id === 'tab-tv') activeTv = activeTv || null;
       renderAll();
     }
@@ -994,11 +1229,11 @@
           ${sesiLogoMarkup('totem-logo')}
           <div class="app-kicker">Atendimento digital SESI Saúde</div>
           <h2 class="totem-title">Bem-vindo ao SESI Saúde</h2>
-          <p class="totem-subtitle">Selecione a necessidade do atendimento. A senha será direcionada automaticamente para a recepção correta.</p>
+          <p class="totem-subtitle">Toque em uma das opções abaixo para gerar sua senha. O atendimento será direcionado automaticamente para a recepção correta.</p>
           <div class="totem-options">
-            <button class="btn big" onclick="showEmpresaRetorno()">Vim Pela Empresa<span class="small">Ocupacional / retorno</span></button>
-            <button class="btn big" onclick="showPessoaFisica()">Vim por Conta Própria<span class="small">Dentista, exames, ultrassom ou especialista</span></button>
-            <button class="btn big" onclick="askPriority('resultado','Entrega de Resultado de Exames')">Resultado de Exames<span class="small">Retirada de exames prontos</span></button>
+            <button class="btn big" onclick="showEmpresaRetorno()"><span class="btn-icon">🏢</span><span>Vim Pela Empresa</span><span class="small">Ocupacional / retorno</span></button>
+            <button class="btn big" onclick="showPessoaFisica()"><span class="btn-icon">👤</span><span>Vim por Conta Própria</span><span class="small">Dentista, exames, ultrassom ou especialista</span></button>
+            <button class="btn big" onclick="askPriority('resultado','Entrega de Resultado de Exames')"><span class="btn-icon">📄</span><span>Resultado de Exames</span><span class="small">Retirada de exames prontos</span></button>
           </div>`;
         return;
       }
@@ -1007,8 +1242,8 @@
           <h2 class="totem-title">Atendimento pela empresa</h2>
           <p class="totem-subtitle">Este atendimento é retorno ocupacional para continuidade no 2º andar?</p>
           <div class="totem-options two">
-            <button class="btn big warning" onclick="askPriority('retorno_ocupacional','Retorno Ocupacional 2º andar')">Sim, é retorno<span class="small">Gera ROC e direciona ao 2º andar</span></button>
-            <button class="btn big" onclick="askPriority('ocupacional','Vim Pela Empresa - Atendimento Ocupacional')">Não, é atendimento inicial<span class="small">Gera ATO/ATOP e direciona ao térreo</span></button>
+            <button class="btn big warning" onclick="askPriority('retorno_ocupacional','Retorno Ocupacional 2º andar')"><span class="btn-icon">↩️</span><span>Sim, é retorno</span><span class="small">Gera ROC e direciona ao 2º andar</span></button>
+            <button class="btn big" onclick="askPriority('ocupacional','Vim Pela Empresa - Atendimento Ocupacional')"><span class="btn-icon">✅</span><span>Não, é atendimento inicial</span><span class="small">Gera ATO/ATOP e direciona ao térreo</span></button>
           </div>
           <div style="margin-top:18px"><button class="btn secondary" onclick="resetTotem()">Voltar</button></div>`;
         return;
@@ -1016,12 +1251,12 @@
       if (totem.screen === 'pf') {
         box.innerHTML = `
           <h2 class="totem-title">Vim por Conta Própria</h2>
-          <p class="totem-subtitle">Escolha o tipo de atendimento PF. Todas as opções serão direcionadas para a Recepção 1º andar.</p>
+          <p class="totem-subtitle">Escolha o tipo de atendimento. Sua senha será encaminhada para a Recepção do 1º andar.</p>
           <div class="totem-options four">
-            <button class="btn big" onclick="askPriority('dentista','Vim por Conta Própria - Dentista')">Dentista</button>
-            <button class="btn big" onclick="askPriority('exames_pf','Vim por Conta Própria - Exames')">Exames</button>
-            <button class="btn big" onclick="askPriority('ultrassom_pf','Vim por Conta Própria - Ultrassom')">Ultrassom</button>
-            <button class="btn big" onclick="askPriority('medico_especialista','Vim por Conta Própria - Consulta com Médico Especialista')">Consulta com Médico Especialista</button>
+            <button class="btn big" onclick="askPriority('dentista','Vim por Conta Própria - Dentista')"><span class="btn-icon">🦷</span><span>Dentista</span></button>
+            <button class="btn big" onclick="askPriority('exames_pf','Vim por Conta Própria - Exames')"><span class="btn-icon">🧪</span><span>Exames</span></button>
+            <button class="btn big" onclick="askPriority('ultrassom_pf','Vim por Conta Própria - Ultrassom')"><span class="btn-icon">🩻</span><span>Ultrassom</span></button>
+            <button class="btn big" onclick="askPriority('medico_especialista','Vim por Conta Própria - Consulta com Médico Especialista')"><span class="btn-icon">🩺</span><span>Consulta com Médico Especialista</span></button>
           </div>
           <div style="margin-top:18px"><button class="btn secondary" onclick="resetTotem()">Voltar</button></div>`;
         return;
@@ -1031,8 +1266,8 @@
           <h2 class="totem-title">Este atendimento é preferencial?</h2>
           <p class="totem-subtitle">Serviço selecionado: <b>${escapeHTML(totem.label)}</b></p>
           <div class="totem-options two">
-            <button class="btn big danger" onclick="criarTicket('${totem.service}', true, {}, true)">Sim<span class="small">Prioridade na fila</span></button>
-            <button class="btn big success" onclick="criarTicket('${totem.service}', false, {}, true)">Não<span class="small">Atendimento comum</span></button>
+            <button class="btn big danger" onclick="criarTicket('${totem.service}', true, {}, true)"><span class="btn-icon">⭐</span><span>Sim</span><span class="small">Prioridade na fila</span></button>
+            <button class="btn big success" onclick="criarTicket('${totem.service}', false, {}, true)"><span class="btn-icon">🙂</span><span>Não</span><span class="small">Atendimento comum</span></button>
           </div>
           <div style="margin-top:18px"><button class="btn secondary" onclick="resetTotem()">Cancelar</button></div>`;
       }
@@ -1081,7 +1316,7 @@
           ${sesiLogoMarkup('print-logo')}
           <h2 style="margin:0 0 6px;font-size:22px">SESI Saúde</h2>
           <p style="margin:0;font-size:13px">Senha de Atendimento</p>
-          <h1 style="font-size:48px; margin:10px 0; letter-spacing:1px; color:#006bb6">${escapeHTML(t.senha)}</h1>
+          <h1 style="font-size:48px; margin:10px 0; letter-spacing:1px; color:#0b76c8">${escapeHTML(t.senha)}</h1>
           <p style="margin:6px 0"><b>${escapeHTML(t.servico)}</b></p>
           <p style="margin:6px 0">${t.priority ? 'Preferencial' : 'Comum'}</p>
           <p style="margin:6px 0"><b>${escapeHTML(queueLabel(t.queue))}</b></p>
@@ -1822,8 +2057,8 @@
       const pfTxt = (t.pfExams || []).map(e => `${e.name}: ${e.status}`).join('<br>') || 'Não informado';
       document.getElementById('printArea').innerHTML = `
         <div style="font-family:Arial, sans-serif; max-width:760px; margin:auto; color:#111">
-          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid #006bb6; padding-bottom:10px; margin-bottom:16px">
-            <h1 style="color:#006bb6; margin:0">SESI Saúde</h1><strong>Ficha ${escapeHTML(t.senha)}</strong>
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid #0b76c8; padding-bottom:10px; margin-bottom:16px">
+            <h1 style="color:#0b76c8; margin:0">SESI Saúde</h1><strong>Ficha ${escapeHTML(t.senha)}</strong>
           </div>
           <p><b>Serviço:</b> ${escapeHTML(t.servico)}</p>
           <p><b>Nome:</b> ${escapeHTML(t.nome || '-')} &nbsp; <b>CPF:</b> ${escapeHTML(t.cpf || '-')}</p>
@@ -1947,22 +2182,59 @@
     }
     function alternarTelaCheiaTv() {
       const panel = document.getElementById('tvPanel');
-      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      if (!panel) return;
+      sairTelaCheiaTotem(false);
+      if (document.fullscreenElement === panel || panel.classList.contains('fullscreen-mode')) sairTelaCheiaTv(false);
       else if (panel.requestFullscreen) panel.requestFullscreen().catch(() => toggleFallbackFullscreen(panel));
       else toggleFallbackFullscreen(panel);
     }
-    function toggleFallbackFullscreen(panel) { panel.classList.toggle('fullscreen-mode'); document.body.classList.toggle('tv-fullscreen-active'); }
+    function toggleFallbackFullscreen(panel) { panel.classList.toggle('fullscreen-mode'); document.body.classList.toggle('tv-fullscreen-active', panel.classList.contains('fullscreen-mode')); }
     function sairTelaCheiaTv(render=true) {
       const panel = document.getElementById('tvPanel');
-      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      if (panel && document.fullscreenElement === panel) document.exitFullscreen().catch(() => {});
       if (panel) panel.classList.remove('fullscreen-mode');
       document.body.classList.remove('tv-fullscreen-active');
       if (render) renderTV();
     }
+
+    function alternarTelaCheiaTotem() {
+      const screen = document.getElementById('totemScreen');
+      if (!screen) return;
+      sairTelaCheiaTv(false);
+      if (document.fullscreenElement === screen || screen.classList.contains('fullscreen-mode')) sairTelaCheiaTotem(false);
+      else if (screen.requestFullscreen) screen.requestFullscreen().catch(() => toggleFallbackFullscreenTotem(screen));
+      else toggleFallbackFullscreenTotem(screen);
+      atualizarBotaoTelaCheiaTotem();
+    }
+    function toggleFallbackFullscreenTotem(screen) {
+      screen.classList.toggle('fullscreen-mode');
+      document.body.classList.toggle('totem-fullscreen-active', screen.classList.contains('fullscreen-mode'));
+      atualizarBotaoTelaCheiaTotem();
+    }
+    function sairTelaCheiaTotem(render=false) {
+      const screen = document.getElementById('totemScreen');
+      if (screen && document.fullscreenElement === screen) document.exitFullscreen().catch(() => {});
+      if (screen) screen.classList.remove('fullscreen-mode');
+      document.body.classList.remove('totem-fullscreen-active');
+      atualizarBotaoTelaCheiaTotem();
+      if (render) renderTotem();
+    }
+    function atualizarBotaoTelaCheiaTotem() {
+      const btn = document.getElementById('totemFullscreenBtn');
+      const screen = document.getElementById('totemScreen');
+      if (!btn || !screen) return;
+      const ativo = document.fullscreenElement === screen || screen.classList.contains('fullscreen-mode') || document.body.classList.contains('totem-fullscreen-active');
+      btn.textContent = ativo ? 'Sair da tela cheia' : 'Tela cheia';
+    }
     document.addEventListener('fullscreenchange', () => {
       const panel = document.getElementById('tvPanel');
-      if (!document.fullscreenElement && panel) panel.classList.remove('fullscreen-mode');
-      document.body.classList.toggle('tv-fullscreen-active', !!document.fullscreenElement);
+      const screen = document.getElementById('totemScreen');
+      const fs = document.fullscreenElement;
+      if (!fs && panel) panel.classList.remove('fullscreen-mode');
+      if (!fs && screen) screen.classList.remove('fullscreen-mode');
+      document.body.classList.toggle('tv-fullscreen-active', fs === panel || !!panel?.classList.contains('fullscreen-mode'));
+      document.body.classList.toggle('totem-fullscreen-active', fs === screen || !!screen?.classList.contains('fullscreen-mode'));
+      atualizarBotaoTelaCheiaTotem();
     });
     function startClock() {
       clearInterval(clockInterval);
