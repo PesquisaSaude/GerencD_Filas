@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PAPA FILA | SESI Saúde</title>
-<script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=EAy8uZcd2AF8JDGeJnu_H1QHTgHtcNcEz88w877TXjBR5kDPCHHNPkCIqiDSZ-nleNlz4Gju-kPQq48wl6rYpcVRIgCCQ2xye_glWR1GgZYN-ZMEYtOhfZrFsl_IJ2z3MNK3dOHPHl5INgJt7r5Y-YESLLCNNE7cbBMwUCTj9R62MJHfkh0fwdoy70C1sDi16ycMaTWg8517ZpJon-351F_2MNUQMrbs3l1OZkaCPK2GE5s64TLGTPf-eD_YOFLSiMm4h9Y9x4-IDIpDnC3spJ17bNgThs5AD1MxEh8AXMCjnKWZWzBrHdSqEAD0RsTCmMhkoJ4vwsZGDjL-WmqszA" charset="UTF-8"></script><style>
+<script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=6nP475TTw21mMMlA3n9fTaAe2Ki5TSgOKmdKpIEIhwniXvA_In66WwugvzOFtWtlbq8TIgg4Cz4g92U5EJZGWYfvXJ2zuHE6vuGVEJ4LKRB61A9Jvsn2GgXi5tuNKj6kcxSg4BQtJftrEZHZ6eydATlQeGYeAU_qE82vApmS1F2RithMoEifHM-TpAOqTv-_TquJbwV_DOsb4DaUdCKDrdxU7VAX72Arh0FT1MV5qvtvRV1Zs37HUzjLdAFFmxIc_oA1NdBZGuR4fGeOnDY8P4HpcEpLButmRNM-dgzMgtKgO1lhZJwoOptjzjq0IXFJqJ95vIOWBqKMD4aWDUnvJPrtnbDqvJLIws5R9M5P_so" charset="UTF-8"></script><style>
     :root {
       --azul:#0b76c8;
       --azul-2:#2b9be6;
@@ -1262,41 +1262,6 @@
         linear-gradient(135deg, #07345f 0%, #0b76c8 62%, #064477 100%);
       color:#172033;
     }
-    .auth-login-logo {
-      width:190px;
-      max-width:82%;
-      min-height:78px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:14px 18px;
-      border-radius:24px;
-      background:#ffffff;
-      box-shadow:0 18px 34px rgba(0,0,0,.18);
-      margin-bottom:6px;
-    }
-    .auth-login-logo img {
-      max-width:100%;
-      max-height:58px;
-      display:block;
-      object-fit:contain;
-    }
-    .auth-logo-fallback {
-      display:none;
-      color:#075a9f;
-      font-weight:950;
-      font-size:1.55rem;
-      letter-spacing:.02em;
-      text-align:center;
-      line-height:1.05;
-    }
-    .auth-logo-fallback small {
-      display:block;
-      color:#e30613;
-      font-size:.72rem;
-      letter-spacing:.10em;
-      margin-top:3px;
-    }
     .auth-login-gate.auth-hidden { display:none !important; }
     body.app-locked header,
     body.app-locked main { display:none !important; }
@@ -1410,7 +1375,7 @@
       letter-spacing:-.03em;
     }
     .user-admin-grid { display:grid; grid-template-columns:420px minmax(0,1fr); gap:18px; align-items:start; }
-    @media (max-width:1100px) { .auth-card, .user-admin-grid { grid-template-columns:1fr; } .auth-brand-panel { padding:28px; } .auth-login-logo { width:165px; min-height:70px; } }
+    @media (max-width:1100px) { .auth-card, .user-admin-grid { grid-template-columns:1fr; } .auth-brand-panel { padding:28px; } }
     .user-table-wrap { overflow:auto; border:1px solid #e1edf7; border-radius:16px; }
     .user-status-pill {
       display:inline-flex;
@@ -1435,6 +1400,106 @@
       white-space:nowrap;
     }
 
+
+
+    /* =========================================================
+       UX multiusuário — usabilidade, sincronização, LGPD e fluxo
+       ========================================================= */
+    .admin-only-action { display:inline-flex; }
+    body:not(.admin-session) .admin-only-action { display:none !important; }
+    .auth-login-logo {
+      width:210px;
+      max-width:100%;
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:22px;
+      background:#ffffff;
+      padding:14px 18px;
+      box-shadow:0 18px 34px rgba(0,0,0,.16);
+      margin-bottom:14px;
+      color:#075a9f;
+      font-weight:950;
+      letter-spacing:.04em;
+    }
+    .auth-login-logo img { max-width:100%; max-height:72px; display:block; }
+    .auth-login-logo span { display:none; }
+    .auth-login-logo.logo-fallback img { display:none; }
+    .auth-login-logo.logo-fallback span { display:block; }
+    .ops-strip {
+      display:grid;
+      grid-template-columns:minmax(280px,1.25fr) repeat(3, minmax(150px,.65fr));
+      gap:12px;
+      margin:0 0 18px;
+    }
+    .ops-card {
+      border:1px solid #d8e8f6;
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(247,251,255,.98));
+      box-shadow:0 10px 24px rgba(15,23,42,.06);
+      padding:13px 14px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:78px;
+    }
+    .ops-card .ops-icon {
+      width:42px;
+      height:42px;
+      flex:0 0 auto;
+      display:grid;
+      place-items:center;
+      border-radius:16px;
+      background:#e7f4ff;
+      color:#075a9f;
+      font-size:1.35rem;
+    }
+    .ops-card strong { display:block; color:#103b63; line-height:1.1; }
+    .ops-card span { display:block; color:#64748b; font-size:.88rem; line-height:1.25; margin-top:4px; }
+    .ops-card.warning { border-color:#fed7aa; background:#fff7ed; }
+    .ops-card.warning .ops-icon { background:#ffedd5; color:#9a5200; }
+    .ops-card.ok { border-color:#bbf7d0; background:#f0fdf4; }
+    .ops-card.ok .ops-icon { background:#dcfce7; color:#166534; }
+    .ops-card.danger { border-color:#fecdd3; background:#fff1f2; }
+    .ops-card.danger .ops-icon { background:#fee2e2; color:#991b1b; }
+    .flow-helper {
+      border:1px solid #d8e8f6;
+      border-radius:18px;
+      background:#fbfdff;
+      padding:12px 14px;
+      margin:12px 0;
+      line-height:1.45;
+    }
+    .flow-helper strong { color:#075a9f; }
+    .flow-helper-grid {
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+    .flow-helper-item {
+      border:1px solid #e1edf7;
+      border-radius:14px;
+      background:#ffffff;
+      padding:10px 12px;
+      color:#344256;
+    }
+    .route-alert {
+      border:1px solid #fed7aa;
+      border-radius:16px;
+      background:#fff7ed;
+      color:#7c2d12;
+      padding:11px 13px;
+      margin:10px 0;
+      font-weight:800;
+      line-height:1.35;
+    }
+    .auth-current-user { max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    @media (max-width:1180px) { .ops-strip { grid-template-columns:1fr 1fr; } }
+    @media (max-width:740px) { .ops-strip, .flow-helper-grid { grid-template-columns:1fr; } }
+
+
     .print-area { display:none; }
     .no-print {}
 
@@ -1452,8 +1517,8 @@
     <div class="auth-card">
       <div class="auth-brand-panel">
         <div class="auth-login-logo" aria-label="Logo SESI Saúde">
-          <img src="img/Logo_SesiSaude.png" alt="Logo SESI Saúde" onerror="this.onerror=null;this.style.display='none';this.parentElement.querySelector('.auth-logo-fallback').style.display='block';">
-          <span class="auth-logo-fallback">SESI<small>SAÚDE</small></span>
+          <img src="img/Logo_SesiSaude.png" alt="Logo SESI Saúde" onerror="this.closest('.auth-login-logo').classList.add('logo-fallback')">
+          <span>SESI SAÚDE</span>
         </div>
         <span class="auth-pill">🔐 Acesso restrito</span>
         <h2 id="loginTitle">PAPA FILA<br>SESI Saúde</h2>
@@ -1501,19 +1566,21 @@
         </div>
       </div>
       <div class="header-actions">
-        <button class="btn ghost" onclick="seedDemo()">Gerar exemplos</button>
-        <button class="btn ghost" onclick="exportarDados()">Exportar dados</button>
-        <button class="btn ghost" onclick="document.getElementById('importFile').click()">Importar</button>
+        <button class="btn ghost admin-only-action" onclick="seedDemo()" title="Ação restrita ao administrador">Gerar exemplos</button>
+        <button class="btn ghost admin-only-action" onclick="exportarDados()" title="Ação restrita ao administrador por conter dados sensíveis">Exportar dados</button>
+        <button class="btn ghost admin-only-action" onclick="document.getElementById('importFile').click()" title="Ação restrita ao administrador">Importar</button>
         <input id="importFile" class="sr-only" type="file" accept="application/json" onchange="importarDados(event)">
+        <button class="btn ghost" onclick="sincronizarManualmente()" title="Atualizar dados desta estação">Sincronizar</button>
         <span class="auth-current-user" id="authCurrentUser">Usuário não identificado</span>
         <button class="btn ghost" onclick="logoutApp()">Sair</button>
-        <button class="btn danger" onclick="limparDados()">Limpar dados</button>
+        <button class="btn danger admin-only-action" onclick="limparDados()" title="Ação restrita ao administrador">Limpar dados</button>
       </div>
     </div>
     <nav class="tabs" id="tabs"></nav>
   </header>
 
   <main>
+    <div class="ops-strip no-print" id="opsStrip"></div>
     <section class="tab active" id="tab-totem">
       <div class="totem-screen" id="totemScreen">
         <div class="totem-fullscreen-controls no-print">
@@ -2089,6 +2156,66 @@
     }
 
 
+    function currentUserLabel() {
+      const s = currentSession();
+      return s ? `${s.nome || s.usuario} (${s.perfil})` : 'Usuário não identificado';
+    }
+    function currentStationLabel() {
+      const sel = document.getElementById('stationSelect');
+      return sel?.value || queueDefs[activeQueue]?.stations?.[0] || 'Estação não informada';
+    }
+    function markTicketTouched(ticket) {
+      if (!ticket) return;
+      ticket.lastOperator = currentUserLabel();
+      ticket.lastStation = currentStationLabel();
+      ticket.updatedAt = nowISO();
+    }
+    function sincronizarManualmente() {
+      syncFromStorage('manual');
+      renderAll();
+      toast('Dados atualizados nesta estação.');
+    }
+    function countOpenByPublic(publico) {
+      const key = normalizeText(publico);
+      return state.tickets.filter(t => normalizeText(t.publico).includes(key) && !['completed','canceled'].includes(t.status)).length;
+    }
+    function renderOpsStrip() {
+      const el = document.getElementById('opsStrip');
+      if (!el) return;
+      if (!isLoggedIn()) { el.innerHTML = ''; return; }
+      const open = state.tickets.filter(t => !['completed','canceled'].includes(t.status));
+      const naoRealizados = open.filter(t => ticketStatusGroup(t).key === 'nao_realizado').length;
+      const pendentes = open.filter(t => ticketStatusGroup(t).key === 'pendente').length;
+      const ocup = countOpenByPublic('Ocupacional');
+      const pf = countOpenByPublic('Pessoa Física');
+      const updated = state.updatedAt ? fmtTime(state.updatedAt) : '--:--';
+      const syncClass = naoRealizados ? 'danger' : pendentes > 10 ? 'warning' : 'ok';
+      const alertText = naoRealizados
+        ? `${naoRealizados} atendimento(s) não realizado(s) precisam de análise.`
+        : pendentes > 10
+          ? `${pendentes} atendimento(s) pendente(s). Avaliar reforço de equipe.`
+          : 'Fluxo dentro do acompanhamento esperado.';
+      el.innerHTML = `
+        <div class="ops-card">
+          <div class="ops-icon">👤</div>
+          <div><strong>${escapeHTML(currentUserLabel())}</strong><span>Estação: ${escapeHTML(currentStationLabel())}</span></div>
+        </div>
+        <div class="ops-card ok">
+          <div class="ops-icon">🔄</div>
+          <div><strong>Sincronizado ${escapeHTML(updated)}</strong><span>Atualização automática entre abas/janelas do navegador.</span></div>
+        </div>
+        <div class="ops-card">
+          <div class="ops-icon">🏢</div>
+          <div><strong>${ocup} Ocupacional</strong><span>Térreo / 2º andar / exames ocupacionais.</span></div>
+        </div>
+        <div class="ops-card ${syncClass}">
+          <div class="ops-icon">${naoRealizados ? '⚠️' : pendentes > 10 ? '⏱️' : '✅'}</div>
+          <div><strong>${pf} PF em aberto</strong><span>${escapeHTML(alertText)}</span></div>
+        </div>`;
+    }
+
+
+
     function defaultAuthUsers() {
       return [
         {id:'u-default-user', nome:'Usuário SESI PE', usuario:'SESIPE', senha:'sistema@2026', perfil:'Usuário', ativo:true, criadoEm:nowISO(), fixo:true},
@@ -2175,6 +2302,8 @@
       const s = currentSession();
       const el = document.getElementById('authCurrentUser');
       if (el) el.textContent = s ? `${s.nome || s.usuario} • ${s.perfil}` : 'Usuário não identificado';
+      document.body.classList.toggle('admin-session', Boolean(s && s.perfil === 'Administrador'));
+      renderOpsStrip();
     }
     function fazerLogin() {
       const usuario = document.getElementById('loginUsuario')?.value || '';
@@ -2375,7 +2504,11 @@
     function makeSenha(prefix) { return `${prefix}-${String(nextNumber(prefix)).padStart(2,'0')}`; }
     function addHistory(ticket, action) {
       ticket.history = ticket.history || [];
-      ticket.history.push({at:nowISO(), action});
+      const user = currentUserLabel();
+      const station = currentStationLabel();
+      ticket.history.push({at:nowISO(), action, user, station});
+      ticket.lastOperator = user;
+      ticket.lastStation = station;
       ticket.updatedAt = nowISO();
     }
     function queueLabel(queue) { return queueDefs[queue]?.label || queue || '-'; }
@@ -2877,7 +3010,8 @@
       addHistory(t, `Ficha chamada para ${local}.`);
       const call = {
         id:uid(), ticketId:t.id, senha:t.senha, nome:t.nome, servico:t.servico, categoria:t.categoria,
-        priority:t.priority, queue:t.queue, panel:ticketPanel(t, local), local, at:nowISO()
+        priority:t.priority, queue:t.queue, panel:ticketPanel(t, local), local, at:nowISO(),
+        operador:currentUserLabel(), station:currentStationLabel()
       };
       state.calls.unshift(call);
       state.calls = state.calls.slice(0,80);
@@ -2987,10 +3121,11 @@
       el.innerHTML = `
         ${baseForm(t)}
         <div class="divider"></div>
+        ${fluxoHelperMarkup(t)}
         ${contextualForm(t)}
         <div class="divider"></div>
         <h3>Histórico da ficha</h3>
-        <div class="timeline">${(t.history || []).slice().reverse().map(h => `<div class="timeline-item"><b>${fmtTime(h.at)}</b><br>${escapeHTML(h.action)}</div>`).join('') || '<div class="muted">Sem histórico.</div>'}</div>`;
+        <div class="timeline">${(t.history || []).slice().reverse().map(h => `<div class="timeline-item"><b>${fmtTime(h.at)}</b><br>${escapeHTML(h.action)}${h.user ? `<br><small>${escapeHTML(h.user)} • ${escapeHTML(h.station || '')}</small>` : ''}</div>`).join('') || '<div class="muted">Sem histórico.</div>'}</div>`;
     }
     function baseForm(t) {
       return `
@@ -3007,6 +3142,37 @@
           <button class="btn dark" onclick="imprimirResumo('${t.id}')">Imprimir ficha</button>
         </div>`;
     }
+
+
+    function fluxoHelperMarkup(t) {
+      if (!t) return '';
+      const isPF = normalizeText(t.publico).includes('pessoa fisica');
+      const isOcup = normalizeText(t.publico).includes('ocupacional');
+      if (isOcup) {
+        return `<div class="flow-helper">
+          <strong>Fluxo correto — Ocupacional</strong>
+          <div class="flow-helper-grid">
+            <div class="flow-helper-item">1. Recepção Térreo identifica trabalhador, empresa/contrato e necessidade de ASO.</div>
+            <div class="flow-helper-item">2. Exames pendentes seguem para Exames Ocupacionais. Triagem/Médico só após liberação dos exames.</div>
+            <div class="flow-helper-item">3. Se houver retorno ASO, acompanhar pela data informada e não encaminhar antes da liberação.</div>
+            <div class="flow-helper-item">4. Exame não realizado deve ter motivo registrado e pode voltar à fila após resolver o impedimento.</div>
+          </div>
+        </div>`;
+      }
+      if (isPF) {
+        return `<div class="flow-helper">
+          <strong>Fluxo correto — Pessoa Física</strong>
+          <div class="flow-helper-grid">
+            <div class="flow-helper-item">1. Recepção 1º andar confirma o serviço PF e cadastra dados mínimos do cliente.</div>
+            <div class="flow-helper-item">2. Dentista, exames, ultrassom e especialista seguem para suas filas próprias conforme seleção.</div>
+            <div class="flow-helper-item">3. Raio X PF, laboratoriais PF e audiometria PF usam roteamento de painel conforme regra configurada.</div>
+            <div class="flow-helper-item">4. Finalizar somente após atendimento realizado ou registrar não realizado quando houver impedimento.</div>
+          </div>
+        </div>`;
+      }
+      return '';
+    }
+
     function contextualForm(t) {
       if (activeQueue === 'recepcao_terreo') return formTerreo(t);
       if (activeQueue === 'recepcao_1') return formRecepcao1(t);
@@ -3025,7 +3191,7 @@
       const t = getTicket(id);
       if (!t) return;
       t[field] = value;
-      t.updatedAt = nowISO();
+      markTicketTouched(t);
       saveState();
     }
     function salvarFicha(id) {
@@ -3562,6 +3728,7 @@
       const pendingLabs = pendingLabExams(t).length;
       if (pendingExams > 0) {
         const labNote = pendingLabs ? ` Exame(s) laboratorial(is) com prioridade automática: ${pendingLabs}.` : '';
+        toast('Fluxo protegido: paciente ocupacional com exames pendentes será enviado para Exames Ocupacionais antes de Triagem/Médico.');
         transferTicket(id, 'exames_ocup', `Encaminhado para Exames Ocupacionais com ${pendingExams} exame(s) pendente(s).${labNote}`);
         return;
       }
@@ -4380,13 +4547,13 @@
               <th>ASO / retorno</th>
               <th>Prioridade</th>
               <th>Tempo</th>
-              <th>Histórico recente</th>
+              <th>Último operador</th><th>Histórico recente</th>
             </tr>
           </thead>
           <tbody>
             ${rows.length ? rows.map(t => {
               const g = ticketStatusGroup(t);
-              const history = (t.history || []).slice(-3).reverse().map(h => `<div class="small"><b>${escapeHTML(fmtDate(h.at))}:</b> ${escapeHTML(h.action)}</div>`).join('') || '<span class="muted small">Sem histórico registrado.</span>';
+              const history = (t.history || []).slice(-3).reverse().map(h => `<div class="small"><b>${escapeHTML(fmtDate(h.at))}:</b> ${escapeHTML(h.action)}${h.user ? `<br><span class="muted">${escapeHTML(h.user)} • ${escapeHTML(h.station || '')}</span>` : ''}</div>`).join('') || '<span class="muted small">Sem histórico registrado.</span>';
               const aso = [
                 t.temAso ? 'ASO: Sim' : 'ASO: Não',
                 t.asoMesmoDia ? 'ASO mesmo dia: Sim' : 'ASO mesmo dia: Não',
@@ -4404,16 +4571,16 @@
                 <td>${aso}</td>
                 <td>${t.priority ? '<span class="tag priority">Preferencial</span>' : '<span class="tag dark">Comum</span>'}</td>
                 <td><b>${elapsedMinutesForDashboard(t)} min</b><br><small>Criado: ${escapeHTML(fmtDate(t.createdAt))}</small><br><small>Atualizado: ${escapeHTML(fmtDate(t.updatedAt))}</small></td>
-                <td>${history}</td>
+                <td>${escapeHTML(t.lastOperator || '-')}<br><small>${escapeHTML(t.lastStation || '-')}</small></td><td>${history}</td>
               </tr>`;
-            }).join('') : '<tr><td colspan="11">Nenhum atendimento encontrado com os filtros selecionados.</td></tr>'}
+            }).join('') : '<tr><td colspan="12">Nenhum atendimento encontrado com os filtros selecionados.</td></tr>'}
           </tbody>
         </table>`;
     }
 
     function exportarStatusAtendimentosCSV() {
       const rows = statusFilteredTickets();
-      const headers = ['senha','nome','cpf','telefone','empresa','contrato','servico','categoria','fila_atual','status_matriz','status_operacional','status_detalhe','prioridade','exames_ocupacionais','exames_pf','aso','retorno_aso','data_retorno_aso','tempo_min','criado_em','atualizado_em'];
+      const headers = ['senha','nome','cpf','telefone','empresa','contrato','servico','categoria','fila_atual','status_matriz','status_operacional','status_detalhe','prioridade','exames_ocupacionais','exames_pf','aso','retorno_aso','data_retorno_aso','tempo_min','ultimo_operador','ultima_estacao','criado_em','atualizado_em'];
       const csvRows = [headers.join(';')].concat(rows.map(t => {
         const g = ticketStatusGroup(t);
         const occ = (t.exams || []).map(e => `${e.name}: ${examStatusGroup(e.status).label}${e.motivoNaoRealizado ? ' - Motivo: ' + e.motivoNaoRealizado : ''}`).join(' | ');
@@ -4422,7 +4589,7 @@
           t.senha, t.nome || '', t.cpf || '', t.telefone || '', t.empresa || '', t.contrato || '',
           t.servico || '', t.categoria || '', queueLabel(t.queue), g.label, statusLabels[t.status] || t.status || '', t.statusText || '',
           t.priority ? 'Preferencial' : 'Comum', occ, pf, t.temAso ? 'Sim' : 'Não', t.retornoAso ? 'Sim' : 'Não', t.dataRetornoAso || '',
-          elapsedMinutesForDashboard(t), fmtDate(t.createdAt), fmtDate(t.updatedAt)
+          elapsedMinutesForDashboard(t), t.lastOperator || '', t.lastStation || '', fmtDate(t.createdAt), fmtDate(t.updatedAt)
         ].map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(';');
       }));
       const blob = new Blob([csvRows.join('\n')], {type:'text/csv;charset=utf-8'});
@@ -4447,6 +4614,7 @@
     }
 
     function exportarDados() {
+      if (!isAdminSession()) return requireAdmin(exportarDados);
       const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -4455,6 +4623,7 @@
       URL.revokeObjectURL(a.href);
     }
     function importarDados(event) {
+      if (!isAdminSession()) { if (event) event.target.value = ''; return requireAdmin(() => document.getElementById('importFile')?.click()); }
       const file = event.target.files?.[0];
       if (!file) return;
       const reader = new FileReader();
@@ -4473,6 +4642,7 @@
       event.target.value = '';
     }
     function limparDados() {
+      if (!isAdminSession()) return requireAdmin(limparDados);
       if (!confirm('Tem certeza que deseja limpar todos os dados do Papa Fila?')) return;
       state = { version:2, counters:{}, tickets:[], calls:[], createdAt:new Date().toISOString() };
       selectedTicketId = null;
@@ -4481,6 +4651,7 @@
       toast('Dados apagados.');
     }
     function seedDemo() {
+      if (!isAdminSession()) return requireAdmin(seedDemo);
       const samples = [
         ['ocupacional', true, {nome:'Maria Silva', empresa:'Indústria Exemplo'}],
         ['resultado', false, {nome:'José Santos'}],
@@ -4508,6 +4679,7 @@
     }
 
     function renderAll() {
+      renderOpsStrip();
       renderTotem();
       renderOperacao();
       renderTV();
