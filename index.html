@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PAPA FILA | SESI Saúde</title>
-<script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=K6UUt7_j3knqHK-cYZVethsGm8VVqI50Yj6bm0f1ybqtStCQU2XR5ryEneJ_fbfSHwzMjJlYgqrTXKd2sDNh9kquVfYM7jfYNpxx1QN9iEyzD-2KzfYYFRF4DU4Uj8mlcQG5t4NP3DYq8M3WnEAkwEUQgGj9L26NmiEfa20F7KkzacMqCCKBxd2-qphUsYgXqwt4H-EubVuwsPeF0NFD3XgQ08KfaYr2URbNLupStDZYsPQtBncWLWfmC9qdnsEOyJ_udbB_MMdlKlVSUWzxyVtO7FfGW4Wwx_e67FXXn6EAdilAT60YScUcaxZMaBnoN2WGAquO0OVX_-NUyoZOrba1jk8-luacD-emDQeiD3M" charset="UTF-8"></script><style>
+<script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=kwoku9eTJgBRB_eUP1YmKwUhqWyiZwEX23lpRL0bLEdnXtkVLasuEo4JHZcEn8V8KP6eUs8ffPUSRkBkh8OTieVUmU5qCqLypAHhhrRUyn_Ava-T4j-xqpiKtDdkXCibBkZj2kTSE4osz3uMMp2PcMh074Z3Pqj-7YInTu-SUIDmXe1WUAWmGTsQYisxuRX4lqO_CiIRQQJ8lfODp0mqlA8iajJZ56yRthq8oVnJQm9ph0x5z6LBA75cZy7UpW_Ypeh4Hq9LmyGNOueVsNNAH1L-cweLebUmvnwjcHG9KBKEhJwdk4Fh8-rgqvj4hBxo1WHvKBtcCeKmua62FplJ-TJhpWg7x_tNU8Ov5zRR6Pw" charset="UTF-8"></script><style>
     :root {
       --azul:#0b76c8;
       --azul-2:#2b9be6;
@@ -2315,6 +2315,7 @@
     let stationFilterByQueue = {};
     let totem = {screen:'home', service:null, label:null, retorno:null};
     let activeTv = sessionStorage.getItem(TV_PANEL_KEY) || null;
+    let tvStatusDayKey = null;
     let clockInterval = null;
     let syncChannel = null;
     let lastStorageSnapshot = localStorage.getItem(STORAGE_KEY) || '';
@@ -2353,7 +2354,19 @@
     function nowISO() { return new Date().toISOString(); }
     function fmtDate(iso) { return iso ? new Date(iso).toLocaleString('pt-BR') : '-'; }
     function fmtTime(iso) { return iso ? new Date(iso).toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}) : '-'; }
-    function todayDate(iso) { return new Date(iso).toISOString().slice(0,10); }
+    function todayDate(iso) {
+      const d = iso ? new Date(iso) : new Date();
+      if (Number.isNaN(d.getTime())) return '';
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+    function localDateLabel(dateKey=todayDate(nowISO())) {
+      const [y, m, d] = String(dateKey || todayDate(nowISO())).split('-').map(Number);
+      const date = new Date(y || new Date().getFullYear(), (m || 1) - 1, d || new Date().getDate());
+      return date.toLocaleDateString('pt-BR');
+    }
     function escapeHTML(value) {
       return String(value ?? '').replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
     }
@@ -4187,15 +4200,32 @@
         .sort((a,b) => new Date(b.at || 0) - new Date(a.at || 0))[0] || null;
     }
 
+    function addDateKeyFromValue(keys, value) {
+      const key = todayDate(value);
+      if (key) keys.add(key);
+    }
+
+    function ticketTvStatusDateKeys(t) {
+      const keys = new Set();
+      [t.createdAt, t.waitStart, t.updatedAt, t.completedAt].forEach(value => addDateKeyFromValue(keys, value));
+      if (t.dataRetornoAso) keys.add(String(t.dataRetornoAso));
+      (state.calls || [])
+        .filter(call => call.ticketId === t.id)
+        .forEach(call => addDateKeyFromValue(keys, call.at));
+      [...(t.exams || []), ...(t.pfExams || [])].forEach(exam => {
+        [exam.addedAt, exam.realizadoAt, exam.naoRealizadoAt, exam.liberadoParaNovaTentativaAt].forEach(value => addDateKeyFromValue(keys, value));
+      });
+      return keys;
+    }
+
+    function ticketBelongsToTvOperationalDay(t, dayKey=todayDate(nowISO())) {
+      return ticketTvStatusDateKeys(t).has(dayKey);
+    }
+
     function tvStatusTickets(panel) {
       const today = todayDate(nowISO());
       return state.tickets
-        .filter(t => {
-          const created = todayDate(t.createdAt || t.updatedAt || nowISO());
-          const updated = todayDate(t.updatedAt || t.createdAt || nowISO());
-          const currentOrToday = created === today || updated === today || !['completed','canceled','absent'].includes(t.status);
-          return currentOrToday && (ticketVisibleInPanel(t, panel) || queuePanel(t.queue) === panel || ticketPanel(t) === panel);
-        })
+        .filter(t => ticketBelongsToTvOperationalDay(t, today) && (ticketVisibleInPanel(t, panel) || queuePanel(t.queue) === panel || ticketPanel(t) === panel))
         .sort((a,b) => {
           const order = {andamento:0, pendente:1, nao_realizado:2, realizado:3};
           const ga = ticketStatusGroup(a).key;
@@ -4245,6 +4275,9 @@
       if (!tv) return;
       const meta = tvStatusPanelMeta(panelId);
       const rows = tvStatusTickets(meta.panel);
+      const todayKey = todayDate(nowISO());
+      tvStatusDayKey = todayKey;
+      const todayLabel = localDateLabel(todayKey);
       const counts = {pendente:0, andamento:0, realizado:0, nao_realizado:0};
       rows.forEach(t => { counts[ticketStatusGroup(t).key] += 1; });
       const rowMarkup = rows.map(tvStatusRowMarkup).join('');
@@ -4253,7 +4286,7 @@
       tv.innerHTML = `
         <div class="tv-status-screen">
           <div class="tv-status-top">
-            <div>${sesiLogoMarkup('tv-logo')}<div class="tv-heading-copy"><h2>${escapeHTML(meta.title)}</h2><p>${escapeHTML(meta.subtitle)} As linhas sobem lentamente e reiniciam automaticamente em loop contínuo.</p></div></div>
+            <div>${sesiLogoMarkup('tv-logo')}<div class="tv-heading-copy"><h2>${escapeHTML(meta.title)}</h2><p>${escapeHTML(meta.subtitle)} Exibindo somente os atendimentos do dia ${escapeHTML(todayLabel)}. As linhas sobem lentamente e reiniciam automaticamente em loop contínuo.</p></div></div>
             <div class="tv-status-toolbar">
               <span class="tv-clock" id="tvClock">${fmtDate(nowISO())}</span>
               <button class="btn ghost" onclick="syncFromStorage('manual'); renderTV()">Atualizar agora</button>
@@ -4276,7 +4309,7 @@
             </div>
           </div>
           <div class="tv-status-viewport">
-            ${rows.length ? `<div class="tv-status-scroller" style="--tv-status-duration:${duration}s">${duplicatedRows}</div>` : `<div class="tv-status-empty"><div><strong>Sem atendimentos no momento</strong><p>Os atendimentos do ${escapeHTML(meta.publico)} aparecerão aqui automaticamente.</p></div></div>`}
+            ${rows.length ? `<div class="tv-status-scroller" style="--tv-status-duration:${duration}s">${duplicatedRows}</div>` : `<div class="tv-status-empty"><div><strong>Sem atendimentos de hoje</strong><p>Somente os atendimentos do dia ${escapeHTML(todayLabel)} para ${escapeHTML(meta.publico)} aparecerão aqui automaticamente.</p></div></div>`}
           </div>
         </div>`;
       startClock();
@@ -4479,6 +4512,18 @@
         if (['status_primeiro','status_segundo'].includes(activeTv)) return;
         renderTV();
       }, 1200);
+
+      setInterval(() => {
+        const currentDayKey = todayDate(nowISO());
+        if (!tvStatusDayKey) tvStatusDayKey = currentDayKey;
+        if (currentDayKey !== tvStatusDayKey) {
+          tvStatusDayKey = currentDayKey;
+          if (['status_primeiro','status_segundo'].includes(activeTv)) {
+            syncFromStorage('day-rollover');
+            renderTV();
+          }
+        }
+      }, 60000);
     }
 
     function renderDash() {
