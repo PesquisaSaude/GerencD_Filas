@@ -987,6 +987,263 @@
     }
     .quality-score strong { color:#075a9f; font-size:2rem; }
 
+
+    /* =========================================================
+       Status dos Atendimentos — matriz detalhada por cliente
+       ========================================================= */
+    .status-hero {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:18px;
+      background:
+        radial-gradient(circle at 12% 15%, rgba(43,155,230,.16), transparent 28%),
+        linear-gradient(135deg, #ffffff 0%, #f4faff 100%);
+    }
+    .status-hero h2 {
+      color:#075a9f;
+      font-size:clamp(1.8rem, 3.2vw, 2.65rem);
+      margin-bottom:6px;
+      letter-spacing:-.03em;
+    }
+    .status-actions { display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+    .status-filters .toolbar { align-items:flex-end; }
+    .status-filters label { margin:0; min-width:180px; flex:1 1 180px; }
+    .status-filters label span { display:block; margin-bottom:6px; }
+    .status-legend {
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .status-kpi-grid {
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      gap:14px;
+      margin:18px 0;
+    }
+    @media (max-width:1000px) { .status-kpi-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); } }
+    @media (max-width:700px) { .status-kpi-grid { grid-template-columns:1fr; } .status-hero { flex-direction:column; align-items:flex-start; } }
+    .status-kpi {
+      border:1px solid #d8e8f6;
+      border-radius:22px;
+      background:linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+      box-shadow:0 12px 28px rgba(15,23,42,.07);
+      padding:16px;
+      min-height:116px;
+    }
+    .status-kpi strong { display:block; font-size:2rem; color:#075a9f; margin-top:10px; line-height:1; }
+    .status-kpi small { color:#64748b; }
+    .status-chip {
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:.82rem;
+      font-weight:900;
+      white-space:nowrap;
+      border:1px solid transparent;
+    }
+    .status-chip .dot {
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      display:inline-block;
+      background:currentColor;
+    }
+    .status-chip.pendente { background:#fff7d6; color:#92400e; border-color:#fde68a; }
+    .status-chip.andamento { background:#e7f4ff; color:#075a9f; border-color:#bfdbfe; }
+    .status-chip.realizado { background:#e8f7f1; color:#0f7b58; border-color:#bbf7d0; }
+    .status-chip.nao_realizado { background:#fff1f2; color:#b91c1c; border-color:#fecdd3; }
+    tr.status-row-pendente td { background:#fffdf0; }
+    tr.status-row-andamento td { background:#f6fbff; }
+    tr.status-row-realizado td { background:#f7fffb; }
+    tr.status-row-nao_realizado td { background:#fff7f7; }
+    .status-matrix-card { overflow:hidden; }
+    .status-table-wrap { overflow:auto; border-radius:16px; border:1px solid #e1edf7; }
+    .status-table { min-width:1480px; }
+    .status-table th { position:sticky; top:0; z-index:1; }
+    .exam-mini-list { display:grid; gap:6px; min-width:220px; }
+    .exam-mini {
+      border:1px solid #e2edf7;
+      border-radius:12px;
+      background:#fbfdff;
+      padding:7px 9px;
+      display:grid;
+      gap:3px;
+      line-height:1.25;
+    }
+    .exam-mini span { font-weight:850; color:#22344a; }
+    .exam-mini b { font-size:.76rem; }
+    .exam-mini small { color:#64748b; }
+    .exam-mini.pendente { border-color:#fde68a; background:#fffdf0; }
+    .exam-mini.andamento { border-color:#bfdbfe; background:#f6fbff; }
+    .exam-mini.realizado { border-color:#bbf7d0; background:#f7fffb; }
+    .exam-mini.nao_realizado { border-color:#fecdd3; background:#fff7f7; }
+
+
+    /* =========================================================
+       Painel TV — Status por andar com rolagem contínua
+       ========================================================= */
+    .tv-menu.status-enabled { grid-template-columns:repeat(3,1fr); }
+    .tv-status-screen {
+      min-height:calc(100vh - 130px);
+      display:grid;
+      grid-template-rows:auto auto minmax(0, 1fr);
+      gap:18px;
+    }
+    .tv-status-top {
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+    .tv-status-top h2 {
+      font-size:clamp(2.2rem, 4vw, 4.1rem);
+      margin:0 0 6px;
+      line-height:1.05;
+      letter-spacing:-.04em;
+    }
+    .tv-status-top p {
+      color:rgba(255,255,255,.82);
+      font-size:clamp(1rem, 1.3vw, 1.35rem);
+      line-height:1.35;
+      margin:0;
+      max-width:980px;
+    }
+    .tv-status-toolbar { display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; align-items:center; }
+    .tv-status-legend, .tv-status-kpis {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .tv-status-kpis {
+      justify-content:space-between;
+    }
+    .tv-status-kpi {
+      flex:1 1 180px;
+      border:1px solid rgba(255,255,255,.24);
+      border-radius:22px;
+      background:rgba(255,255,255,.13);
+      padding:14px 16px;
+      box-shadow:0 14px 30px rgba(0,0,0,.12);
+    }
+    .tv-status-kpi span { display:block; color:rgba(255,255,255,.78); font-weight:850; }
+    .tv-status-kpi strong { display:block; font-size:2.25rem; line-height:1; margin-top:8px; }
+    .tv-status-badge {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:clamp(.92rem, 1.1vw, 1.08rem);
+      font-weight:950;
+      border:1px solid rgba(255,255,255,.20);
+      box-shadow:0 10px 22px rgba(0,0,0,.10);
+      white-space:nowrap;
+    }
+    .tv-status-badge.pendente { background:#fff7d6; color:#92400e; }
+    .tv-status-badge.andamento { background:#dbeafe; color:#075a9f; }
+    .tv-status-badge.realizado { background:#dcfce7; color:#166534; }
+    .tv-status-badge.nao_realizado { background:#fee2e2; color:#991b1b; }
+    .tv-status-viewport {
+      position:relative;
+      min-height:480px;
+      max-height:calc(100vh - 315px);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.24);
+      border-radius:30px;
+      background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.07));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.16), 0 24px 50px rgba(0,0,0,.16);
+    }
+    .tv-status-viewport::before,
+    .tv-status-viewport::after {
+      content:'';
+      position:absolute;
+      left:0;
+      right:0;
+      height:76px;
+      z-index:2;
+      pointer-events:none;
+    }
+    .tv-status-viewport::before { top:0; background:linear-gradient(180deg, rgba(6,43,79,.95), rgba(6,43,79,0)); }
+    .tv-status-viewport::after { bottom:0; background:linear-gradient(0deg, rgba(6,43,79,.95), rgba(6,43,79,0)); }
+    .tv-status-scroller {
+      display:grid;
+      gap:12px;
+      padding:18px;
+      animation:tvStatusLoop var(--tv-status-duration, 80s) linear infinite;
+      will-change:transform;
+    }
+    .tv-status-viewport:hover .tv-status-scroller { animation-play-state:paused; }
+    @keyframes tvStatusLoop {
+      0% { transform:translateY(0); }
+      100% { transform:translateY(-50%); }
+    }
+    .tv-status-row {
+      display:grid;
+      grid-template-columns:minmax(160px,.85fr) minmax(260px,1.35fr) minmax(230px,1fr) minmax(220px,.9fr);
+      gap:14px;
+      align-items:center;
+      border:1px solid rgba(255,255,255,.22);
+      border-radius:22px;
+      background:rgba(255,255,255,.92);
+      color:#172033;
+      padding:16px 18px;
+      min-height:106px;
+      box-shadow:0 12px 28px rgba(0,0,0,.13);
+    }
+    .tv-status-row.pendente { border-left:12px solid #ffba08; }
+    .tv-status-row.andamento { border-left:12px solid #2b9be6; }
+    .tv-status-row.realizado { border-left:12px solid #0f7b58; }
+    .tv-status-row.nao_realizado { border-left:12px solid #e30613; }
+    .tv-status-senha {
+      color:#075a9f;
+      font-weight:950;
+      font-size:clamp(1.65rem, 2.3vw, 2.5rem);
+      line-height:1;
+      letter-spacing:.02em;
+    }
+    .tv-status-nome {
+      font-weight:950;
+      font-size:clamp(1.25rem, 1.7vw, 1.9rem);
+      line-height:1.12;
+      overflow-wrap:anywhere;
+    }
+    .tv-status-sub {
+      display:block;
+      margin-top:6px;
+      color:#52667b;
+      font-size:clamp(.92rem, 1vw, 1.05rem);
+      line-height:1.28;
+      font-weight:760;
+    }
+    .tv-status-etapa {
+      font-size:clamp(1rem, 1.15vw, 1.22rem);
+      line-height:1.28;
+      font-weight:850;
+      color:#20364f;
+    }
+    .tv-status-empty {
+      height:100%;
+      min-height:460px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding:40px;
+      color:white;
+    }
+    .tv-status-empty strong { display:block; font-size:clamp(2rem,4vw,3.5rem); margin-bottom:10px; }
+    @media (max-width:1100px) {
+      .tv-menu.status-enabled { grid-template-columns:1fr; }
+      .tv-status-row { grid-template-columns:1fr; }
+      .tv-status-viewport { max-height:none; height:70vh; }
+    }
+
     .print-area { display:none; }
     .no-print {}
 
@@ -1240,6 +1497,72 @@
       </div>
     </section>
 
+    <section class="tab" id="tab-status">
+      <div class="status-hero card">
+        <div>
+          <span class="app-kicker">Controle operacional</span>
+          <h2>Status dos Atendimentos</h2>
+          <p class="subtitle">Matriz detalhada para as recepções localizarem cada atendimento, visualizarem o status atual, a fila, os exames e o histórico recente do cliente/trabalhador.</p>
+          <div class="status-legend">
+            <span class="status-chip pendente"><span class="dot"></span>Pendente</span>
+            <span class="status-chip andamento"><span class="dot"></span>Em andamento</span>
+            <span class="status-chip realizado"><span class="dot"></span>Realizado</span>
+            <span class="status-chip nao_realizado"><span class="dot"></span>Não Realizado</span>
+          </div>
+        </div>
+        <div class="status-actions">
+          <button class="btn secondary" onclick="renderStatusAtendimentos()">Atualizar status</button>
+          <button class="btn" onclick="exportarStatusAtendimentosCSV()">Exportar CSV</button>
+        </div>
+      </div>
+
+      <div class="card status-filters">
+        <div class="card-title">
+          <div>
+            <h2>Filtros de localização</h2>
+            <p class="subtitle">Filtre por período, fila, status, prioridade, tipo de atendimento ou busque por senha, nome, CPF, empresa, exame e observações.</p>
+          </div>
+        </div>
+        <div class="toolbar">
+          <label><span>Data inicial</span><input type="date" id="statusDataInicial" onchange="renderStatusAtendimentos()"></label>
+          <label><span>Data final</span><input type="date" id="statusDataFinal" onchange="renderStatusAtendimentos()"></label>
+          <label><span>Fila atual</span><select id="statusFila" onchange="renderStatusAtendimentos()"></select></label>
+          <label><span>Status</span><select id="statusGrupo" onchange="renderStatusAtendimentos()">
+            <option value="">Todos os status</option>
+            <option value="pendente">🟡 Pendente</option>
+            <option value="andamento">🔵 Em andamento</option>
+            <option value="realizado">🟢 Realizado</option>
+            <option value="nao_realizado">🔴 Não Realizado</option>
+          </select></label>
+          <label><span>Prioridade</span><select id="statusPrioridade" onchange="renderStatusAtendimentos()">
+            <option value="">Todas</option>
+            <option value="preferencial">Preferencial</option>
+            <option value="comum">Comum</option>
+          </select></label>
+          <label><span>Tipo</span><select id="statusTipo" onchange="renderStatusAtendimentos()">
+            <option value="">Todos</option>
+            <option value="ocupacional">Ocupacional</option>
+            <option value="pf">Pessoa Física</option>
+            <option value="resultado">Resultado de Exames</option>
+            <option value="retorno">Retorno Ocupacional</option>
+          </select></label>
+          <label><span>Buscar</span><input id="statusBusca" placeholder="Senha, nome, CPF, empresa, exame ou status" oninput="renderStatusAtendimentos()"></label>
+        </div>
+      </div>
+
+      <div class="status-kpi-grid" id="statusKpis"></div>
+
+      <div class="card status-matrix-card">
+        <div class="card-title">
+          <div>
+            <h2>Matriz detalhada de cada cliente</h2>
+            <p class="subtitle">Visão consolidada com status atual, fila, atendimento, exames, ASO/retorno, prioridade, tempo e histórico recente.</p>
+          </div>
+        </div>
+        <div class="status-table-wrap" id="statusMatrix"></div>
+      </div>
+    </section>
+
   </main>
 
   <div class="toast" id="toast"></div>
@@ -1260,7 +1583,8 @@
       ['tab-operacao','Operação de Filas'],
       ['tab-acompanhamento','Acompanhamento'],
       ['tab-fluxos','Fluxos Configurados'],
-      ['tab-dashboard','Dashboard']
+      ['tab-dashboard','Dashboard'],
+      ['tab-status','Status dos Atendimentos']
     ];
 
 
@@ -1400,6 +1724,19 @@
       absent:'Ausente',
       completed:'Finalizado',
       canceled:'Cancelado'
+    };
+
+    const statusGroupLabels = {
+      pendente:'Pendente',
+      andamento:'Em andamento',
+      realizado:'Realizado',
+      nao_realizado:'Não Realizado'
+    };
+    const statusGroupHints = {
+      pendente:'Aguardando chamada ou ação da recepção/técnico.',
+      andamento:'Chamado ou em atendimento na etapa atual.',
+      realizado:'Atendimento finalizado sem impedimento registrado.',
+      nao_realizado:'Ausente, cancelado ou com exame não realizado/impedido.'
     };
 
     let state = loadState();
@@ -1555,6 +1892,7 @@
       renderDash();
       renderFluxos();
       renderDashboard();
+      renderStatusAtendimentos();
       if (autoPrint) imprimirSenha(ticket.id);
       return ticket;
     }
@@ -2824,6 +3162,125 @@
       };
     }
 
+
+    function tvStatusPanelMeta(panelId) {
+      if (panelId === 'status_segundo') {
+        return {
+          panel:'segundo',
+          title:'Status dos Atendimentos — 2º andar',
+          subtitle:'Acompanhe exames ocupacionais, triagem, médico ocupacional, retorno ocupacional, Laboratório PF e Audiometria PF.',
+          publico:'Trabalhadores e clientes do 2º andar'
+        };
+      }
+      return {
+        panel:'primeiro',
+        title:'Status dos Atendimentos — 1º andar',
+        subtitle:'Acompanhe atendimentos de Pessoa Física, odontologia, ultrassom, ECG, EEG, psicologia, especialidades e pagamento.',
+        publico:'Clientes do 1º andar'
+      };
+    }
+
+    function latestCallForTicket(ticketId) {
+      return [...(state.calls || [])]
+        .filter(c => c.ticketId === ticketId)
+        .sort((a,b) => new Date(b.at || 0) - new Date(a.at || 0))[0] || null;
+    }
+
+    function tvStatusTickets(panel) {
+      const today = todayDate(nowISO());
+      return state.tickets
+        .filter(t => {
+          const created = todayDate(t.createdAt || t.updatedAt || nowISO());
+          const updated = todayDate(t.updatedAt || t.createdAt || nowISO());
+          const currentOrToday = created === today || updated === today || !['completed','canceled','absent'].includes(t.status);
+          return currentOrToday && (ticketVisibleInPanel(t, panel) || queuePanel(t.queue) === panel || ticketPanel(t) === panel);
+        })
+        .sort((a,b) => {
+          const order = {andamento:0, pendente:1, nao_realizado:2, realizado:3};
+          const ga = ticketStatusGroup(a).key;
+          const gb = ticketStatusGroup(b).key;
+          return (order[ga] ?? 9) - (order[gb] ?? 9)
+            || Number(b.priority) - Number(a.priority)
+            || new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0);
+        });
+    }
+
+    function tvStatusDetail(t) {
+      const call = latestCallForTicket(t.id);
+      const queue = queueLabel(t.queue);
+      const local = call?.local || '';
+      const statusText = t.statusText || statusLabels[t.status] || '';
+      if (local && ['called','in_service'].includes(t.status)) return `${queue} • ${local}`;
+      if (statusText && statusText !== statusLabels[t.status]) return `${queue} • ${statusText}`;
+      return queue;
+    }
+
+    function tvStatusServiceText(t) {
+      const exams = (t.exams || []).concat(t.pfExams || []).filter(e => e.status !== 'realizado').map(e => e.name).slice(0, 2);
+      const base = t.especialidade || t.servico || t.categoria || 'Atendimento';
+      return exams.length ? `${base} • ${exams.join(' / ')}` : base;
+    }
+
+    function tvStatusRowMarkup(t) {
+      const g = ticketStatusGroup(t);
+      const label = g.label || statusGroupLabels[g.key] || 'Pendente';
+      const name = t.nome || 'Aguardando identificação';
+      return `<div class="tv-status-row ${g.key}">
+        <div>
+          <div class="tv-status-senha">${escapeHTML(t.senha || '-')}</div>
+          ${t.priority ? '<span class="tv-status-sub">Atendimento preferencial</span>' : '<span class="tv-status-sub">Atendimento comum</span>'}
+        </div>
+        <div>
+          <div class="tv-status-nome">${escapeHTML(name)}</div>
+          <span class="tv-status-sub">${escapeHTML(tvStatusServiceText(t))}</span>
+        </div>
+        <div class="tv-status-etapa">${escapeHTML(tvStatusDetail(t))}<span class="tv-status-sub">Atualizado: ${escapeHTML(fmtTime(t.updatedAt || t.createdAt || nowISO()))}</span></div>
+        <div>${statusChipMarkup(g.key, label)}</div>
+      </div>`;
+    }
+
+    function renderTvStatusPanel(panelId) {
+      const tv = document.getElementById('tvContent');
+      if (!tv) return;
+      const meta = tvStatusPanelMeta(panelId);
+      const rows = tvStatusTickets(meta.panel);
+      const counts = {pendente:0, andamento:0, realizado:0, nao_realizado:0};
+      rows.forEach(t => { counts[ticketStatusGroup(t).key] += 1; });
+      const rowMarkup = rows.map(tvStatusRowMarkup).join('');
+      const duplicatedRows = rows.length ? rowMarkup + rowMarkup : '';
+      const duration = Math.max(55, rows.length * 8);
+      tv.innerHTML = `
+        <div class="tv-status-screen">
+          <div class="tv-status-top">
+            <div>${sesiLogoMarkup('tv-logo')}<div class="tv-heading-copy"><h2>${escapeHTML(meta.title)}</h2><p>${escapeHTML(meta.subtitle)} As linhas sobem lentamente e reiniciam automaticamente em loop contínuo.</p></div></div>
+            <div class="tv-status-toolbar">
+              <span class="tv-clock" id="tvClock">${fmtDate(nowISO())}</span>
+              <button class="btn ghost" onclick="syncFromStorage('manual'); renderTV()">Atualizar agora</button>
+              <button class="btn ghost" onclick="alternarTelaCheiaTv()">Tela cheia</button>
+              <button class="btn ghost" onclick="voltarMenuTv()">Voltar</button>
+            </div>
+          </div>
+          <div>
+            <div class="tv-status-legend">
+              <span class="tv-status-badge pendente">🟡 Pendente</span>
+              <span class="tv-status-badge andamento">🔵 Em andamento</span>
+              <span class="tv-status-badge realizado">🟢 Realizado</span>
+              <span class="tv-status-badge nao_realizado">🔴 Não Realizado</span>
+            </div>
+            <div class="tv-status-kpis" style="margin-top:12px">
+              <div class="tv-status-kpi"><span>Pendente</span><strong>${counts.pendente}</strong></div>
+              <div class="tv-status-kpi"><span>Em andamento</span><strong>${counts.andamento}</strong></div>
+              <div class="tv-status-kpi"><span>Realizado</span><strong>${counts.realizado}</strong></div>
+              <div class="tv-status-kpi"><span>Não Realizado</span><strong>${counts.nao_realizado}</strong></div>
+            </div>
+          </div>
+          <div class="tv-status-viewport">
+            ${rows.length ? `<div class="tv-status-scroller" style="--tv-status-duration:${duration}s">${duplicatedRows}</div>` : `<div class="tv-status-empty"><div><strong>Sem atendimentos no momento</strong><p>Os atendimentos do ${escapeHTML(meta.publico)} aparecerão aqui automaticamente.</p></div></div>`}
+          </div>
+        </div>`;
+      startClock();
+    }
+
     function renderTV() {
       const tv = document.getElementById('tvContent');
       if (!activeTv) {
@@ -2831,6 +3288,8 @@
           ['terreo','Painel TV Térreo','Recepção Térreo 1, 2 e 3, resultado de exames e chamadas de Raio X PF.'],
           ['primeiro','Painel TV 1º andar','Pessoa Física, odontologia, ultrassom, ECG, EEG, psicologia, especialidades e pagamento.'],
           ['segundo','Painel TV 2º andar','Retorno ocupacional, exames ocupacionais, triagem, médico ocupacional, Laboratório PF e Audiometria PF.'],
+          ['status_primeiro','Status dos Atendimentos — 1º andar','TV informativa para clientes acompanharem, em tempo real, a situação dos atendimentos do 1º andar.'],
+          ['status_segundo','Status dos Atendimentos — 2º andar','TV informativa para trabalhadores acompanharem, em tempo real, a situação dos atendimentos do 2º andar.'],
           ['geral','Painel Geral','Visualização integrada de todas as chamadas.']
         ];
         tv.innerHTML = `
@@ -2841,7 +3300,7 @@
               <button class="btn ghost" onclick="tocarSinalSonoro()">Testar alerta</button>
             </div>
           </div>
-          <div class="tv-menu">${cards.map(([id,title,desc]) => `
+          <div class="tv-menu status-enabled">${cards.map(([id,title,desc]) => `
             <button class="tv-menu-card" onclick="abrirPainelTv('${id}')">
               <div><h3>${escapeHTML(title)}</h3><p>${escapeHTML(desc)}</p></div>
               <span class="btn ghost">Abrir painel</span>
@@ -2849,7 +3308,11 @@
         startClock();
         return;
       }
-      const titleMap = {terreo:'Painel TV Térreo', primeiro:'Painel TV 1º andar', segundo:'Painel TV 2º andar', geral:'Painel Geral'};
+      const titleMap = {terreo:'Painel TV Térreo', primeiro:'Painel TV 1º andar', segundo:'Painel TV 2º andar', status_primeiro:'Status dos Atendimentos — 1º andar', status_segundo:'Status dos Atendimentos — 2º andar', geral:'Painel Geral'};
+      if (activeTv === 'status_primeiro' || activeTv === 'status_segundo') {
+        renderTvStatusPanel(activeTv);
+        return;
+      }
       const panelCalls = callsByPanel(activeTv);
       const latest = panelCalls[0] || null;
       tocarAlertaTvSeNovaChamada(latest);
@@ -3209,6 +3672,172 @@
       URL.revokeObjectURL(a.href);
     }
 
+
+    function ticketStatusGroup(t) {
+      const hasNonRealized = nonRealizedOccExams(t).length > 0 || (t.pfExams || []).some(e => e.status === 'nao_realizado');
+      if (hasNonRealized || ['absent','canceled'].includes(t.status)) return {key:'nao_realizado', label:statusGroupLabels.nao_realizado};
+      if (t.status === 'completed') return {key:'realizado', label:statusGroupLabels.realizado};
+      if (['called','in_service'].includes(t.status)) return {key:'andamento', label:statusGroupLabels.andamento};
+      return {key:'pendente', label:statusGroupLabels.pendente};
+    }
+
+    function statusChipMarkup(key, label) {
+      const safeKey = ['pendente','andamento','realizado','nao_realizado'].includes(key) ? key : 'pendente';
+      return `<span class="status-chip ${safeKey}"><span class="dot"></span>${escapeHTML(label || statusGroupLabels[safeKey] || safeKey)}</span>`;
+    }
+
+    function examStatusGroup(status) {
+      if (status === 'realizado') return {key:'realizado', label:'Realizado'};
+      if (status === 'nao_realizado') return {key:'nao_realizado', label:'Não Realizado'};
+      return {key:'pendente', label:'Pendente'};
+    }
+
+    function renderExamMiniList(exams, emptyText='Sem exames registrados') {
+      const list = Array.isArray(exams) ? exams : [];
+      if (!list.length) return `<span class="muted small">${escapeHTML(emptyText)}</span>`;
+      return `<div class="exam-mini-list">${list.map(e => {
+        const g = examStatusGroup(e.status);
+        const motivo = e.motivoNaoRealizado ? `<small><b>Motivo:</b> ${escapeHTML(e.motivoNaoRealizado)}</small>` : '';
+        const data = e.doneAt || e.naoRealizadoAt || e.liberadoParaNovaTentativaAt || e.addedAt || '';
+        return `<div class="exam-mini ${g.key}"><span>${escapeHTML(e.name || 'Exame')}</span><b>${escapeHTML(g.label)}</b>${motivo}${data ? `<small>${escapeHTML(fmtDate(data))}</small>` : ''}</div>`;
+      }).join('')}</div>`;
+    }
+
+    function tipoStatusFiltro(t) {
+      const categoria = normalizeText(t.categoria || '');
+      const tipo = normalizeText(t.tipo || '');
+      const servico = normalizeText(t.servico || '');
+      if (categoria.includes('resultado') || tipo.includes('resultado') || servico.includes('resultado')) return 'resultado';
+      if (categoria.includes('retorno') || tipo.includes('retorno')) return 'retorno';
+      if (categoria.includes('pessoa fisica') || tipo.includes('dentista') || tipo.includes('exames_pf') || tipo.includes('ultrassom') || tipo.includes('medico_especialista')) return 'pf';
+      if (categoria.includes('ocupacional') || tipo.includes('ocupacional')) return 'ocupacional';
+      return '';
+    }
+
+    function statusSearchBag(t) {
+      const exams = (t.exams || []).concat(t.pfExams || []).flatMap(e => [e.name, e.status, e.motivoNaoRealizado]).join(' ');
+      const history = (t.history || []).slice(-6).map(h => h.action).join(' ');
+      const group = ticketStatusGroup(t);
+      return [
+        t.senha, t.nome, t.cpf, t.telefone, t.empresa, t.contrato, t.servico, t.categoria,
+        t.publico, t.statusText, statusLabels[t.status], group.label, queueLabel(t.queue),
+        t.especialidade, t.profissional, t.observacao, exams, history
+      ].map(normalizeText).join(' ');
+    }
+
+    function ensureStatusFilters() {
+      const sel = document.getElementById('statusFila');
+      if (!sel) return;
+      const current = sel.value;
+      sel.innerHTML = '<option value="">Todas as filas</option>' + Object.entries(queueDefs).map(([key, q]) => `<option value="${escapeHTML(key)}">${escapeHTML(q.label)}</option>`).join('');
+      if ([...sel.options].some(o => o.value === current)) sel.value = current;
+    }
+
+    function statusFilteredTickets() {
+      const start = document.getElementById('statusDataInicial')?.value || '';
+      const end = document.getElementById('statusDataFinal')?.value || '';
+      const queue = document.getElementById('statusFila')?.value || '';
+      const group = document.getElementById('statusGrupo')?.value || '';
+      const priority = document.getElementById('statusPrioridade')?.value || '';
+      const tipo = document.getElementById('statusTipo')?.value || '';
+      const term = normalizeText(document.getElementById('statusBusca')?.value || '').trim();
+      return state.tickets.filter(t => {
+        const d = todayDate(t.createdAt || nowISO());
+        if (start && d < start) return false;
+        if (end && d > end) return false;
+        if (queue && t.queue !== queue) return false;
+        if (group && ticketStatusGroup(t).key !== group) return false;
+        if (priority === 'preferencial' && !t.priority) return false;
+        if (priority === 'comum' && t.priority) return false;
+        if (tipo && tipoStatusFiltro(t) !== tipo) return false;
+        if (term && !statusSearchBag(t).includes(term)) return false;
+        return true;
+      }).sort((a,b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
+    }
+
+    function renderStatusAtendimentos() {
+      const matrix = document.getElementById('statusMatrix');
+      if (!matrix) return;
+      ensureStatusFilters();
+      const rows = statusFilteredTickets();
+      const counts = {pendente:0, andamento:0, realizado:0, nao_realizado:0};
+      rows.forEach(t => { counts[ticketStatusGroup(t).key] += 1; });
+      const kpiEl = document.getElementById('statusKpis');
+      if (kpiEl) {
+        kpiEl.innerHTML = Object.entries(statusGroupLabels).map(([key, label]) => `
+          <div class="status-kpi">
+            ${statusChipMarkup(key, label)}
+            <strong>${counts[key] || 0}</strong>
+            <small>${escapeHTML(statusGroupHints[key] || '')}</small>
+          </div>`).join('');
+      }
+      matrix.innerHTML = `
+        <table class="status-table">
+          <thead>
+            <tr>
+              <th>Senha</th>
+              <th>Cliente/Trabalhador</th>
+              <th>Atendimento</th>
+              <th>Fila atual / local</th>
+              <th>Status atual</th>
+              <th>Exames ocupacionais</th>
+              <th>Exames PF</th>
+              <th>ASO / retorno</th>
+              <th>Prioridade</th>
+              <th>Tempo</th>
+              <th>Histórico recente</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.length ? rows.map(t => {
+              const g = ticketStatusGroup(t);
+              const history = (t.history || []).slice(-3).reverse().map(h => `<div class="small"><b>${escapeHTML(fmtDate(h.at))}:</b> ${escapeHTML(h.action)}</div>`).join('') || '<span class="muted small">Sem histórico registrado.</span>';
+              const aso = [
+                t.temAso ? 'ASO: Sim' : 'ASO: Não',
+                t.asoMesmoDia ? 'ASO mesmo dia: Sim' : 'ASO mesmo dia: Não',
+                t.retornoAso ? 'Retorno ASO: Sim' : 'Retorno ASO: Não',
+                t.dataRetornoAso ? `Data retorno: ${t.dataRetornoAso}` : ''
+              ].filter(Boolean).join('<br>');
+              return `<tr class="status-row-${g.key}">
+                <td><b>${escapeHTML(t.senha)}</b><br><small>${escapeHTML(t.prefix || '')}</small></td>
+                <td><b>${escapeHTML(t.nome || 'Ficha ainda não nomeada')}</b><br><small>CPF: ${escapeHTML(t.cpf || '-')}</small><br><small>Tel.: ${escapeHTML(t.telefone || '-')}</small>${t.empresa ? `<br><small>Empresa: ${escapeHTML(t.empresa)}</small>` : ''}${t.contrato ? `<br><small>Contrato: ${escapeHTML(t.contrato)}</small>` : ''}</td>
+                <td>${escapeHTML(t.servico || '-')}<br><small>${escapeHTML(t.categoria || '-')}</small>${t.especialidade ? `<br><small>Especialidade: ${escapeHTML(t.especialidade)}</small>` : ''}${t.profissional ? `<br><small>Profissional: ${escapeHTML(t.profissional)}</small>` : ''}</td>
+                <td><b>${escapeHTML(queueLabel(t.queue))}</b><br><small>${escapeHTML(queueDefs[t.queue]?.floor || panelLabel(ticketPanel(t)))}</small></td>
+                <td>${statusChipMarkup(g.key, g.label)}<br><small><b>Operacional:</b> ${escapeHTML(statusLabels[t.status] || t.status || '-')}</small><br><small>${escapeHTML(t.statusText || '-')}</small></td>
+                <td>${renderExamMiniList(t.exams, 'Sem exames ocupacionais')}</td>
+                <td>${renderExamMiniList(t.pfExams, 'Sem exames PF')}</td>
+                <td>${aso}</td>
+                <td>${t.priority ? '<span class="tag priority">Preferencial</span>' : '<span class="tag dark">Comum</span>'}</td>
+                <td><b>${elapsedMinutesForDashboard(t)} min</b><br><small>Criado: ${escapeHTML(fmtDate(t.createdAt))}</small><br><small>Atualizado: ${escapeHTML(fmtDate(t.updatedAt))}</small></td>
+                <td>${history}</td>
+              </tr>`;
+            }).join('') : '<tr><td colspan="11">Nenhum atendimento encontrado com os filtros selecionados.</td></tr>'}
+          </tbody>
+        </table>`;
+    }
+
+    function exportarStatusAtendimentosCSV() {
+      const rows = statusFilteredTickets();
+      const headers = ['senha','nome','cpf','telefone','empresa','contrato','servico','categoria','fila_atual','status_matriz','status_operacional','status_detalhe','prioridade','exames_ocupacionais','exames_pf','aso','retorno_aso','data_retorno_aso','tempo_min','criado_em','atualizado_em'];
+      const csvRows = [headers.join(';')].concat(rows.map(t => {
+        const g = ticketStatusGroup(t);
+        const occ = (t.exams || []).map(e => `${e.name}: ${examStatusGroup(e.status).label}${e.motivoNaoRealizado ? ' - Motivo: ' + e.motivoNaoRealizado : ''}`).join(' | ');
+        const pf = (t.pfExams || []).map(e => `${e.name}: ${examStatusGroup(e.status).label}${e.motivoNaoRealizado ? ' - Motivo: ' + e.motivoNaoRealizado : ''}`).join(' | ');
+        return [
+          t.senha, t.nome || '', t.cpf || '', t.telefone || '', t.empresa || '', t.contrato || '',
+          t.servico || '', t.categoria || '', queueLabel(t.queue), g.label, statusLabels[t.status] || t.status || '', t.statusText || '',
+          t.priority ? 'Preferencial' : 'Comum', occ, pf, t.temAso ? 'Sim' : 'Não', t.retornoAso ? 'Sim' : 'Não', t.dataRetornoAso || '',
+          elapsedMinutesForDashboard(t), fmtDate(t.createdAt), fmtDate(t.updatedAt)
+        ].map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(';');
+      }));
+      const blob = new Blob([csvRows.join('\n')], {type:'text/csv;charset=utf-8'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `status-atendimentos-papa-fila-sesi-saude-${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
     function renderFluxos() {
       const flows = [
         ['Atendimento Ocupacional Inicial','Totem','ATO/ATOP','Recepção Térreo','Recepção 2º andar','Exames ou Triagem/ASO','Médico Ocupacional','Finalização'],
@@ -3290,6 +3919,7 @@
       renderDash();
       renderFluxos();
       renderDashboard();
+      renderStatusAtendimentos();
     }
 
     renderTabs();
