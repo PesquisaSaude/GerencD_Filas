@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PAPA FILA | SESI Saúde</title>
-<script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=6nP475TTw21mMMlA3n9fTaAe2Ki5TSgOKmdKpIEIhwniXvA_In66WwugvzOFtWtlbq8TIgg4Cz4g92U5EJZGWYfvXJ2zuHE6vuGVEJ4LKRB61A9Jvsn2GgXi5tuNKj6kcxSg4BQtJftrEZHZ6eydATlQeGYeAU_qE82vApmS1F2RithMoEifHM-TpAOqTv-_TquJbwV_DOsb4DaUdCKDrdxU7VAX72Arh0FT1MV5qvtvRV1Zs37HUzjLdAFFmxIc_oA1NdBZGuR4fGeOnDY8P4HpcEpLButmRNM-dgzMgtKgO1lhZJwoOptjzjq0IXFJqJ95vIOWBqKMD4aWDUnvJPrtnbDqvJLIws5R9M5P_so" charset="UTF-8"></script><style>
+<script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=K6UUt7_j3knqHK-cYZVethsGm8VVqI50Yj6bm0f1ybqtStCQU2XR5ryEneJ_fbfSHwzMjJlYgqrTXKd2sDNh9kquVfYM7jfYNpxx1QN9iEyzD-2KzfYYFRF4DU4Uj8mlcQG5t4NP3DYq8M3WnEAkwEUQgGj9L26NmiEfa20F7KkzacMqCCKBxd2-qphUsYgXqwt4H-EubVuwsPeF0NFD3XgQ08KfaYr2URbNLupStDZYsPQtBncWLWfmC9qdnsEOyJ_udbB_MMdlKlVSUWzxyVtO7FfGW4Wwx_e67FXXn6EAdilAT60YScUcaxZMaBnoN2WGAquO0OVX_-NUyoZOrba1jk8-luacD-emDQeiD3M" charset="UTF-8"></script><style>
     :root {
       --azul:#0b76c8;
       --azul-2:#2b9be6;
@@ -1400,6 +1400,82 @@
       white-space:nowrap;
     }
 
+    .access-permission-panel {
+      border:1px solid #d8e8f6;
+      border-radius:18px;
+      background:#fbfdff;
+      padding:12px;
+      margin-top:8px;
+    }
+    .access-permission-panel .subtitle { margin-bottom:10px; }
+    .access-permission-tools {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:8px 0 12px;
+    }
+    .access-group {
+      border:1px solid #e1edf7;
+      border-radius:16px;
+      background:#ffffff;
+      margin-bottom:10px;
+      overflow:hidden;
+    }
+    .access-group-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+      background:#edf4fb;
+      color:#123e66;
+      font-weight:900;
+    }
+    .access-group-head button { min-height:34px; padding:6px 10px; }
+    .access-options {
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:8px;
+      padding:10px 12px 12px;
+    }
+    .access-check {
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      border:1px solid #e1edf7;
+      border-radius:12px;
+      padding:8px 10px;
+      background:#fbfdff;
+      font-weight:760;
+      line-height:1.25;
+    }
+    .access-check input { width:auto; margin-top:2px; }
+    .access-check small { display:block; color:#64748b; font-weight:700; margin-top:2px; }
+    .access-chip-list { display:flex; flex-wrap:wrap; gap:5px; max-width:380px; }
+    .access-chip {
+      display:inline-flex;
+      align-items:center;
+      border-radius:999px;
+      padding:4px 8px;
+      background:#eef6fd;
+      color:#0b4f88;
+      font-size:.74rem;
+      font-weight:850;
+      white-space:nowrap;
+    }
+    .access-chip.more { background:#fff7ed; color:#9a5200; }
+    .permission-warning {
+      border:1px solid #fed7aa;
+      background:#fff7ed;
+      color:#7c2d12;
+      border-radius:14px;
+      padding:10px 12px;
+      margin:10px 0;
+      font-weight:800;
+      line-height:1.35;
+    }
+    @media (max-width:760px) { .access-options { grid-template-columns:1fr; } }
+
 
 
     /* =========================================================
@@ -1885,7 +1961,7 @@
           <div class="card-title">
             <div>
               <h2 id="userFormTitle">Cadastrar usuário</h2>
-              <p class="subtitle">Defina o perfil do usuário. Perfil Administrador acessa Status dos Atendimentos e Gestão de Usuários.</p>
+              <p class="subtitle">Defina o perfil e selecione exatamente quais recepções, salas, triagens, exames e especialidades o usuário poderá acessar.</p>
             </div>
           </div>
           <input type="hidden" id="usuarioEditId">
@@ -1905,6 +1981,17 @@
             <option value="true">Ativo</option>
             <option value="false">Inativo</option>
           </select>
+
+          <label>Filas, recepções e salas permitidas</label>
+          <div class="access-permission-panel">
+            <p class="subtitle small">Selecione os locais que este usuário poderá visualizar e operar na plataforma. Administradores continuam com acesso total.</p>
+            <div class="access-permission-tools">
+              <button class="btn secondary" type="button" onclick="marcarTodosAcessosUsuario()">Marcar todos</button>
+              <button class="btn secondary" type="button" onclick="limparAcessosUsuario()">Limpar acessos</button>
+              <button class="btn secondary" type="button" onclick="marcarAcessosRecepcoes()">Somente recepções</button>
+            </div>
+            <div id="usuarioAcessosGrid"></div>
+          </div>
           <div class="toolbar">
             <button class="btn success" onclick="salvarUsuarioAdmin()">Salvar usuário</button>
             <button class="btn secondary" onclick="limparFormularioUsuario()">Limpar</button>
@@ -1919,7 +2006,7 @@
             </div>
           </div>
           <div class="toolbar">
-            <input id="usuarioBusca" placeholder="Buscar usuário, nome ou perfil" oninput="renderUsuarios()">
+            <input id="usuarioBusca" placeholder="Buscar usuário, nome, perfil ou acesso" oninput="renderUsuarios()">
           </div>
           <div class="user-table-wrap" id="usuariosTable"></div>
         </div>
@@ -2038,6 +2125,122 @@
         stations:['Recepção Odontológica 1','Recepção Odontológica 2']
       }
     };
+
+
+    function accessKey(queue, station) {
+      return `${queue}::${station || '*'}`;
+    }
+    function allAccessPoints() {
+      return Object.entries(queueDefs).flatMap(([queue, q]) => (q.stations || []).map(station => ({
+        key: accessKey(queue, station),
+        queue,
+        station,
+        group: q.label,
+        floor: q.floor,
+        label: station,
+        search: `${q.label} ${q.floor} ${station}`
+      })));
+    }
+    function allAccessKeys() {
+      return allAccessPoints().map(p => p.key);
+    }
+    function sanitizeAccessList(list, fallbackAll=false) {
+      const valid = new Set(allAccessKeys());
+      const source = Array.isArray(list) ? list : [];
+      const clean = [...new Set(source.map(v => String(v || '').trim()).filter(v => valid.has(v)))];
+      return clean.length ? clean : (fallbackAll ? allAccessKeys() : []);
+    }
+    function userAccesses(user) {
+      if (!user) return [];
+      if (user.perfil === 'Administrador') return allAccessKeys();
+      if (!Object.prototype.hasOwnProperty.call(user, 'acessos')) return allAccessKeys();
+      return sanitizeAccessList(user.acessos, false);
+    }
+    function currentAccesses() {
+      const s = currentSession();
+      if (!s) return [];
+      if (s.perfil === 'Administrador') return allAccessKeys();
+      if (!Object.prototype.hasOwnProperty.call(s, 'acessos')) return allAccessKeys();
+      return sanitizeAccessList(s.acessos, false);
+    }
+    function canAccessStation(queue, station='') {
+      if (isAdminSession()) return true;
+      const allowed = currentAccesses();
+      if (!queueDefs[queue]) return false;
+      if (!station) return (queueDefs[queue].stations || []).some(st => allowed.includes(accessKey(queue, st)));
+      return allowed.includes(accessKey(queue, station));
+    }
+    function canAccessQueue(queue) {
+      return canAccessStation(queue, '');
+    }
+    function allowedStationsForQueue(queue) {
+      const stations = queueDefs[queue]?.stations || [];
+      if (isAdminSession()) return stations;
+      const allowed = currentAccesses();
+      return stations.filter(st => allowed.includes(accessKey(queue, st)));
+    }
+    function allowedQueueEntries() {
+      return Object.entries(queueDefs).filter(([key]) => canAccessQueue(key));
+    }
+    function ensureActiveQueueAllowed() {
+      if (canAccessQueue(activeQueue)) return true;
+      const first = allowedQueueEntries()[0]?.[0] || '';
+      activeQueue = first;
+      selectedTicketId = null;
+      return Boolean(first);
+    }
+    function ticketMatchesAllowedAccess(t, queue=t?.queue) {
+      if (!t || isAdminSession()) return true;
+      const allowedStations = allowedStationsForQueue(queue);
+      if (!allowedStations.length) return false;
+      return allowedStations.some(station => stationMatchesTicket(t, station, queue));
+    }
+    function accessSummaryFromKeys(keys, max=4) {
+      const map = new Map(allAccessPoints().map(p => [p.key, p]));
+      const clean = sanitizeAccessList(keys, false);
+      if (!clean.length) return '<span class="muted small">Nenhum acesso definido</span>';
+      const labels = clean.map(k => map.get(k)).filter(Boolean).map(p => p.label);
+      const shown = labels.slice(0, max).map(label => `<span class="access-chip">${escapeHTML(label)}</span>`).join('');
+      const more = labels.length > max ? `<span class="access-chip more">+${labels.length - max}</span>` : '';
+      return `<div class="access-chip-list">${shown}${more}</div>`;
+    }
+    function selectedUserAccessKeys() {
+      return Array.from(document.querySelectorAll('.usuario-acesso-check:checked')).map(cb => cb.value);
+    }
+    function renderUsuarioAcessosGrid(selectedKeys=[]) {
+      const grid = document.getElementById('usuarioAcessosGrid');
+      if (!grid) return;
+      const selected = new Set(sanitizeAccessList(selectedKeys, false));
+      grid.innerHTML = Object.entries(queueDefs).map(([queue, q]) => {
+        const options = (q.stations || []).map(station => {
+          const key = accessKey(queue, station);
+          return `<label class="access-check"><input class="usuario-acesso-check" data-queue="${escapeHTML(queue)}" type="checkbox" value="${escapeHTML(key)}" ${selected.has(key) ? 'checked' : ''}><span>${escapeHTML(station)}<small>${escapeHTML(q.floor)}</small></span></label>`;
+        }).join('');
+        return `<div class="access-group">
+          <div class="access-group-head"><span>${escapeHTML(q.label)}</span><button class="btn secondary" type="button" onclick="marcarGrupoAcessoUsuario('${escapeHTML(queue)}')">Marcar grupo</button></div>
+          <div class="access-options">${options}</div>
+        </div>`;
+      }).join('');
+    }
+    function setUsuarioAcessos(keys) {
+      const selected = new Set(sanitizeAccessList(keys, false));
+      document.querySelectorAll('.usuario-acesso-check').forEach(cb => { cb.checked = selected.has(cb.value); });
+    }
+    function marcarTodosAcessosUsuario() {
+      renderUsuarioAcessosGrid(allAccessKeys());
+    }
+    function limparAcessosUsuario() {
+      renderUsuarioAcessosGrid([]);
+    }
+    function marcarGrupoAcessoUsuario(queue) {
+      document.querySelectorAll(`.usuario-acesso-check[data-queue="${queue}"]`).forEach(cb => { cb.checked = true; });
+    }
+    function marcarAcessosRecepcoes() {
+      const keys = allAccessPoints()
+        .filter(p => normalizeText(p.group).includes('recepcao') || normalizeText(p.station).includes('recepcao'))
+        .map(p => p.key);
+      renderUsuarioAcessosGrid(keys);
+    }
 
     const occupationalExams = [
       'Audiometria','Acuidade Visual','Espirometria','ECG - Eletrocardiograma','EEG - Eletroencefalograma','Raio X','Avaliação Psicossocial','Exames Laboratoriais'
@@ -2161,8 +2364,8 @@
       return s ? `${s.nome || s.usuario} (${s.perfil})` : 'Usuário não identificado';
     }
     function currentStationLabel() {
-      const sel = document.getElementById('stationSelect');
-      return sel?.value || queueDefs[activeQueue]?.stations?.[0] || 'Estação não informada';
+      const selected = getSelectedStation();
+      return selected || allowedStationsForQueue(activeQueue)[0] || queueDefs[activeQueue]?.stations?.[0] || 'Estação não informada';
     }
     function markTicketTouched(ticket) {
       if (!ticket) return;
@@ -2218,8 +2421,8 @@
 
     function defaultAuthUsers() {
       return [
-        {id:'u-default-user', nome:'Usuário SESI PE', usuario:'SESIPE', senha:'sistema@2026', perfil:'Usuário', ativo:true, criadoEm:nowISO(), fixo:true},
-        {id:'u-default-admin', nome:'Administrador SESI PE', usuario:'SESIPEADM', senha:'sistema@2026', perfil:'Administrador', ativo:true, criadoEm:nowISO(), fixo:true}
+        {id:'u-default-user', nome:'Usuário SESI PE', usuario:'SESIPE', senha:'sistema@2026', perfil:'Usuário', ativo:true, acessos:allAccessKeys(), criadoEm:nowISO(), fixo:true},
+        {id:'u-default-admin', nome:'Administrador SESI PE', usuario:'SESIPEADM', senha:'sistema@2026', perfil:'Administrador', ativo:true, acessos:allAccessKeys(), criadoEm:nowISO(), fixo:true}
       ];
     }
     function normalizeAuthUser(u) {
@@ -2230,6 +2433,7 @@
         senha:String(u?.senha || ''),
         perfil:u?.perfil === 'Administrador' ? 'Administrador' : 'Usuário',
         ativo:u?.ativo !== false,
+        acessos:u?.perfil === 'Administrador' ? allAccessKeys() : (Object.prototype.hasOwnProperty.call(u || {}, 'acessos') ? sanitizeAccessList(u.acessos, false) : allAccessKeys()),
         criadoEm:u?.criadoEm || nowISO(),
         atualizadoEm:u?.atualizadoEm || u?.criadoEm || nowISO(),
         fixo:Boolean(u?.fixo)
@@ -2281,6 +2485,7 @@
         usuario:user.usuario,
         perfil:user.perfil,
         ativo:user.ativo,
+        acessos:userAccesses(user),
         loginEm:nowISO()
       }));
       updateAuthUI();
@@ -2379,6 +2584,7 @@
       if (ativo) ativo.value = 'true';
       const title = document.getElementById('userFormTitle');
       if (title) title.textContent = 'Cadastrar usuário';
+      renderUsuarioAcessosGrid([]);
     }
     function renderUsuarios() {
       const table = document.getElementById('usuariosTable');
@@ -2390,11 +2596,11 @@
       const term = (document.getElementById('usuarioBusca')?.value || '').toLowerCase().trim();
       const current = currentSession();
       const users = loadAuthUsers()
-        .filter(u => !term || [u.nome, u.usuario, u.perfil, u.ativo ? 'ativo' : 'inativo'].join(' ').toLowerCase().includes(term))
+        .filter(u => !term || [u.nome, u.usuario, u.perfil, u.ativo ? 'ativo' : 'inativo', ...userAccesses(u).map(k => allAccessPoints().find(p => p.key === k)?.search || '')].join(' ').toLowerCase().includes(term))
         .sort((a,b) => String(a.usuario).localeCompare(String(b.usuario), 'pt-BR'));
       table.innerHTML = `
         <table>
-          <thead><tr><th>Nome</th><th>Usuário</th><th>Perfil</th><th>Status</th><th>Criado em</th><th>Ações</th></tr></thead>
+          <thead><tr><th>Nome</th><th>Usuário</th><th>Perfil</th><th>Acessos permitidos</th><th>Status</th><th>Criado em</th><th>Ações</th></tr></thead>
           <tbody>
             ${users.length ? users.map(u => {
               const locked = u.id === 'u-default-admin' || (current && current.id === u.id);
@@ -2402,6 +2608,7 @@
                 <td><b>${escapeHTML(u.nome || '-')}</b></td>
                 <td>${escapeHTML(u.usuario)}</td>
                 <td><span class="user-profile-pill">${escapeHTML(u.perfil)}</span></td>
+                <td>${accessSummaryFromKeys(userAccesses(u))}</td>
                 <td><span class="user-status-pill ${u.ativo ? 'active' : 'inactive'}">${u.ativo ? 'Ativo' : 'Inativo'}</span></td>
                 <td>${escapeHTML(fmtDate(u.criadoEm))}</td>
                 <td>
@@ -2412,7 +2619,7 @@
                   </div>
                 </td>
               </tr>`;
-            }).join('') : '<tr><td colspan="6">Nenhum usuário encontrado.</td></tr>'}
+            }).join('') : '<tr><td colspan="7">Nenhum usuário encontrado.</td></tr>'}
           </tbody>
         </table>`;
     }
@@ -2426,6 +2633,7 @@
       document.getElementById('usuarioSenha').value = user.senha || '';
       document.getElementById('usuarioPerfil').value = user.perfil || 'Usuário';
       document.getElementById('usuarioAtivo').value = String(user.ativo !== false);
+      renderUsuarioAcessosGrid(userAccesses(user));
       const title = document.getElementById('userFormTitle');
       if (title) title.textContent = 'Editar usuário';
       toast('Usuário carregado para edição.');
@@ -2438,8 +2646,13 @@
       const senha = document.getElementById('usuarioSenha')?.value || '';
       const perfil = document.getElementById('usuarioPerfil')?.value === 'Administrador' ? 'Administrador' : 'Usuário';
       const ativo = document.getElementById('usuarioAtivo')?.value !== 'false';
+      const acessosSelecionados = perfil === 'Administrador' ? allAccessKeys() : selectedUserAccessKeys();
       if (!usuario || !senha) {
         toast('Informe usuário e senha para salvar.');
+        return;
+      }
+      if (perfil !== 'Administrador' && !acessosSelecionados.length) {
+        toast('Selecione pelo menos uma recepção, sala ou fila para o usuário.');
         return;
       }
       let users = loadAuthUsers();
@@ -2449,9 +2662,9 @@
         return;
       }
       if (id) {
-        users = users.map(u => u.id === id ? {...u, nome:nome || usuario, usuario, senha, perfil, ativo, atualizadoEm:nowISO()} : u);
+        users = users.map(u => u.id === id ? {...u, nome:nome || usuario, usuario, senha, perfil, ativo, acessos:acessosSelecionados, atualizadoEm:nowISO()} : u);
       } else {
-        users.push({id:uid(), nome:nome || usuario, usuario, senha, perfil, ativo, criadoEm:nowISO(), atualizadoEm:nowISO(), fixo:false});
+        users.push({id:uid(), nome:nome || usuario, usuario, senha, perfil, ativo, acessos:acessosSelecionados, criadoEm:nowISO(), atualizadoEm:nowISO(), fixo:false});
       }
       saveAuthUsers(users);
       limparFormularioUsuario();
@@ -2757,7 +2970,8 @@
         : state.tickets.filter(t => t.queue === queue);
       return base
         .filter(t => queue === 'exames_nao_realizados' ? (view === 'active' || view === 'all' ? true : statusMatchesView(t.status, view)) : (includeAll || statusMatchesView(t.status, view)))
-        .filter(t => stationMatchesTicket(t, station))
+        .filter(t => ticketMatchesAllowedAccess(t, queue))
+        .filter(t => stationMatchesTicket(t, station, queue))
         .filter(t => !term || [t.senha,t.nome,t.cpf,t.empresa,t.servico,t.categoria,t.statusText].some(v => String(v || '').toLowerCase().includes(term)) || nonRealizedOccExams(t).some(e => [e.name,e.motivoNaoRealizado].some(v => String(v || '').toLowerCase().includes(term))))
         .sort((a,b) => compareTicketsForQueue(a, b, queue));
     }
@@ -2767,7 +2981,12 @@
       return status === view;
     }
     function getSelectedStation() {
-      return stationFilterByQueue[activeQueue] || '';
+      const allowed = allowedStationsForQueue(activeQueue);
+      const selected = stationFilterByQueue[activeQueue] || '';
+      if (selected && allowed.includes(selected)) return selected;
+      if (selected && !allowed.includes(selected)) stationFilterByQueue[activeQueue] = '';
+      if (!isAdminSession() && allowed.length === 1) return allowed[0];
+      return '';
     }
     function setStationFilter(value) {
       stationFilterByQueue[activeQueue] = value || '';
@@ -2815,24 +3034,25 @@
     function makePfExamRecord(name) {
       return {name, status:'pendente', labPriority:isLaboratoryExamName(name), addedAt:nowISO()};
     }
-    function stationMatchesTicket(t, station) {
+    function stationMatchesTicket(t, station, queueOverride=activeQueue) {
       if (!station) return true;
       const s = normalizeText(station);
-      if (activeQueue === 'exames_nao_realizados') {
+      const queueKey = queueOverride || activeQueue;
+      if (queueKey === 'exames_nao_realizados') {
         const pending = nonRealizedOccExams(t).map(e => normalizeText(e.name));
         const aliases = [s];
         if (s.includes('psicossocial')) aliases.push('avaliacao psicossocial');
         if (s.includes('laboratoriais')) aliases.push('exames laboratoriais');
         return pending.some(name => aliases.some(alias => name.includes(alias) || alias.includes(name)));
       }
-      if (activeQueue === 'exames_ocup') {
+      if (queueKey === 'exames_ocup') {
         const pending = (t.exams || []).filter(e => e.status !== 'realizado').map(e => normalizeText(e.name));
         const aliases = [s];
         if (s.includes('psicossocial')) aliases.push('avaliacao psicossocial');
         if (s.includes('laboratoriais')) aliases.push('exames laboratoriais');
         return pending.some(name => aliases.some(alias => name.includes(alias) || alias.includes(name)));
       }
-      if (activeQueue === 'exames_pf') {
+      if (queueKey === 'exames_pf') {
         const pending = (t.pfExams || []).filter(e => e.status !== 'realizado').map(e => normalizeText(e.name));
         const aliases = [s];
         if (s.includes('laboratoriais')) aliases.push('exames laboratoriais pf', 'laboratorial pf', 'laboratoriais pf');
@@ -2844,7 +3064,7 @@
         if (s.includes('psicologia')) aliases.push('psicologia pf', 'psicologia');
         return pending.some(name => aliases.some(alias => name.includes(alias) || alias.includes(name)));
       }
-      if (activeQueue === 'especialidades') {
+      if (queueKey === 'especialidades') {
         return normalizeText(t.especialidade).includes(s) || s.includes(normalizeText(t.especialidade));
       }
       return true;
@@ -2853,7 +3073,8 @@
       const station = getSelectedStation();
       return state.tickets
         .filter(t => t.queue === queue && t.status === 'waiting')
-        .filter(t => stationMatchesTicket(t, station))
+        .filter(t => ticketMatchesAllowedAccess(t, queue))
+        .filter(t => stationMatchesTicket(t, station, queue))
         .sort((a,b) => compareTicketsForQueue(a, b, queue))[0];
     }
 
@@ -2873,14 +3094,24 @@
 
     function renderQueueMenu() {
       const menu = document.getElementById('queueMenu');
-      menu.innerHTML = Object.entries(queueDefs).map(([key, q]) => {
+      ensureActiveQueueAllowed();
+      const entries = allowedQueueEntries();
+      if (!entries.length) {
+        menu.innerHTML = '<div class="empty">Seu usuário ainda não possui acesso a nenhuma recepção, sala ou fila. Solicite liberação ao administrador.</div>';
+        return;
+      }
+      menu.innerHTML = entries.map(([key, q]) => {
         const count = key === 'exames_nao_realizados'
-          ? state.tickets.filter(t => hasNonRealizedOccExam(t)).length
-          : state.tickets.filter(t => t.queue === key && !['completed','canceled'].includes(t.status)).length;
+          ? state.tickets.filter(t => hasNonRealizedOccExam(t) && ticketMatchesAllowedAccess(t, key)).length
+          : state.tickets.filter(t => t.queue === key && !['completed','canceled'].includes(t.status) && ticketMatchesAllowedAccess(t, key)).length;
         return `<button class="${activeQueue===key?'active':''}" onclick="setActiveQueue('${key}')"><span>${escapeHTML(q.label)}<br><small class="muted">${escapeHTML(q.floor)}</small></span><span class="queue-count">${count}</span></button>`;
       }).join('');
     }
     function setActiveQueue(queue) {
+      if (!canAccessQueue(queue)) {
+        toast('Seu usuário não possui acesso a esta fila ou sala.');
+        return;
+      }
       activeQueue = queue;
       selectedTicketId = null;
       document.getElementById('queueSearch').value = '';
@@ -2896,13 +3127,21 @@
     }
     function escolherLocalChamada() {
       const selected = getSelectedStation();
-      const stations = queueDefs[activeQueue]?.stations || [];
+      const stations = allowedStationsForQueue(activeQueue);
       return selected || stations[0] || queueLabel(activeQueue);
     }
 
     function renderOperacao() {
       renderMetrics('metricsTop');
       renderQueueMenu();
+      if (!ensureActiveQueueAllowed()) {
+        document.getElementById('queueTitle').textContent = 'Sem acesso operacional';
+        document.getElementById('queueSubtitle').textContent = 'Seu perfil ainda não possui filas, recepções ou salas liberadas.';
+        document.getElementById('queueFloorTag').textContent = 'Acesso pendente';
+        document.getElementById('queueList').innerHTML = '<div class="empty">Solicite ao administrador a liberação das filas necessárias ao seu trabalho.</div>';
+        document.getElementById('ticketForm').innerHTML = '<div class="empty">Nenhuma ficha disponível para este perfil.</div>';
+        return;
+      }
       const q = queueDefs[activeQueue];
       document.getElementById('queueTitle').textContent = q.label;
       document.getElementById('queueSubtitle').textContent = q.subtitle;
@@ -2959,12 +3198,15 @@
     }
 
     function selectTicket(id) {
+      const t = getTicket(id);
+      if (t && !ticketMatchesAllowedAccess(t, t.queue)) return toast('Seu usuário não possui acesso a esta ficha.');
       selectedTicketId = selectedTicketId === id ? null : id;
       renderOperacao();
     }
     function iniciarAtendimento(id) {
       const t = getTicket(id);
       if (!t) return;
+      if (!ticketMatchesAllowedAccess(t, t.queue)) return toast('Seu usuário não possui acesso para atender esta ficha.');
       t.status = 'in_service';
       t.statusText = `Em atendimento em ${queueLabel(t.queue)}`;
       t.inServiceAt = nowISO();
@@ -2976,6 +3218,7 @@
     function marcarAusente(id) {
       const t = getTicket(id);
       if (!t) return;
+      if (!ticketMatchesAllowedAccess(t, t.queue)) return toast('Seu usuário não possui acesso para alterar esta ficha.');
       t.status = 'absent';
       t.statusText = `Ausente em ${queueLabel(t.queue)}`;
       addHistory(t, `Marcado como ausente em ${queueLabel(t.queue)}.`);
@@ -2986,6 +3229,7 @@
     function reativarTicket(id) {
       const t = getTicket(id);
       if (!t) return;
+      if (!ticketMatchesAllowedAccess(t, t.queue)) return toast('Seu usuário não possui acesso para reativar esta ficha.');
       t.status = 'waiting';
       t.waitStart = nowISO();
       t.statusText = `Reativado e aguardando ${queueLabel(t.queue)}`;
@@ -3004,6 +3248,7 @@
     function chamarTicket(id, local) {
       const t = getTicket(id);
       if (!t || ['completed','canceled'].includes(t.status)) return;
+      if (!canAccessStation(t.queue, local) && !ticketMatchesAllowedAccess(t, t.queue)) return toast('Seu usuário não possui acesso para chamar nesta sala ou fila.');
       t.status = 'called';
       t.calledAt = nowISO();
       t.statusText = `Chamado para ${local}`;
@@ -3855,8 +4100,8 @@
       t.waitStart = nowISO();
       t.statusText = note || `Encaminhado para ${queueLabel(queue)}`;
       addHistory(t, t.statusText);
-      selectedTicketId = t.id;
-      activeQueue = queue;
+      selectedTicketId = canAccessQueue(queue) ? t.id : null;
+      if (canAccessQueue(queue)) activeQueue = queue;
       saveState();
       renderAll();
       toast(`${t.senha} encaminhada para ${queueLabel(queue)}.`);
@@ -4687,12 +4932,14 @@
       renderFluxos();
       renderDashboard();
       renderStatusAtendimentos();
+      renderUsuarios();
     }
 
     renderTabs();
     initAuthGate();
     initRealtimeSync();
     renderAll();
+    renderUsuarioAcessosGrid([]);
   </script>
 </body>
 </html>
