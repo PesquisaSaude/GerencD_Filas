@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PAPA FILA | SESI Saúde</title>
-<script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=kwoku9eTJgBRB_eUP1YmKwUhqWyiZwEX23lpRL0bLEdnXtkVLasuEo4JHZcEn8V8KP6eUs8ffPUSRkBkh8OTieVUmU5qCqLypAHhhrRUyn_Ava-T4j-xqpiKtDdkXCibBkZj2kTSE4osz3uMMp2PcMh074Z3Pqj-7YInTu-SUIDmXe1WUAWmGTsQYisxuRX4lqO_CiIRQQJ8lfODp0mqlA8iajJZ56yRthq8oVnJQm9ph0x5z6LBA75cZy7UpW_Ypeh4Hq9LmyGNOueVsNNAH1L-cweLebUmvnwjcHG9KBKEhJwdk4Fh8-rgqvj4hBxo1WHvKBtcCeKmua62FplJ-TJhpWg7x_tNU8Ov5zRR6Pw" charset="UTF-8"></script><style>
+  <title>SESI Pernambuco • Saúde | Atendimento</title>
+<style>
     :root {
       --azul:#0b76c8;
       --azul-2:#2b9be6;
@@ -262,7 +262,15 @@
     .totem-options { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
     .totem-options.two { max-width:680px; margin:0 auto; grid-template-columns:repeat(2,1fr); }
     .totem-options.four { grid-template-columns:repeat(4,1fr); }
-    @media (max-width:1000px) { .totem-options,.totem-options.four,.totem-options.two { grid-template-columns:1fr; } }
+    /* Os cinco serviços preservam a largura original dos cartões (4 por linha).
+       O quinto fica centralizado sem ser ampliado. */
+    .totem-options.five { grid-template-columns:repeat(8,minmax(0,1fr)); }
+    .totem-options.five > .btn.big { grid-column:span 2; }
+    .totem-options.five > .btn.big:last-child { grid-column:4 / span 2; }
+    @media (max-width:1000px) {
+      .totem-options,.totem-options.four,.totem-options.two,.totem-options.five { grid-template-columns:1fr; }
+      .totem-options.five > .btn.big,.totem-options.five > .btn.big:last-child { grid-column:auto; }
+    }
     .receipt {
       background:white;
       border:2px dashed var(--azul);
@@ -1172,17 +1180,27 @@
     }
     .tv-status-viewport::before { top:0; background:linear-gradient(180deg, rgba(6,43,79,.95), rgba(6,43,79,0)); }
     .tv-status-viewport::after { bottom:0; background:linear-gradient(0deg, rgba(6,43,79,.95), rgba(6,43,79,0)); }
+    /* A lista é renderizada uma única vez. A animação percorre apenas o excesso
+       real de conteúdo, sem clonar linhas e sem duplicar atendimentos. */
     .tv-status-scroller {
       display:grid;
       gap:12px;
       padding:18px;
-      animation:tvStatusLoop var(--tv-status-duration, 80s) linear infinite;
+      transform:translateY(0);
+    }
+    .tv-status-scroller.is-scrolling {
+      animation:tvStatusLoop var(--tv-status-duration, 80s) ease-in-out infinite alternate;
       will-change:transform;
     }
-    .tv-status-viewport:hover .tv-status-scroller { animation-play-state:paused; }
+    .tv-status-viewport:hover .tv-status-scroller,
+    .tv-status-viewport:focus-within .tv-status-scroller { animation-play-state:paused; }
     @keyframes tvStatusLoop {
-      0% { transform:translateY(0); }
-      100% { transform:translateY(-50%); }
+      0%, 6% { transform:translateY(0); }
+      94%, 100% { transform:translateY(calc(-1 * var(--tv-status-distance, 0px))); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tv-status-scroller.is-scrolling { animation:none; transform:none; }
+      .tv-status-viewport { overflow-y:auto; }
     }
     .tv-status-row {
       display:grid;
@@ -1585,7 +1603,387 @@
       .print-area { display:block; position:fixed; inset:0; padding:14px; background:white; }
       .no-print { display:none !important; }
     }
-  </style>
+
+
+    /* ===========================================================
+       SESI Pernambuco | Experiência 2026
+       Identidade: azul institucional, azul-claro e verde da nova marca
+       Tipografia e alvos de toque otimizados para atendimento presencial
+       =========================================================== */
+    :root {
+      --azul:#1a4b9f;
+      --azul-2:#0091d6;
+      --azul-3:#edf6ff;
+      --verde:#168149;
+      --verde-2:#eaf8ee;
+      --vermelho:#bd2f42;
+      --laranja:#df7a32;
+      --cinza:#f5f8fc;
+      --cinza-2:#dae5f2;
+      --cinza-3:#ecf2f9;
+      --texto:#192b43;
+      --muted:#5d6f84;
+      --sombra:0 20px 48px rgba(23,53,105,.13);
+      --sombra-2:0 9px 24px rgba(23,53,105,.07);
+      --marca-verde:#4db74f;
+      --marca-azul:#1a4b9f;
+      --marca-ciano:#0091d6;
+    }
+    body {
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:#f4f7fc;
+      line-height:1.45;
+      -webkit-font-smoothing:antialiased;
+    }
+    header {
+      background:linear-gradient(110deg,#123779 0%,#1a4b9f 72%,#235cb1 100%);
+      border-bottom:4px solid var(--marca-verde);
+    }
+    .topbar { padding:15px clamp(16px,2.6vw,40px); }
+    .brand { gap:18px; }
+    .brand h1 { font-size:clamp(1rem,1.3vw,1.27rem); font-weight:850; line-height:1.26; }
+    .brand p { font-size:.86rem; opacity:.92; }
+    .brand-logo { width:164px; min-width:164px; max-width:none; }
+    .brand-logo img { max-width:100%; max-height:62px; object-fit:contain; }
+    .brand-logo .brandmark-fallback { display:none; }
+    .brand-logo.logo-fallback img { display:none; }
+    .brand-logo.logo-fallback .brandmark-fallback { display:flex; }
+    .brandmark-fallback {
+      min-height:58px; align-items:center; justify-content:center; flex-direction:column;
+      background:#fff; border-radius:13px; padding:7px 15px; color:#1a4b9f;
+      box-shadow:0 7px 18px rgba(4,30,80,.12);
+    }
+    .brandmark-word { display:inline-flex; align-items:baseline; gap:0; font-size:2rem; letter-spacing:-.075em; font-style:italic; font-weight:950; line-height:1; }
+    .brandmark-i { position:relative; margin-left:1px; }
+    .brandmark-i::after { content:''; width:8px; height:8px; border-radius:50%; position:absolute; right:-2px; top:-2px; background:var(--marca-verde); }
+    .brandmark-caption { font-size:.59rem; letter-spacing:.17em; font-weight:900; margin-top:3px; }
+    .tabs { background:#fff; border-bottom:1px solid #dbe6f1; padding:12px clamp(16px,2.6vw,40px); gap:7px; box-shadow:none; }
+    .tab-btn { background:transparent; border:1px solid transparent; box-shadow:none; font-size:.87rem; border-radius:11px; color:#4a5d76; min-height:46px; }
+    .tab-btn.active,.tab-btn:hover { background:#e8f3ff; border-color:#b7d8fb; color:#174b96; box-shadow:none; transform:none; }
+    .tab-btn.active { box-shadow:inset 0 -3px 0 var(--marca-verde); }
+    main { padding:clamp(14px,2.3vw,32px) clamp(14px,2.6vw,40px) 42px; }
+    .card,.metric,.dashboard-kpi,.status-kpi,.ops-card {
+      background:white; border-color:#dfe8f2; box-shadow:0 7px 25px rgba(22,62,112,.055);
+      border-radius:19px;
+    }
+    .card:hover,.metric:hover,.ticket:hover { transform:none; box-shadow:0 10px 25px rgba(22,62,112,.09); }
+    .card-title h2,.dashboard-hero h2,.status-hero h2,.user-admin-hero h2 { color:#153e7c; }
+    .btn { border-radius:12px; font-weight:760; box-shadow:none; background:#1a4b9f; }
+    .btn:hover { box-shadow:0 6px 14px rgba(26,75,159,.15); transform:none; }
+    .btn.secondary { border:1px solid #cfdeec; color:#1a4b9f; }
+    .btn.success { background:#168149; }
+    .btn.danger { background:#b93448; }
+    .btn.warning { background:#bd6a2a; }
+    .btn:focus-visible, .tab-btn:focus-visible, button:focus-visible,
+    input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline:3px solid #0091d6 !important; outline-offset:3px;
+    }
+    .auth-login-gate {
+      background:radial-gradient(circle at 90% 10%,rgba(77,183,79,.19),transparent 35%),
+                 linear-gradient(135deg,#112f67,#1a4b9f);
+    }
+    .auth-brand-panel {
+      background:radial-gradient(circle at 10% 15%,rgba(77,183,79,.20),transparent 33%),
+                 linear-gradient(145deg,#163d86,#235aaf);
+      border-bottom:5px solid #4db74f;
+    }
+    .auth-card { border-radius:26px; }
+    .auth-brand-panel h2 { letter-spacing:-.025em; }
+    .auth-form-panel h3 { color:#1a4b9f; }
+    .auth-login-logo { box-shadow:0 10px 28px rgba(0,30,77,.16); }
+    .auth-login-logo.logo-fallback span { color:#1a4b9f; }
+    .ticket::before { background:linear-gradient(#1a4b9f,#0091d6); }
+    .ticket.priority::before { background:#168149; }
+    .tag.blue,.app-kicker { color:#1a4b9f; background:#eaf3ff; }
+    .metric strong,.dashboard-kpi strong,.status-kpi strong { color:#1a4b9f; }
+    .tv-panel {
+      background:radial-gradient(circle at 95% 5%,rgba(77,183,79,.18),transparent 32%),
+                 linear-gradient(135deg,#102c65,#1a4b9f 65%,#123d7b);
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .tv-menu-card { transition:background .18s ease; }
+    .tv-menu-card:hover { background:rgba(255,255,255,.19); }
+    .tv-status-viewport::before { background:linear-gradient(180deg,rgba(16,44,101,.95),rgba(16,44,101,0)); }
+    .tv-status-viewport::after { background:linear-gradient(0deg,rgba(16,44,101,.95),rgba(16,44,101,0)); }
+    .tv-status-scroller.is-scrolling { animation-timing-function:linear; }
+    /* Totem: hierarquia clara, botões largos, texto simples e leitura rápida */
+    .totem-screen {
+      min-height:calc(100vh - 205px);
+      background:radial-gradient(circle at 100% 0%,rgba(0,145,214,.08),transparent 30%),
+                 radial-gradient(circle at 0% 100%,rgba(77,183,79,.08),transparent 36%),
+                 #f8fbff;
+      border:1px solid #e0e8f2;
+      border-radius:24px;
+      box-shadow:none;
+      padding:clamp(24px,3vw,46px);
+    }
+    .totem-screen::before { border:none; }
+    .totem-box { max-width:1060px; }
+    .totem-title { color:#183f86; letter-spacing:-.035em; font-size:clamp(2rem,4vw,3.3rem); font-weight:850; line-height:1.12; }
+    .totem-subtitle { color:#4b6078; max-width:800px; margin-bottom:23px; font-size:clamp(1rem,1.5vw,1.19rem); }
+    .totem-options { gap:15px; }
+    .totem-options .btn.big {
+      min-height:142px; padding:22px 18px; font-size:1.13rem; font-weight:850;
+      border:2px solid #dce9f6; border-radius:20px;
+      background:#fff; color:#193f7e;
+      box-shadow:0 5px 20px rgba(20,56,107,.06);
+      gap:6px;
+    }
+    .totem-options .btn.big::after { background:#edf6ff; width:72px; height:72px; right:-43px; top:-43px; }
+    .totem-options .btn.big:hover { transform:translateY(-2px); box-shadow:0 10px 23px rgba(26,75,159,.11); border-color:#0091d6; }
+    .totem-options .btn.big:active { transform:scale(.99); }
+    .totem-options .btn.big:focus-visible { outline:4px solid #0091d6 !important; outline-offset:3px; }
+    .totem-options .btn.big .small { color:#52667d; font-size:.88rem; opacity:1; font-weight:600; }
+    .totem-options .btn.big.is-preferential,
+    .totem-options .btn.big.is-preferential:hover {
+      background:#eef8f1; color:#126b3d; border-color:#b6e4c2;
+    }
+    .totem-options .btn.big.is-regular { background:#f0f6ff; border-color:#cadbf5; }
+    .totem-options .btn.big.warning, .totem-options .btn.big.success, .totem-options .btn.big.danger {
+      background:#fff; color:#193f7e; box-shadow:0 5px 20px rgba(20,56,107,.06);
+    }
+    .btn-icon { background:#eaf3ff; color:#164889; border-radius:14px; width:50px; height:50px; font-size:1.65rem; margin-bottom:8px; }
+    .totem-options .is-preferential .btn-icon { background:#d8efe0; color:#176e40; }
+    .totem-options .is-regular .btn-icon { background:#dceaff; color:#1a4b9f; }
+    .totem-options.five { grid-template-columns:repeat(8,minmax(0,1fr)); }
+    .totem-options.five > .btn.big { grid-column:span 2; }
+    .totem-options.five > .btn.big:last-child { grid-column:4 / span 2; }
+    .totem-options.two { max-width:780px; }
+    .totem-stepper { display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin:0 auto 24px; }
+    .totem-step {
+      display:flex; gap:8px; align-items:center; padding:7px 11px; border-radius:999px;
+      background:#f1f5fa; color:#697a90; font-weight:760; font-size:.81rem;
+      border:1px solid #e4ecf5;
+    }
+    .totem-step-number { display:grid; place-items:center; width:23px; height:23px; border-radius:50%; background:#dce7f2; color:#4c657e; font-size:.78rem; font-weight:900; }
+    .totem-step.active { background:#e8f1ff; color:#143d7b; border-color:#a8c8f1; }
+    .totem-step.active .totem-step-number { background:#1a4b9f; color:#fff; }
+    .totem-step.complete .totem-step-number { background:#168149; color:#fff; }
+    .totem-step.complete { color:#2c6646; background:#f0f8f3; }
+    .totem-footer { margin:22px auto 0; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; }
+    .totem-footer .btn { min-width:164px; min-height:52px; font-size:1rem; }
+    .totem-help { margin:22px 0 0; color:#61738b; font-size:.88rem; font-weight:540; }
+    .totem-service { display:inline-flex; align-items:center; gap:8px; border:1px solid #cddff1; background:#fff; color:#1a4b9f; padding:12px 20px; border-radius:999px; margin-bottom:23px; font-weight:850; }
+    .totem-top-tools { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    .totem-top-tools .btn { border:1px solid #d5e2f0; color:#234b87; background:#fff; border-radius:12px; font-size:.87rem; min-height:44px; padding:8px 13px; }
+    .totem-top-tools .btn[aria-pressed="true"] { border-color:#4db74f; background:#eaf8ee; color:#145f37; }
+    .totem-screen.access-large .totem-title { font-size:clamp(2.3rem,5.2vw,4rem); }
+    .totem-screen.access-large .totem-subtitle { font-size:clamp(1.3rem,2.15vw,1.52rem); }
+    .totem-screen.access-large .totem-options .btn.big { font-size:clamp(1.3rem,2.2vw,1.6rem); min-height:168px; }
+    .totem-screen.access-large .totem-options .btn.big .small { font-size:1.05rem; }
+    .totem-screen.access-contrast { background:#0c2346; border-color:#0c2346; }
+    .totem-screen.access-contrast .totem-title { color:#fff; }
+    .totem-screen.access-contrast .totem-subtitle,.totem-screen.access-contrast .totem-help { color:#f5fbff; }
+    .totem-screen.access-contrast .totem-step { background:#153d71; color:#fff; border-color:#8cbdf7; }
+    .totem-screen.access-contrast .totem-step-number { background:#fff; color:#0c2346; }
+    .totem-screen.access-contrast .totem-options .btn.big { border-color:#8fd8ff; color:#0e326c; background:#fff; }
+    .totem-screen.access-contrast .totem-options .btn.big .small { color:#264160; }
+    .totem-screen.access-contrast .totem-service { color:#0e326c; }
+    .totem-screen.access-contrast .receipt { background:#fff; }
+    .totem-screen.access-contrast .receipt * { color:#1c3356; }
+    .totem-screen.access-contrast .receipt .senha-big { color:#1a4b9f; }
+    .totem-screen.access-contrast .app-kicker { color:#fff; background:#245ca8; border-color:#7fb6ec; }
+    .totem-screen.access-contrast .totem-top-tools .btn { background:#fff; color:#092d67; }
+    .totem-fullscreen-controls { position:absolute; top:16px; right:16px; gap:9px; align-items:center; }
+    .totem-fullscreen-controls .btn { box-shadow:none; }
+    .receipt { border:1px solid #c6dbec; max-width:570px; padding:clamp(20px,3vw,34px); box-shadow:0 10px 35px rgba(22,62,112,.08); }
+    .receipt .senha-big { color:#1a4b9f; font-size:clamp(3.8rem,7vw,5rem); }
+    .receipt h2 { color:#147744; }
+    .receipt-direction { padding:15px 17px; background:#edf6ff; border:1px solid #caddf1; border-radius:14px; color:#183e73; margin:16px 0; }
+    .receipt-direction b { display:block; font-size:1.1rem; }
+    .receipt .btn { min-height:49px; }
+    .app-kicker { font-size:.75rem; letter-spacing:.06em; border:1px solid #c9ddf4; border-radius:999px; box-shadow:none; }
+    .totem-screen.fullscreen-mode { padding:clamp(25px,4vw,54px); }
+    body.totem-fullscreen-active .totem-title { font-size:clamp(2.2rem,4.5vw,3.9rem); }
+    body.totem-fullscreen-active .totem-options .btn.big { min-height:148px; }
+    .toast { border-radius:14px; }
+    @media (max-width:1000px) {
+      .totem-options.five,.totem-options.two,.totem-options.four,.totem-options { grid-template-columns:repeat(2,minmax(0,1fr)); max-width:100%; }
+      .totem-options.five > .btn.big,.totem-options.five > .btn.big:last-child { grid-column:auto; }
+      .totem-options.five > .btn.big:last-child { grid-column:1 / -1; max-width:calc(50% - 8px); width:100%; justify-self:center; }
+    }
+    @media (max-width:660px) {
+      .brand-logo { width:100px; min-width:100px; }
+      .brandmark-word { font-size:1.6rem; }
+      .brand { min-width:0; flex-basis:100%; }
+      .totem-screen { padding:64px 16px 22px; border-radius:17px; }
+      .totem-options.five,.totem-options.two,.totem-options.four,.totem-options { grid-template-columns:1fr; }
+      .totem-options.five > .btn.big:last-child { grid-column:auto; max-width:100%; }
+      .totem-options .btn.big { min-height:112px; padding:14px; font-size:1.08rem; }
+      .totem-stepper { gap:5px; }
+      .totem-step { font-size:.7rem; padding:5px 7px; gap:5px; }
+      .totem-step-number { width:20px; height:20px; }
+      .totem-footer .btn { min-width:100%; }
+      .totem-top-tools .btn { min-height:38px; padding:7px 9px; font-size:.75rem; }
+      .totem-fullscreen-controls { top:11px; right:11px; left:11px; justify-content:center; }
+      .receipt { padding:20px 14px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      *,*::before,*::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; }
+    }
+    @media print {
+      .print-area { background:#fff !important; }
+      .print-area * { color:#111 !important; }
+    }
+
+  /* SESI PE | Painel gerencial - visual corporativo e acessível */
+.dashboard-page { --dash-blue:#17458b; --dash-ink:#1c3452; --dash-soft:#f4f8fd; --dash-line:#dfe8f3; --dash-muted:#60748d; --dash-green:#168149; }
+.dashboard-page .dashboard-hero { padding:25px 28px; align-items:center; background:linear-gradient(118deg,#ffffff 50%,#eef7ff 100%); border-left:5px solid var(--marca-verde); }
+.dashboard-page .dashboard-hero h2 { font-size:clamp(1.7rem,2.5vw,2.5rem); letter-spacing:-.04em; margin:2px 0 7px; }
+.dashboard-page .dashboard-hero .subtitle { max-width:680px; }
+.dashboard-page .dashboard-actions { align-items:center; }
+.dashboard-page .dashboard-actions .btn { min-height:45px; white-space:nowrap; }
+.dashboard-eyebrow { text-transform:uppercase; letter-spacing:.11em; font-size:.72rem; font-weight:900; color:#4e6c99; }
+.dashboard-context { display:flex; gap:10px 16px; flex-wrap:wrap; align-items:center; color:#647993; font-size:.82rem; padding-top:11px; }
+.dashboard-context span::before { content:'●'; font-size:.55rem; color:#168149; padding-right:7px; }
+.dashboard-note { padding:11px 15px; color:#536d86; background:#eef5fc; border:1px solid #d6e4f1; border-radius:13px; font-size:.85rem; line-height:1.5; }
+.dashboard-filter-panel { padding:19px 22px 18px; }
+.dashboard-filter-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:12px; }
+.dashboard-filter-header h3 { font-size:1rem; margin:0; color:#173b70; }
+.dashboard-quick { display:flex; gap:7px; flex-wrap:wrap; }
+.dashboard-quick button { border:1px solid #d7e3f0; background:#fff; color:#385776; border-radius:10px; min-height:38px; padding:7px 13px; font-size:.85rem; font-weight:800; }
+.dashboard-quick button.active, .dashboard-quick button[aria-pressed="true"] { background:#e8f2ff; color:#17458b; border-color:#80b8eb; }
+.dashboard-filter-grid { display:grid; grid-template-columns:repeat(4,minmax(150px,1fr)); gap:11px 15px; align-items:end; }
+.dashboard-filter-grid label { margin:0; font-size:.8rem; color:#536a86; }
+.dashboard-filter-grid label span { display:block; margin-bottom:5px; }
+.dashboard-filter-grid input,.dashboard-filter-grid select { min-height:43px; background:#fbfdff; width:100%; }
+.dashboard-filter-grid .dashboard-filter-wide { grid-column:span 2; }
+.dashboard-kpi-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin:16px 0; }
+.dashboard-page .dashboard-kpi { position:relative; min-height:150px; padding:20px 19px; overflow:hidden; border-radius:18px; border:1px solid #dde7f1; box-shadow:0 5px 19px rgba(20,54,102,.055); }
+.dashboard-page .dashboard-kpi::after { width:76px; height:76px; top:-39px; right:-24px; background:#e8f1fe; }
+.dashboard-page .dashboard-kpi:before { content:''; position:absolute; inset:0 auto 0 0; width:4px; background:#1a4b9f; border-radius:18px 0 0 18px; }
+.dashboard-page .dashboard-kpi.tone-green:before { background:#168149; }
+.dashboard-page .dashboard-kpi.tone-orange:before { background:#d98332; }
+.dashboard-page .dashboard-kpi.tone-red:before { background:#bd2f42; }
+.dashboard-page .dashboard-kpi strong { display:block; font-size:clamp(1.85rem,2.5vw,2.4rem); letter-spacing:-.055em; margin:16px 0 9px; line-height:1.05; }
+.dashboard-page .dashboard-kpi.tone-green strong { color:#147545; }
+.dashboard-page .dashboard-kpi.tone-orange strong { color:#ad5c17; }
+.dashboard-page .dashboard-kpi.tone-red strong { color:#a82c43; }
+.dashboard-page .dashboard-kpi span { display:block; font-size:.86rem; font-weight:850; color:#556b83; }
+.dashboard-page .dashboard-kpi small { display:block; line-height:1.35; color:#6b7f94; font-size:.77rem; }
+.dashboard-section-title { font-size:1.09rem; font-weight:850; color:#173e73; margin:0; }
+.dashboard-card-desc { margin:4px 0 0; color:#687e96; font-size:.82rem; line-height:1.4; }
+.dashboard-panel { border:1px solid #e1eaf4; border-radius:19px; background:#fff; padding:21px; box-shadow:0 6px 22px rgba(25,61,113,.055); min-width:0; }
+.dashboard-panel-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:19px; }
+.dashboard-panel-heading .tag { flex-shrink:0; font-size:.72rem; }
+.dashboard-panels { display:grid; grid-template-columns:1.35fr 1fr; gap:15px; margin:15px 0; }
+.dashboard-panels.equal { grid-template-columns:1fr 1fr; }
+.dashboard-panels .wide { grid-column:1/-1; }
+.dashboard-svg-wrap { height:240px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.dashboard-svg-wrap svg { width:100%; max-width:100%; height:100%; overflow:visible; }
+.dashboard-empty { min-height:145px; display:grid; place-items:center; font-size:.91rem; line-height:1.5; }
+.dashboard-mini-metrics { display:flex; gap:12px; flex-wrap:wrap; margin-top:7px; }
+.dashboard-mini-metrics span { background:#f3f7fb; color:#51677f; border-radius:8px; padding:6px 9px; font-size:.79rem; }
+.dashboard-mini-metrics strong { color:#173e73; }
+.dashboard-status-layout { display:grid; grid-template-columns:175px 1fr; align-items:center; gap:17px; }
+.dashboard-donut { width:166px; height:166px; margin:auto; border-radius:50%; position:relative; display:grid; place-items:center; background:#e9f0f7; }
+.dashboard-donut-center { position:absolute; inset:29px; background:#fff; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 1px 8px rgba(20,54,102,.07); }
+.dashboard-donut-center strong { font-size:1.8rem; color:#1a4b9f; line-height:1; }
+.dashboard-donut-center small { color:#6b7c91; margin-top:5px; font-weight:750; }
+.dashboard-legend { display:grid; gap:11px; }
+.dashboard-legend-row { display:flex; gap:9px; justify-content:space-between; align-items:center; font-size:.84rem; color:#47617c; }
+.dashboard-legend-row b { color:#173957; }
+.dashboard-legend-label { display:flex; align-items:center; gap:8px; }
+.dashboard-legend-dot { width:10px; height:10px; border-radius:4px; flex-shrink:0; }
+.dashboard-page .dash-bar-list { gap:14px; }
+.dashboard-page .dash-bar-head { font-size:.83rem; color:#53677f; font-weight:750; }
+.dashboard-page .dash-bar-head span:last-child { color:#183f78; font-variant-numeric:tabular-nums; }
+.dashboard-page .dash-bar-track { height:9px; border:0; background:#eaf1f8; }
+.dashboard-page .dash-bar-fill { background:linear-gradient(90deg,#1a4b9f,#0091d6); }
+.dashboard-page .dash-bar-fill.ok { background:#168149; }
+.dashboard-page .dash-bar-fill.warn { background:#d7843d; }
+.dashboard-heatmap { display:grid; gap:7px; }
+.dashboard-hour-bars { display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:7px; height:175px; align-items:end; }
+.dashboard-hour-column { display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:5px; min-width:0; height:100%; }
+.dashboard-hour-track { background:#edf3f9; border-radius:6px 6px 2px 2px; height:125px; width:100%; display:flex; align-items:flex-end; overflow:hidden; }
+.dashboard-hour-fill { width:100%; min-height:2px; background:linear-gradient(180deg,#28a7db,#1a4b9f); border-radius:6px 6px 0 0; }
+.dashboard-hour-column small { color:#68829c; font-size:.67rem; }
+.dashboard-hour-column b { color:#315477; font-size:.69rem; }
+.dashboard-progress { height:12px; background:#e7edf5; border-radius:999px; overflow:hidden; margin:10px 0; }
+.dashboard-progress > span { display:block; height:100%; background:linear-gradient(90deg,#168149,#56be72); border-radius:999px; }
+.dashboard-sla-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-top:17px; }
+.dashboard-sla-stats > div { background:#f5f8fc; padding:13px; border-radius:12px; }
+.dashboard-sla-stats strong { display:block; font-size:1.5rem; color:#17458b; }
+.dashboard-sla-stats small { color:#637991; line-height:1.4; }
+.dashboard-list-compact { display:grid; gap:9px; }
+.dashboard-list-compact > div { padding:10px 12px; border:1px solid #e5edf5; border-radius:11px; font-size:.83rem; color:#526b85; display:flex; justify-content:space-between; gap:8px; align-items:center; }
+.dashboard-list-compact b { color:#203d60; }
+.dashboard-table-wrap { overflow:auto; border:1px solid #e4ebf5; border-radius:12px; }
+.dashboard-table { width:100%; border-collapse:collapse; min-width:780px; }
+.dashboard-table th { font-size:.72rem; letter-spacing:.02em; background:#f3f7fc; color:#536b85; text-transform:uppercase; white-space:nowrap; }
+.dashboard-table td { font-size:.81rem; color:#405973; }
+.dashboard-table th,.dashboard-table td { padding:12px 11px; }
+.dashboard-table tbody tr:hover td { background:#f5f9fe; }
+.dashboard-table td.numeric { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.dashboard-table th.numeric { text-align:right; }
+.dashboard-table strong { color:#21446d; }
+.dashboard-severity { font-weight:850; border-radius:8px; padding:5px 8px; background:#eff5fe; color:#17458b; font-size:.74rem; white-space:nowrap; }
+.dashboard-severity.critical { background:#fcebed; color:#9b2940; }
+.dashboard-severity.warn { background:#fff2e8; color:#aa591f; }
+.dashboard-alert-list { display:grid; gap:10px; }
+.dashboard-alert { display:flex; gap:12px; align-items:flex-start; background:#f6f9fc; padding:13px 14px; border:1px solid #e5edf4; border-left:4px solid #1a4b9f; border-radius:11px; }
+.dashboard-alert.critical { background:#fff5f6; border-left-color:#bd2f42; }
+.dashboard-alert.warn { background:#fffaf3; border-left-color:#d7843d; }
+.dashboard-alert.ok { background:#f1faf4; border-left-color:#168149; }
+.dashboard-alert strong { display:block; font-size:.87rem; color:#29435f; margin-bottom:3px; }
+.dashboard-alert small { display:block; font-size:.8rem; line-height:1.4; color:#5c7189; }
+.dashboard-quality-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:11px; }
+.dashboard-quality-item { border:1px solid #e2eaf3; border-radius:12px; padding:12px; background:#f9fbfe; }
+.dashboard-quality-item strong { display:block; font-size:1.4rem; color:#214b8b; }
+.dashboard-quality-item span { font-size:.8rem; color:#647990; }
+.dashboard-panel-footnote { margin:14px 0 0; color:#7789a0; font-size:.76rem; line-height:1.5; }
+@media(max-width:1280px) { .dashboard-filter-grid { grid-template-columns:repeat(3,minmax(150px,1fr)); } .dashboard-kpi-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:950px) { .dashboard-panels,.dashboard-panels.equal { grid-template-columns:1fr; } .dashboard-filter-grid { grid-template-columns:repeat(2,minmax(150px,1fr)); } }
+@media(max-width:620px) { .dashboard-page .dashboard-hero { padding:18px; } .dashboard-filter-grid,.dashboard-kpi-grid { grid-template-columns:1fr; } .dashboard-filter-grid .dashboard-filter-wide { grid-column:auto; } .dashboard-status-layout { grid-template-columns:1fr; } .dashboard-sla-stats { grid-template-columns:1fr; } .dashboard-hour-bars { gap:2px; } .dashboard-hour-column small { font-size:.57rem; } .dashboard-page .dashboard-actions { justify-content:flex-start; } }
+/* Gráfico gerencial ASO — comparação real de casos e jornadas. */
+.dashboard-aso-graph { display:grid; gap:16px; margin:10px 0 0; }
+.dashboard-aso-row { display:grid; grid-template-columns:minmax(155px,1fr) minmax(140px,2.2fr) 58px; align-items:center; gap:12px; }
+.dashboard-aso-label { font-size:.86rem; font-weight:800; color:#314c70; }
+.dashboard-aso-track { height:25px; background:#edf3f9; border-radius:9px; overflow:hidden; }
+.dashboard-aso-bar { height:100%; border-radius:9px; min-width:0; transition:width .2s ease; background:#1a4b9f; }
+.dashboard-aso-bar.dia { background:linear-gradient(90deg,#1a4b9f,#139bd0); }
+.dashboard-aso-bar.retorno { background:linear-gradient(90deg,#d7843d,#f2b259); }
+.dashboard-aso-bar.sem-aso { background:linear-gradient(90deg,#168149,#65b584); }
+.dashboard-aso-total { font-weight:900; color:#234368; font-variant-numeric:tabular-nums; text-align:right; }
+.dashboard-aso-insights { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; margin-top:12px; }
+.dashboard-aso-insights > div { background:#f1f6fc; padding:12px 11px; border-radius:11px; }
+.dashboard-aso-insights strong { display:block; color:#1a4b9f; font-size:1.35rem; }
+.dashboard-aso-insights small { display:block; color:#657c93; font-size:.75rem; }
+.aso-form-helper { border:1px solid #c7e0f3; background:#f2f8ff; color:#24577e; padding:10px 12px; border-radius:12px; margin:12px 0; line-height:1.45; }
+.aso-form-helper.warning { border-color:#f5cf9e; background:#fff7eb; color:#924f16; }
+@media(max-width:620px) { .dashboard-aso-row { grid-template-columns:1fr 1.5fr 34px; gap:7px; } .dashboard-aso-insights { grid-template-columns:1fr; } }
+
+/* Identidade SESI Saúde: imagem carregada de img/Logo_SesiSaude.png (com fallback textual). */
+.logo-fallback-text { display:none; flex-direction:column; align-items:center; justify-content:center; color:#17458b; font-weight:900; font-size:1.3rem; line-height:1.08; letter-spacing:.02em; }
+.logo-fallback-text small { font-size:.55rem; font-weight:800; letter-spacing:.13em; margin-top:4px; }
+.brand-logo .logo-fallback-text { padding:9px 13px; border-radius:9px; background:white; }
+.brand-logo.logo-fallback .logo-fallback-text,.auth-login-logo.logo-fallback .logo-fallback-text,.sesi-logo.logo-fallback .logo-fallback-text { display:flex; }
+.sesi-logo.totem-logo,.sesi-logo.tv-logo,.sesi-logo.print-logo { display:inline-flex !important; }
+.totem-brandbar { display:flex; justify-content:center; margin-bottom:17px; }
+.totem-brandbar .sesi-logo { width:138px; min-height:50px; }
+.totem-brandbar img { width:138px; max-height:64px; object-fit:contain; }
+.totem-brandbar .logo-fallback-text { padding:5px; }
+.sesi-logo.tv-logo { width:132px; min-height:54px; margin-right:14px; }
+.sesi-logo.tv-logo img { width:132px; height:auto; max-height:66px; object-fit:contain; }
+.sesi-logo.tv-logo .logo-fallback-text { background:#fff; padding:9px; border-radius:10px; }
+.sesi-logo.print-logo { display:block !important; width:130px; margin:0 auto 8px; }
+.sesi-logo.print-logo img { width:125px; max-height:55px; object-fit:contain; }
+.auth-login-logo .logo-fallback-text { font-size:1.1rem; }
+@media print { .sesi-logo.print-logo img { max-height:52px; } }
+
+  /* Aviso informativo do retorno: destaque legível sem bloquear o fluxo. */
+  .totem-notice {
+    display:flex; align-items:flex-start; gap:12px;
+    max-width:780px; margin:18px auto 10px; padding:15px 18px;
+    border:1px solid #b8d8f5; border-radius:17px;
+    background:#eef7ff; color:#163e70; text-align:left;
+    line-height:1.5; font-size:1rem;
+  }
+  .totem-notice > span:first-child { flex:0 0 auto; font-size:1.35rem; }
+  .totem-screen.access-contrast .totem-notice {
+    background:#ffffff; color:#0c2346; border-color:#8fd8ff;
+  }
+</style>
 </head>
 <body>
 
@@ -1635,10 +2033,13 @@
   <header class="no-print">
     <div class="topbar">
       <div class="brand">
-        <div class="sesi-logo brand-logo" aria-label="Logo SESI Saúde"><img src="img/Logo_SesiSaude.png" alt="Logo SESI Saúde" onerror="this.onerror=null;this.src='img/Logo_SesiSaude.jpg';"></div>
+        <div class="sesi-logo brand-logo" aria-label="SESI Pernambuco — Saúde">
+          <img src="img/Logo_SesiSaude.png" alt="Logo SESI Saúde" onerror="this.closest('.brand-logo').classList.add('logo-fallback');this.hidden=true;">
+          <div class="logo-fallback-text" aria-label="SESI Pernambuco">SESI<small>PERNAMBUCO · SAÚDE</small></div>
+        </div>
         <div>
-          <h1>PAPA FILA — Gerenciamento de Filas SESI Saúde</h1>
-          <p>Totem, painéis de TV, roteamento por andar, prioridade, operação de filas e acompanhamento.</p>
+          <h1>SESI Saúde <span style="opacity:.7;font-weight:600">/ Gestão de Atendimento</span></h1>
+          <p>Atendimento, senhas, recepção e acompanhamento em um só lugar.</p>
         </div>
       </div>
       <div class="header-actions">
@@ -1660,9 +2061,13 @@
     <section class="tab active" id="tab-totem">
       <div class="totem-screen" id="totemScreen">
         <div class="totem-fullscreen-controls no-print">
-          <button class="btn secondary" id="totemFullscreenBtn" onclick="alternarTelaCheiaTotem()">Tela cheia</button>
+          <div class="totem-top-tools" role="group" aria-label="Recursos de acessibilidade">
+            <button type="button" class="btn" id="totemFonteBtn" aria-pressed="false" onclick="alternarFonteTotem()" title="Aumentar ou restaurar o tamanho do texto">A+ Texto</button>
+            <button type="button" class="btn" id="totemContrasteBtn" aria-pressed="false" onclick="alternarContrasteTotem()" title="Alternar alto contraste">◐ Contraste</button>
+            <button type="button" class="btn secondary" id="totemFullscreenBtn" onclick="alternarTelaCheiaTotem()">Tela cheia</button>
+          </div>
         </div>
-        <div class="totem-box" id="totemBox"></div>
+        <div class="totem-box" id="totemBox" aria-live="polite" aria-atomic="true"></div>
       </div>
     </section>
 
@@ -1767,115 +2172,105 @@
         <div class="flow-board" id="flowBoard"></div>
       </div>
     </section>
-    <section class="tab" id="tab-dashboard">
-      <div class="dashboard-hero card">
-        <div>
-          <span class="app-kicker">Gestão estratégica</span>
-          <h2>Dashboard Gerencial</h2>
-          <p class="subtitle">Visão executiva dos atendimentos armazenados no Papa Fila para acompanhamento de demanda, gargalos, SLA, priorização laboratorial e qualidade dos dados.</p>
-        </div>
-        <div class="dashboard-actions">
-          <button class="btn secondary" onclick="renderDashboard()">Atualizar dashboard</button>
-          <button class="btn" onclick="exportarDashboardCSV()">Exportar CSV</button>
-        </div>
+<section class="tab dashboard-page" id="tab-dashboard" aria-label="Painel gerencial de atendimento">
+  <div class="dashboard-hero card">
+    <div>
+      <span class="dashboard-eyebrow">Inteligência operacional · SESI Pernambuco</span>
+      <h2>Visão gerencial de atendimentos</h2>
+      <p class="subtitle">Desempenho, filas, capacidade, qualidade e alertas para orientar decisões com base nos registros do Papa Fila.</p>
+      <div class="dashboard-context"><span id="dashboardPeriodoRotulo">Período: últimos 7 dias</span><span id="dashboardAtualizado">Atualização: —</span><span>Origem: dados deste navegador</span></div>
+    </div>
+    <div class="dashboard-actions">
+      <button type="button" class="btn secondary" onclick="renderDashboard()" aria-label="Atualizar dados do painel">↻ Atualizar</button>
+      <button type="button" class="btn" onclick="exportarDashboardCSV()" title="Relatório agregado, sem nomes e CPFs">↓ Exportar relatório</button>
+    </div>
+  </div>
+  <div class="dashboard-filter-panel card">
+    <div class="dashboard-filter-header">
+      <h3>Filtros e período de análise</h3>
+      <div class="dashboard-quick" aria-label="Selecionar período">
+        <button type="button" data-periodo="hoje" aria-pressed="false" onclick="setDashboardPeriodo('hoje')">Hoje</button>
+        <button type="button" data-periodo="7dias" aria-pressed="true" class="active" onclick="setDashboardPeriodo('7dias')">7 dias</button>
+        <button type="button" data-periodo="30dias" aria-pressed="false" onclick="setDashboardPeriodo('30dias')">30 dias</button>
+        <button type="button" data-periodo="todos" aria-pressed="false" onclick="setDashboardPeriodo('todos')">Todo o histórico</button>
       </div>
-
-      <div class="card dashboard-filters">
-        <div class="card-title">
-          <div>
-            <h2>Filtros de análise</h2>
-            <p class="subtitle">Use os filtros para analisar períodos, filas, serviços e status específicos sem alterar os dados originais.</p>
-          </div>
-        </div>
-        <div class="toolbar">
-          <label><span>Data inicial</span><input type="date" id="dashboardDataInicial" onchange="renderDashboard()"></label>
-          <label><span>Data final</span><input type="date" id="dashboardDataFinal" onchange="renderDashboard()"></label>
-          <label><span>Fila</span><select id="dashboardFila" onchange="renderDashboard()"></select></label>
-          <label><span>Status</span><select id="dashboardStatus" onchange="renderDashboard()">
-            <option value="">Todos os status</option>
-            <option value="waiting">Aguardando</option>
-            <option value="called">Chamado</option>
-            <option value="in_service">Em atendimento</option>
-            <option value="absent">Ausente</option>
-            <option value="completed">Finalizado</option>
-            <option value="canceled">Cancelado</option>
-          </select></label>
-          <label><span>Buscar</span><input id="dashboardBusca" placeholder="Serviço, senha, nome, empresa ou fila" oninput="renderDashboard()"></label>
-        </div>
-      </div>
-
-      <div class="dashboard-grid kpi-grid" id="dashboardKpis"></div>
-
-      <div class="grid grid-2 dashboard-section-grid">
-        <div class="card">
-          <div class="card-title">
-            <div>
-              <h2>Gargalos por fila</h2>
-              <p class="subtitle">Mostra onde há mais fichas em aberto para apoiar decisões de alocação de equipe.</p>
-            </div>
-          </div>
-          <div id="dashboardGargalos"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">
-            <div>
-              <h2>Distribuição por serviço</h2>
-              <p class="subtitle">Ajuda a entender a demanda mais frequente e planejar capacidade por tipo de atendimento.</p>
-            </div>
-          </div>
-          <div id="dashboardServicos"></div>
-        </div>
-      </div>
-
-      <div class="grid grid-2 dashboard-section-grid">
-        <div class="card">
-          <div class="card-title">
-            <div>
-              <h2>Indicadores de SLA e prioridade</h2>
-              <p class="subtitle">Acompanhe tempo de espera, preferenciais, laboratoriais e ausências.</p>
-            </div>
-          </div>
-          <div id="dashboardSla"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">
-            <div>
-              <h2>Qualidade dos dados</h2>
-              <p class="subtitle">Boas práticas de gestão exigem cadastro completo para análise confiável e tomada de decisão.</p>
-            </div>
-          </div>
-          <div id="dashboardQualidade"></div>
-        </div>
-      </div>
-
-      <div class="grid grid-2 dashboard-section-grid">
-        <div class="card">
-          <div class="card-title">
-            <div>
-              <h2>Alertas estratégicos</h2>
-              <p class="subtitle">Sinais para tratamento imediato pela coordenação e gestão da operação.</p>
-            </div>
-          </div>
-          <div id="dashboardAlertas"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">
-            <div>
-              <h2>Boas práticas aplicadas</h2>
-              <p class="subtitle">Práticas recomendadas para acompanhamento dos dados armazenados no atendimento.</p>
-            </div>
-          </div>
-          <div class="best-practices">
-            <div><b>Gestão por indicadores:</b> acompanhar volume, tempo médio, SLA, ausências e gargalos diariamente.</div>
-            <div><b>Gestão à vista:</b> usar indicadores simples e objetivos para orientar decisões rápidas por turno e por andar.</div>
-            <div><b>Priorização inteligente:</b> manter preferenciais em primeiro lugar e exames laboratoriais destacados por impacto no fluxo.</div>
-            <div><b>Qualidade de dados:</b> reduzir fichas sem nome, CPF, serviço ou empresa para melhorar relatórios e rastreabilidade.</div>
-            <div><b>LGPD e minimização:</b> usar dados pessoais apenas quando necessário e preferir análises agregadas para a gestão.</div>
-            <div><b>Melhoria contínua:</b> revisar gargalos, metas e capacidade semanalmente, usando os dados exportados como evidência.</div>
-          </div>
-        </div>
-      </div>
-    </section>
+    </div>
+    <div class="dashboard-filter-grid">
+      <label><span>Data inicial</span><input type="date" id="dashboardDataInicial" onchange="dashboardPeriodoPersonalizado()"></label>
+      <label><span>Data final</span><input type="date" id="dashboardDataFinal" onchange="dashboardPeriodoPersonalizado()"></label>
+      <label><span>Fila / setor</span><select id="dashboardFila" onchange="renderDashboard()"><option value="">Todas as filas</option></select></label>
+      <label><span>Etapa do atendimento</span><select id="dashboardStatus" onchange="renderDashboard()">
+        <option value="">Todos os status</option><option value="waiting">Aguardando</option><option value="called">Chamado</option><option value="in_service">Em atendimento</option><option value="absent">Ausente</option><option value="completed">Finalizado</option><option value="canceled">Cancelado</option>
+      </select></label>
+      <label><span>Perfil de atendimento</span><select id="dashboardPublico" onchange="renderDashboard()"><option value="">Todos os perfis</option><option value="Trabalhador">Trabalhador</option><option value="Cliente">Cliente</option></select></label>
+      <label><span>Prioridade</span><select id="dashboardPrioridade" onchange="renderDashboard()"><option value="">Todas as prioridades</option><option value="preferencial">Preferenciais</option><option value="comum">Comuns</option></select></label>
+      <label><span>Referência de espera (min)</span><input id="dashboardMetaMin" type="number" min="1" max="240" step="1" value="20" onchange="renderDashboard()" aria-label="Meta de espera em minutos"></label>
+      <label class="dashboard-filter-wide"><span>Pesquisar</span><input id="dashboardBusca" placeholder="Senha, serviço, empresa ou fila" oninput="renderDashboard()"></label>
+    </div>
+  </div>
+  <div class="dashboard-kpi-grid" id="dashboardKpis" aria-live="polite"></div>
+  <p class="dashboard-note" id="dashboardNotaMetodologica">Indicadores calculados por senha emitida no período; os status representam a situação atual de cada senha. A referência de espera é gerencial e ajustável, não representa SLA contratual.</p>
+  <div class="dashboard-panels">
+    <div class="dashboard-panel">
+      <div class="dashboard-panel-heading"><div><h3 class="dashboard-section-title">Evolução da demanda</h3><p class="dashboard-card-desc">Senhas emitidas por dia para identificar tendência e sazonalidade.</p></div><span class="tag blue">Histórico</span></div>
+      <div id="dashboardTendencia" class="dashboard-svg-wrap"></div>
+      <div id="dashboardTendenciaInfo" class="dashboard-mini-metrics"></div>
+    </div>
+    <div class="dashboard-panel">
+      <div class="dashboard-panel-heading"><div><h3 class="dashboard-section-title">Situação dos atendimentos</h3><p class="dashboard-card-desc">Composição atual da demanda filtrada.</p></div><span class="tag blue">Distribuição</span></div>
+      <div id="dashboardStatusDistribuicao"></div>
+    </div>
+  </div>
+  <div class="dashboard-panel" style="margin-top:15px">
+    <div class="dashboard-panel-heading"><div><h3 class="dashboard-section-title">Gráfico de ASO — mesmo dia e retornos</h3><p class="dashboard-card-desc">Distribuição dos atendimentos ocupacionais com ASO no mesmo dia, ASO em outra data e sem ASO. Permite dimensionar Triagem, Exames Ocupacionais e retornos.</p></div><span class="tag blue">Planejamento ocupacional</span></div>
+    <div id="dashboardGraficoAso" role="region" aria-label="Gráfico comparativo de atendimentos com ASO"></div>
+  </div>
+  <div class="dashboard-panels equal">
+    <div class="dashboard-panel">
+      <div class="dashboard-panel-heading"><div><h3 class="dashboard-section-title">Filas com maior demanda em aberto</h3><p class="dashboard-card-desc">Quantidade de senhas ainda não finalizadas por fila atual.</p></div></div>
+      <div id="dashboardGargalos"></div>
+    </div>
+    <div class="dashboard-panel">
+      <div class="dashboard-panel-heading"><div><h3 class="dashboard-section-title">Serviços mais procurados</h3><p class="dashboard-card-desc">Volume por serviço solicitado no totem.</p></div></div>
+      <div id="dashboardServicos"></div>
+    </div>
+  </div>
+  <div class="dashboard-panels equal">
+    <div class="dashboard-panel">
+      <div class="dashboard-panel-heading"><div><h3 class="dashboard-section-title">Cumprimento da referência de espera</h3><p class="dashboard-card-desc">Tempo na fila atual de quem ainda aguarda chamada.</p></div></div>
+      <div id="dashboardSla"></div>
+    </div>
+    <div class="dashboard-panel">
+      <div class="dashboard-panel-heading"><div><h3 class="dashboard-section-title">Movimento por faixa horária</h3><p class="dashboard-card-desc">Horários de emissão mais movimentados — útil para organizar escalas.</p></div></div>
+      <div id="dashboardHorarios"></div>
+    </div>
+  </div>
+  <div class="dashboard-panels equal">
+    <div class="dashboard-panel">
+      <div class="dashboard-panel-heading"><div><h3 class="dashboard-section-title">Perfil e localização das filas</h3><p class="dashboard-card-desc">Demanda por público e painel/andar associado à fila atual.</p></div></div>
+      <div id="dashboardPerfis"></div>
+    </div>
+    <div class="dashboard-panel">
+      <div class="dashboard-panel-heading"><div><h3 class="dashboard-section-title">Integridade dos registros</h3><p class="dashboard-card-desc">Campos operacionais essenciais; CPF não é requisito do indicador.</p></div></div>
+      <div id="dashboardQualidade"></div>
+    </div>
+  </div>
+  <div class="dashboard-panel" style="margin-top:15px">
+    <div class="dashboard-panel-heading"><div><h3 class="dashboard-section-title">Desempenho detalhado por fila</h3><p class="dashboard-card-desc">Volume, posição atual, pendências e espera máxima para dimensionar recursos.</p></div><span class="tag blue">Comparativo de setores</span></div>
+    <div id="dashboardTabelaFilas"></div>
+  </div>
+  <div class="dashboard-panels equal">
+    <div class="dashboard-panel">
+      <div class="dashboard-panel-heading"><div><h3 class="dashboard-section-title">Pontos de atenção</h3><p class="dashboard-card-desc">Alertas priorizados para orientação da supervisão.</p></div></div>
+      <div id="dashboardAlertas"></div>
+    </div>
+    <div class="dashboard-panel">
+      <div class="dashboard-panel-heading"><div><h3 class="dashboard-section-title">Senhas com maior espera</h3><p class="dashboard-card-desc">Visão sem nomes e dados pessoais; tempo na fila atual.</p></div><span class="tag blue">Operação</span></div>
+      <div id="dashboardCriticos"></div>
+    </div>
+  </div>
+  <div class="dashboard-note"><strong>Limitação do protótipo:</strong> os dados provêm do armazenamento local deste navegador e não formam uma base centralizada entre estações. Para indicadores corporativos consolidados, é necessária integração com uma API e banco de dados compartilhado. Métricas de primeira chamada usam os registros de histórico disponíveis e podem ser incompletas em backups antigos.</div>
+</section>
 
     <section class="tab" id="tab-status">
       <div class="status-hero card">
@@ -1938,6 +2333,7 @@
             <h2>Matriz detalhada de cada cliente</h2>
             <p class="subtitle">Visão consolidada com status atual, fila, atendimento, exames, ASO/retorno, prioridade, tempo e histórico recente.</p>
           </div>
+          <span class="tag blue" id="statusResultSummary" aria-live="polite">0 atendimentos</span>
         </div>
         <div class="status-table-wrap" id="statusMatrix"></div>
       </div>
@@ -2016,7 +2412,7 @@
 
   </main>
 
-  <div class="toast" id="toast"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="print-area" id="printArea"></div>
 
   <script>
@@ -2042,8 +2438,13 @@
     ];
 
 
+    // Logotipo SESI Saúde: imagem local em img/Logo_SesiSaude.png.
+    // Preserve a pasta img ao lado do HTML; se a imagem não carregar, exibe texto alternativo.
+    const SESI_LOGO_SRC = 'img/Logo_SesiSaude.png';
     function sesiLogoMarkup(extraClass='') {
-      return '';
+      const allowed = ['totem-logo','tv-logo','print-logo','receipt-logo'];
+      const cls = allowed.includes(extraClass) ? extraClass : '';
+      return `<span class="sesi-logo ${cls}" aria-label="SESI Pernambuco — Saúde"><img src="${SESI_LOGO_SRC}" alt="Logo SESI Saúde" onerror="this.hidden=true;this.parentElement.classList.add('logo-fallback')"><span class="logo-fallback-text">SESI<small>PERNAMBUCO · SAÚDE</small></span></span>`;
     }
 
     const queueDefs = {
@@ -2056,14 +2457,14 @@
       },
       recepcao_1: {
         label:'Recepção 1º andar — Pessoa Física',
-        subtitle:'Atende PF: Dentista, Exames, Ultrassom e Consulta com Médico Especialista.',
+        subtitle:'Atende PF: Dentista, Exames, Ultrassom e Consultas com Médico Especialista (primeiro atendimento e retorno).',
         floor:'Painel TV 1º andar',
         panel:'primeiro',
         stations:['Recepção 1º andar 1','Recepção 1º andar 2']
       },
       recepcao_2: {
         label:'Recepção 2º andar — Ocupacional',
-        subtitle:'Atende retorno ocupacional ROC e continuidade do atendimento ocupacional.',
+        subtitle:'Atende retorno ocupacional ROC, vacinação pela empresa e continuidade do atendimento ocupacional.',
         floor:'Painel TV 2º andar',
         panel:'segundo',
         stations:['Recepção 2º andar 1','Recepção 2º andar 2']
@@ -2332,11 +2733,50 @@
       }
       return normalizeState({ version:2, counters:{}, tickets:[], calls:[], createdAt:new Date().toISOString() });
     }
+    // Um atendimento é identificado por seu ID. Não agrupar por CPF, nome ou senha:
+    // uma pessoa pode ter múltiplos atendimentos legítimos em dias diferentes.
+    function uniqueTicketsById(tickets) {
+      const unique = new Map();
+      (Array.isArray(tickets) ? tickets : []).forEach(ticket => {
+        if (!ticket || typeof ticket !== 'object' || Array.isArray(ticket)) return;
+        const id = String(ticket.id || '').trim();
+        const item = id ? ticket : {...ticket, id:uid()};
+        const previous = unique.get(item.id);
+        if (!previous) {
+          unique.set(item.id, item);
+          return;
+        }
+        const lastAt = value => {
+          const n = Date.parse(value.updatedAt || value.completedAt || value.createdAt || '');
+          return Number.isFinite(n) ? n : 0;
+        };
+        if (lastAt(item) > lastAt(previous) ||
+           (lastAt(item) === lastAt(previous) && (item.history || []).length > (previous.history || []).length)) {
+          unique.set(item.id, item);
+        }
+      });
+      return [...unique.values()];
+    }
+
+    // Mantém a sequência das senhas após importação de backups incompletos,
+    // evitando gerar novas senhas iguais às já existentes.
+    function restoreCounters(counters, tickets) {
+      const result = {...(counters && typeof counters === 'object' && !Array.isArray(counters) ? counters : {})};
+      tickets.forEach(t => {
+        const match = /^([A-Z]+)-(\d+)$/.exec(String(t.senha || '').trim());
+        if (!match) return;
+        const prefix = match[1];
+        result[prefix] = Math.max(Number(result[prefix]) || 0, Number(match[2]));
+      });
+      return result;
+    }
+
     function normalizeState(data) {
+      const tickets = uniqueTicketsById(data?.tickets);
       return {
         version:2,
-        counters:data?.counters || {},
-        tickets:Array.isArray(data?.tickets) ? data.tickets : [],
+        counters:restoreCounters(data?.counters, tickets),
+        tickets,
         calls:Array.isArray(data?.calls) ? data.calls : [],
         createdAt:data?.createdAt || new Date().toISOString(),
         updatedAt:data?.updatedAt || data?.createdAt || new Date().toISOString(),
@@ -2718,7 +3158,7 @@
     function getTicket(id) { return state.tickets.find(t => t.id === id); }
     function toast(message) {
       const el = document.getElementById('toast');
-      el.innerHTML = message;
+      el.textContent = String(message ?? '');
       el.classList.add('show');
       clearTimeout(el._timeout);
       el._timeout = setTimeout(() => el.classList.remove('show'), 3200);
@@ -2790,14 +3230,19 @@
         dentista: { prefix: priority ? 'ODTP' : 'ODT', categoria:'Pessoa Física - Dentista', servico:'Vim por Conta Própria - Dentista', queue:pfQueue, publico:'Cliente' },
         exames_pf: { prefix: priority ? 'PFEP' : 'PFE', categoria:'Pessoa Física - Exames', servico:'Vim por Conta Própria - Exames', queue:pfQueue, publico:'Cliente' },
         ultrassom_pf: { prefix: priority ? 'USGP' : 'USG', categoria:'Pessoa Física - Ultrassom', servico:'Vim por Conta Própria - Ultrassom', queue:pfQueue, publico:'Cliente' },
-        medico_especialista: { prefix: priority ? 'ESPP' : 'ESP', categoria:'Pessoa Física - Médico Especialista', servico:'Vim por Conta Própria - Consulta com Médico Especialista', queue:pfQueue, publico:'Cliente' }
+        medico_especialista: { prefix: priority ? 'ESPP' : 'ESP', categoria:'Pessoa Física - Médico Especialista', servico:'Consulta com Médico Especialista - Primeiro Atendimento', queue:pfQueue, publico:'Cliente' },
+        medico_especialista_retorno: { prefix: priority ? 'ESRP' : 'ESR', categoria:'Pessoa Física - Médico Especialista', servico:'Consulta com Médico Especialista - Retorno', queue:pfQueue, publico:'Cliente' },
+        vacina: { prefix: priority ? 'VACP' : 'VAC', categoria:'Vacinação pela Empresa', servico:'Vim Pela Empresa - Vacina', queue:'recepcao_2', publico:'Trabalhador' }
       };
       return map[tipo];
     }
 
     function criarTicket(tipo, priority=false, meta={}, autoPrint=false) {
+      // Evita duas senhas se o cliente tocar repetidas vezes no mesmo botão.
+      if (autoPrint && (totem.screen !== 'priority' || totemEmissaoEmAndamento)) return null;
       const cfg = serviceConfig(tipo, priority, meta.retorno);
       if (!cfg) return toast('Tipo de atendimento não configurado.');
+      if (autoPrint) totemEmissaoEmAndamento = true;
       const ticket = {
         id:uid(),
         senha:makeSenha(cfg.prefix),
@@ -2812,8 +3257,10 @@
         status:'waiting',
         statusText:`Aguardando ${queueLabel(cfg.queue)}`,
         nome:'', cpf:'', telefone:'', empresa:'', contrato:'', observacao:'',
+        tipoConsultaEspecialista: tipo === 'medico_especialista' ? 'Primeiro Atendimento' : tipo === 'medico_especialista_retorno' ? 'Retorno' : '',
         especialidade:'', profissional:'',
         temAso:false,
+        triagemConcluidaAt:'',
         asoMesmoDia:true,
         retornoAso:false,
         dataRetornoAso:'',
@@ -2822,7 +3269,8 @@
         createdAt:nowISO(), waitStart:nowISO(), updatedAt:nowISO(), history:[]
       };
       if (tipo === 'exames_pf') ticket.pfExams = [{name:'Exames Laboratoriais PF', status:'pendente'}];
-      if (tipo === 'medico_especialista') ticket.especialidade = 'Clínico Geral';
+      if (tipo === 'medico_especialista' || tipo === 'medico_especialista_retorno') ticket.especialidade = 'Clínico Geral';
+      if (tipo === 'medico_especialista_retorno') ticket.observacao = 'Retorno em até 30 dias da consulta realizada (orientação do totem).';
       addHistory(ticket, `Ficha gerada no Totem para ${cfg.servico}. Destino inicial: ${queueLabel(cfg.queue)}.`);
       state.tickets.push(ticket);
       saveState();
@@ -2860,98 +3308,188 @@
       renderAll();
     }
 
+    // Navegação de totem: componentes simples, sem mudar as regras de fila.
+    let totemEmissaoEmAndamento = false;
+    let totemIdleTimer = null;
+    const TOTEM_IDLE_MS = 60000;
+
+    function totemEtapas(active) {
+      const steps = ['Origem','Serviço','Preferência','Senha'];
+      return `<div class="totem-brandbar">${sesiLogoMarkup('totem-logo')}</div><nav class="totem-stepper" aria-label="Etapas do atendimento">${steps.map((step, i) => `
+        <span class="totem-step ${i + 1 === active ? 'active' : i + 1 < active ? 'complete' : ''}" ${i + 1 === active ? 'aria-current="step"' : ''}>
+          <span class="totem-step-number">${i + 1 < active ? '✓' : i + 1}</span>${step}
+        </span>`).join('')}</nav>`;
+    }
+    function totemAjuda() {
+      return '<p class="totem-help">Precisa de ajuda para utilizar o totem? Procure a equipe da recepção.</p>';
+    }
+    function totemVoltar(acao='voltarTotem()', rotulo='Voltar') {
+      return `<div class="totem-footer"><button type="button" class="btn secondary" onclick="${acao}">← ${rotulo}</button></div>`;
+    }
+    function agendarInatividadeTotem() {
+      clearTimeout(totemIdleTimer);
+      if (totem.screen === 'home' || totem.screen === 'receipt') return;
+      totemIdleTimer = setTimeout(() => {
+        resetTotem();
+        toast('Atendimento reiniciado após período sem interação.');
+      }, TOTEM_IDLE_MS);
+    }
+    function registrarInteracaoTotem() { agendarInatividadeTotem(); }
+    function alternarFonteTotem() {
+      const tela = document.getElementById('totemScreen');
+      tela?.classList.toggle('access-large');
+      document.getElementById('totemFonteBtn')?.setAttribute('aria-pressed', String(!!tela?.classList.contains('access-large')));
+      registrarInteracaoTotem();
+    }
+    function alternarContrasteTotem() {
+      const tela = document.getElementById('totemScreen');
+      tela?.classList.toggle('access-contrast');
+      document.getElementById('totemContrasteBtn')?.setAttribute('aria-pressed', String(!!tela?.classList.contains('access-contrast')));
+      registrarInteracaoTotem();
+    }
     function renderTotem() {
       const box = document.getElementById('totemBox');
+      if (!box) return;
+      agendarInatividadeTotem();
       if (totem.screen === 'receipt') {
         const ticket = getTicket(totem.ticketId);
-        if (ticket) {
-          renderReceipt(ticket);
-          return;
-        }
-        resetTotem();
-        return;
+        if (ticket) { renderReceipt(ticket); return; }
+        resetTotem(); return;
       }
       if (totem.screen === 'home') {
         box.innerHTML = `
-          ${sesiLogoMarkup('totem-logo')}
-          <div class="app-kicker">Atendimento digital SESI Saúde</div>
-          <h2 class="totem-title">Bem-vindo ao SESI Saúde</h2>
-          <p class="totem-subtitle">Toque em uma das opções abaixo para gerar sua senha. O atendimento será direcionado automaticamente para a recepção correta.</p>
-          <div class="totem-options">
-            <button class="btn big" onclick="showEmpresaRetorno()"><span class="btn-icon">🏢</span><span>Vim Pela Empresa</span><span class="small">Ocupacional / retorno</span></button>
-            <button class="btn big" onclick="showPessoaFisica()"><span class="btn-icon">👤</span><span>Vim por Conta Própria</span><span class="small">Dentista, exames, ultrassom ou especialista</span></button>
-            <button class="btn big" onclick="askPriority('resultado','Entrega de Resultado de Exames')"><span class="btn-icon">📄</span><span>Resultado de Exames</span><span class="small">Retirada de exames prontos</span></button>
-          </div>`;
+          ${totemEtapas(1)}
+          <div class="app-kicker">SESI Pernambuco • Saúde</div>
+          <h2 class="totem-title">Olá! Como podemos ajudar?</h2>
+          <p class="totem-subtitle">Escolha uma das opções para começar. É simples, rápido e você receberá sua senha de atendimento.</p>
+          <div class="totem-options two">
+            <button type="button" class="btn big" onclick="showEmpresaRetorno()"><span class="btn-icon" aria-hidden="true">🏢</span><span>Vim Pela Empresa</span><span class="small">Exames e atendimentos ocupacionais</span></button>
+            <button type="button" class="btn big" onclick="showPessoaFisica()"><span class="btn-icon" aria-hidden="true">👤</span><span>Vim por Conta Própria</span><span class="small">Consultas, exames e resultados</span></button>
+          </div>
+          ${totemAjuda()}`;
         return;
       }
       if (totem.screen === 'empresa_retorno') {
         box.innerHTML = `
-          <h2 class="totem-title">Atendimento pela empresa</h2>
-          <p class="totem-subtitle">Este atendimento é retorno ocupacional para continuidade no 2º andar?</p>
-          <div class="totem-options two">
-            <button class="btn big warning" onclick="askPriority('retorno_ocupacional','Retorno Ocupacional 2º andar')"><span class="btn-icon">↩️</span><span>Sim, é retorno</span><span class="small">Gera ROC e direciona ao 2º andar</span></button>
-            <button class="btn big" onclick="askPriority('ocupacional','Vim Pela Empresa - Atendimento Ocupacional')"><span class="btn-icon">✅</span><span>Não, é atendimento inicial</span><span class="small">Gera ATO/ATOP e direciona ao térreo</span></button>
+          ${totemEtapas(2)}
+          <div class="app-kicker">Atendimento pela empresa</div>
+          <h2 class="totem-title">Qual é o seu atendimento?</h2>
+          <p class="totem-subtitle">Escolha o tipo de atendimento que deseja realizar pela empresa.</p>
+          <div class="totem-options">
+            <button type="button" class="btn big" onclick="askPriority('retorno_ocupacional','Retorno Ocupacional 2º andar')"><span class="btn-icon" aria-hidden="true">↩️</span><span>Retorno ocupacional</span><span class="small">Atendimento no 2º andar</span></button>
+            <button type="button" class="btn big" onclick="askPriority('ocupacional','Vim Pela Empresa - Atendimento Ocupacional')"><span class="btn-icon" aria-hidden="true">📋</span><span>Atendimento inicial</span><span class="small">Primeiro atendimento • Recepção Térreo</span></button>
+            <button type="button" class="btn big" onclick="askPriority('vacina','Vim Pela Empresa - Vacina')"><span class="btn-icon" aria-hidden="true">💉</span><span>Vacina</span><span class="small">Chamada e atendimento no 2º andar</span></button>
           </div>
-          <div style="margin-top:18px"><button class="btn secondary" onclick="resetTotem()">Voltar</button></div>`;
+          ${totemVoltar('resetTotem()')}${totemAjuda()}`;
         return;
       }
       if (totem.screen === 'pf') {
         box.innerHTML = `
-          <h2 class="totem-title">Vim por Conta Própria</h2>
-          <p class="totem-subtitle">Escolha o tipo de atendimento. Sua senha será encaminhada para a Recepção do 1º andar.</p>
-          <div class="totem-options four">
-            <button class="btn big" onclick="askPriority('dentista','Vim por Conta Própria - Dentista')"><span class="btn-icon">🦷</span><span>Dentista</span></button>
-            <button class="btn big" onclick="askPriority('exames_pf','Vim por Conta Própria - Exames')"><span class="btn-icon">🧪</span><span>Exames</span></button>
-            <button class="btn big" onclick="askPriority('ultrassom_pf','Vim por Conta Própria - Ultrassom')"><span class="btn-icon">🩻</span><span>Ultrassom</span></button>
-            <button class="btn big" onclick="askPriority('medico_especialista','Vim por Conta Própria - Consulta com Médico Especialista')"><span class="btn-icon">🩺</span><span>Consulta com Médico Especialista</span></button>
+          ${totemEtapas(2)}
+          <div class="app-kicker">Atendimento particular</div>
+          <h2 class="totem-title">O que você precisa hoje?</h2>
+          <p class="totem-subtitle">Selecione o serviço que deseja. O local de atendimento será informado na senha.</p>
+          <div class="totem-options five">
+            <button type="button" class="btn big" onclick="askPriority('dentista','Vim por Conta Própria - Dentista')"><span class="btn-icon" aria-hidden="true">🦷</span><span>Dentista</span></button>
+            <button type="button" class="btn big" onclick="askPriority('exames_pf','Vim por Conta Própria - Exames')"><span class="btn-icon" aria-hidden="true">🧪</span><span>Exames</span></button>
+            <button type="button" class="btn big" onclick="askPriority('ultrassom_pf','Vim por Conta Própria - Ultrassom')"><span class="btn-icon" aria-hidden="true">🩻</span><span>Ultrassom</span></button>
+            <button type="button" class="btn big" onclick="showMedicoEspecialista()"><span class="btn-icon" aria-hidden="true">🩺</span><span>Consulta com Médico Especialista</span><span class="small">Primeiro atendimento ou retorno</span></button>
+            <button type="button" class="btn big" onclick="askPriority('resultado','Entrega de Resultado de Exames')"><span class="btn-icon" aria-hidden="true">📄</span><span>Resultado de Exames</span><span class="small">Retirada de resultados prontos</span></button>
           </div>
-          <div style="margin-top:18px"><button class="btn secondary" onclick="resetTotem()">Voltar</button></div>`;
+          ${totemVoltar('resetTotem()')}${totemAjuda()}`;
+        return;
+      }
+      if (totem.screen === 'medico_especialista') {
+        box.innerHTML = `
+          ${totemEtapas(2)}
+          <div class="app-kicker">Consulta com Médico Especialista</div>
+          <h2 class="totem-title">Qual é o tipo da sua consulta?</h2>
+          <p class="totem-subtitle">Escolha uma opção. O atendimento será realizado no 1º andar.</p>
+          <div class="totem-options two">
+            <button type="button" class="btn big" onclick="askPriority('medico_especialista','Consulta com Médico Especialista - Primeiro Atendimento')"><span class="btn-icon" aria-hidden="true">🩺</span><span>Primeiro Atendimento</span><span class="small">Primeira consulta • 1º andar</span></button>
+            <button type="button" class="btn big" onclick="askPriority('medico_especialista_retorno','Consulta com Médico Especialista - Retorno')"><span class="btn-icon" aria-hidden="true">↩️</span><span>Retorno</span><span class="small">Até 30 dias após a consulta realizada • 1º andar</span></button>
+          </div>
+          <div class="totem-notice" role="note"><span aria-hidden="true">ℹ️</span><span><strong>Atenção:</strong> o retorno com o médico especialista é considerado dentro do prazo de <strong>30 dias após a consulta realizada</strong>.</span></div>
+          ${totemVoltar('showPessoaFisica()')}${totemAjuda()}`;
         return;
       }
       if (totem.screen === 'priority') {
         box.innerHTML = `
-          <h2 class="totem-title">Este atendimento é preferencial?</h2>
-          <p class="totem-subtitle">Serviço selecionado: <b>${escapeHTML(totem.label)}</b></p>
+          ${totemEtapas(3)}
+          <div class="app-kicker">Última etapa antes da senha</div>
+          <h2 class="totem-title">Precisa de atendimento preferencial?</h2>
+          <p class="totem-subtitle">Escolha abaixo para receber sua senha.</p>
+          <div class="totem-service">${escapeHTML(totem.label)}</div>
+          ${totem.service === 'medico_especialista_retorno' ? '<div class="totem-notice" role="note"><span aria-hidden="true">ℹ️</span><span>O retorno deve ocorrer em até <strong>30 dias da consulta realizada</strong>. Atendimento no <strong>1º andar</strong>.</span></div>' : ''}
           <div class="totem-options two">
-            <button class="btn big danger" onclick="criarTicket('${totem.service}', true, {}, true)"><span class="btn-icon">⭐</span><span>Sim</span><span class="small">Prioridade na fila</span></button>
-            <button class="btn big success" onclick="criarTicket('${totem.service}', false, {}, true)"><span class="btn-icon">🙂</span><span>Não</span><span class="small">Atendimento comum</span></button>
+            <button type="button" class="btn big is-preferential" onclick="criarTicket('${totem.service}', true, {}, true)"><span class="btn-icon" aria-hidden="true">★</span><span>Sim, preferencial</span><span class="small">Tenho direito a atendimento preferencial</span></button>
+            <button type="button" class="btn big is-regular" onclick="criarTicket('${totem.service}', false, {}, true)"><span class="btn-icon" aria-hidden="true">✓</span><span>Não, comum</span><span class="small">Atendimento sem preferência</span></button>
           </div>
-          <div style="margin-top:18px"><button class="btn secondary" onclick="resetTotem()">Cancelar</button></div>`;
+          ${totemVoltar()}${totemAjuda()}`;
       }
     }
-    function showEmpresaRetorno() { totem = {screen:'empresa_retorno', service:null, label:null}; renderTotem(); }
-    function showPessoaFisica() { totem = {screen:'pf', service:null, label:null}; renderTotem(); }
-    function askPriority(service, label) { totem = {screen:'priority', service, label}; renderTotem(); }
+    function showEmpresaRetorno() {
+      totemEmissaoEmAndamento = false;
+      totem = {screen:'empresa_retorno', service:null, label:null, origem:'empresa_retorno'};
+      renderTotem();
+    }
+    function showPessoaFisica() {
+      totemEmissaoEmAndamento = false;
+      totem = {screen:'pf', service:null, label:null, origem:'pf'};
+      renderTotem();
+    }
+    function showMedicoEspecialista() {
+      totemEmissaoEmAndamento = false;
+      totem = {screen:'medico_especialista', service:null, label:null, origem:'pf'};
+      renderTotem();
+    }
+    function askPriority(service, label) {
+      totemEmissaoEmAndamento = false;
+      const origem = totem.screen === 'empresa_retorno' ? 'empresa_retorno' : totem.screen === 'medico_especialista' ? 'medico_especialista' : 'pf';
+      totem = {screen:'priority', service, label, origem};
+      renderTotem();
+    }
+    function voltarTotem() {
+      const origem = totem.origem;
+      if (origem === 'empresa_retorno') showEmpresaRetorno();
+      else if (origem === 'medico_especialista') showMedicoEspecialista();
+      else if (origem === 'pf') showPessoaFisica();
+      else resetTotem();
+    }
     function resetTotem() {
       clearTimeout(showReceipt._timeout);
+      clearTimeout(totemIdleTimer);
+      totemEmissaoEmAndamento = false;
       totem = {screen:'home', service:null, label:null};
       renderTotem();
     }
-
     function renderReceipt(ticket) {
       const orientacao = ticket.queue === 'recepcao_2' ? 'Siga para o 2º andar e aguarde ser chamado.' : ticket.queue === 'recepcao_1' ? 'Siga para o 1º andar e aguarde ser chamado.' : 'Aguarde no térreo para chamada na TV.';
       document.getElementById('totemBox').innerHTML = `
+        ${totemEtapas(4)}
         <div class="receipt">
-          ${sesiLogoMarkup('receipt-logo')}
-          <h2>Senha gerada</h2>
-          <div class="senha-big">${escapeHTML(ticket.senha)}</div>
+          <div class="app-kicker">Atendimento registrado</div>
+          <h2>✓ Senha emitida!</h2>
+          <p class="muted">Guarde sua senha e acompanhe o painel de chamadas.</p>
+          <div class="senha-big" aria-label="Sua senha é ${escapeHTML(ticket.senha)}">${escapeHTML(ticket.senha)}</div>
           <p><b>${escapeHTML(ticket.servico)}</b></p>
-          <p>${ticket.priority ? '<span class="danger-text">Atendimento preferencial</span>' : 'Atendimento comum'}</p>
-          <p class="muted"><b>Local inicial:</b> ${escapeHTML(queueLabel(ticket.queue))}</p>
-          <p class="muted">${escapeHTML(orientacao)}</p>
-          <p class="small muted">A senha será impressa para o cliente acompanhar a chamada no Painel TV.</p>
+          <p>${ticket.priority ? '<span class="ok-text">★ Atendimento preferencial</span>' : 'Atendimento comum'}</p>
+          <div class="receipt-direction"><b>📍 ${escapeHTML(queueLabel(ticket.queue))}</b>${escapeHTML(orientacao)}</div>
+          ${ticket.tipo === 'medico_especialista_retorno' ? '<div class="totem-notice" role="note"><span aria-hidden="true">ℹ️</span><span>Retorno em até <strong>30 dias após a consulta realizada</strong>.</span></div>' : ''}
+          <p class="small muted">A emissão da senha envia o comprovante para a impressão.</p>
           <div class="toolbar" style="justify-content:center;margin-top:18px">
-            <button class="btn" onclick="imprimirSenha('${ticket.id}')">Imprimir senha novamente</button>
-            <button class="btn secondary" onclick="resetTotem()">Nova senha</button>
+            <button type="button" class="btn" onclick="imprimirSenha('${ticket.id}')">Imprimir novamente</button>
+            <button type="button" class="btn secondary" onclick="resetTotem()">Concluir</button>
           </div>
-        </div>`;
+        </div>
+        ${totemAjuda()}`;
     }
-
     function showReceipt(ticket) {
       totem = {screen:'receipt', ticketId:ticket.id};
       renderReceipt(ticket);
       clearTimeout(showReceipt._timeout);
-      showReceipt._timeout = setTimeout(resetTotem, 12000);
+      // Higieniza os dados da tela compartilhada após a entrega do comprovante.
+      showReceipt._timeout = setTimeout(resetTotem, 18000);
     }
 
     function imprimirSenha(id) {
@@ -2963,25 +3501,26 @@
           ${sesiLogoMarkup('print-logo')}
           <h2 style="margin:0 0 6px;font-size:22px">SESI Saúde</h2>
           <p style="margin:0;font-size:13px">Senha de Atendimento</p>
-          <h1 style="font-size:48px; margin:10px 0; letter-spacing:1px; color:#0b76c8">${escapeHTML(t.senha)}</h1>
+          <h1 style="font-size:48px; margin:10px 0; letter-spacing:1px; color:#1a4b9f">${escapeHTML(t.senha)}</h1>
           <p style="margin:6px 0"><b>${escapeHTML(t.servico)}</b></p>
           <p style="margin:6px 0">${t.priority ? 'Preferencial' : 'Comum'}</p>
           <p style="margin:6px 0"><b>${escapeHTML(queueLabel(t.queue))}</b></p>
           <p style="margin:6px 0">${escapeHTML(orientacao)}</p>
+          ${t.tipo === 'medico_especialista_retorno' ? '<p style="font-size:12px;margin:6px 0">Retorno: até 30 dias após a consulta realizada.</p>' : ''}
           <hr style="border:0;border-top:1px dashed #777;margin:12px 0">
           <small>${fmtDate(t.createdAt)}</small>
           <p style="font-size:11px;margin:8px 0 0">Acompanhe a chamada no Painel TV.</p>
         </div>`;
 
-      const voltarInicio = () => {
-        clearTimeout(showReceipt._timeout);
-        setTimeout(resetTotem, 450);
-      };
-
-      window.addEventListener('afterprint', voltarInicio, { once:true });
-      window.print();
-      toast('Senha enviada para impressão. O Totem retornará para a tela inicial.');
-      setTimeout(voltarInicio, 1500);
+      // O comprovante permanece na tela pelo tempo da confirmação.
+      // Evita voltar prematuramente ao início se o diálogo de impressão for fechado.
+      try {
+        window.print();
+        toast('Comprovante preparado para impressão.');
+      } catch (erroImpressao) {
+        console.warn('Impressão indisponível nesta estação', erroImpressao);
+        toast('Não foi possível imprimir. Solicite ajuda à recepção.');
+      }
     }
 
     function filteredTicketsForQueue(queue, includeAll=false) {
@@ -3430,9 +3969,9 @@
           <strong>Fluxo correto — Ocupacional</strong>
           <div class="flow-helper-grid">
             <div class="flow-helper-item">1. Recepção Térreo identifica trabalhador, empresa/contrato e necessidade de ASO.</div>
-            <div class="flow-helper-item">2. Exames pendentes seguem para Exames Ocupacionais. Triagem/Médico só após liberação dos exames.</div>
-            <div class="flow-helper-item">3. Se houver retorno ASO, acompanhar pela data informada e não encaminhar antes da liberação.</div>
-            <div class="flow-helper-item">4. Exame não realizado deve ter motivo registrado e pode voltar à fila após resolver o impedimento.</div>
+            <div class="flow-helper-item">2. ASO no mesmo dia: encaminhamento inicial obrigatório para Triagem / Anamnese.</div>
+            <div class="flow-helper-item">3. Após a triagem, realizar os exames pendentes; somente depois seguir ao Médico Ocupacional.</div>
+            <div class="flow-helper-item">4. ASO em outra data: registrar a data de retorno, realizar exames pendentes e encerrar esta visita com retorno registrado.</div>
           </div>
         </div>`;
       }
@@ -3468,6 +4007,7 @@
       const t = getTicket(id);
       if (!t) return;
       t[field] = value;
+      if (field === 'dataRetornoAso' && t.temAso && !t.asoMesmoDia) t.retornoAso = !!value;
       markTicketTouched(t);
       saveState();
     }
@@ -3506,39 +4046,36 @@
         <p class="subtitle">${subtitulo}</p>
         <div class="grid grid-2">
           <div>
-            <label>Atendimento possui ASO?</label>
-            <select onchange="setBooleanField('${t.id}','temAso',this.value)">
-              <option value="true" ${t.temAso?'selected':''}>Sim</option>
+            <label for="asoTem_${t.id}">Atendimento possui ASO?</label>
+            <select id="asoTem_${t.id}" onchange="setBooleanField('${t.id}','temAso',this.value)">
               <option value="false" ${!t.temAso?'selected':''}>Não</option>
+              <option value="true" ${t.temAso?'selected':''}>Sim</option>
             </select>
           </div>
+          ${t.temAso ? `
           <div>
-            <label>ASO no mesmo dia?</label>
-            <select onchange="setBooleanField('${t.id}','asoMesmoDia',this.value)">
-              <option value="true" ${t.asoMesmoDia?'selected':''}>Sim</option>
-              <option value="false" ${!t.asoMesmoDia?'selected':''}>Não, haverá retorno</option>
+            <label for="asoDia_${t.id}">O ASO será realizado hoje?</label>
+            <select id="asoDia_${t.id}" onchange="setBooleanField('${t.id}','asoMesmoDia',this.value)">
+              <option value="true" ${t.asoMesmoDia?'selected':''}>Sim, no mesmo dia</option>
+              <option value="false" ${!t.asoMesmoDia?'selected':''}>Não, em outra data</option>
             </select>
           </div>
-          <div>
-            <label>Data de retorno ASO</label>
-            <input type="date" value="${escapeHTML(t.dataRetornoAso)}" onchange="updateField('${t.id}','dataRetornoAso',this.value)">
-          </div>
-          <div>
-            <label>Retorno ASO?</label>
-            <select onchange="setBooleanField('${t.id}','retornoAso',this.value)">
-              <option value="false" ${!t.retornoAso?'selected':''}>Não</option>
-              <option value="true" ${t.retornoAso?'selected':''}>Sim</option>
-            </select>
-          </div>
+          ${!t.asoMesmoDia ? `
+          <div class="aso-retorno-field">
+            <label for="asoRetorno_${t.id}">Data de retorno para o ASO <span class="danger-text">*</span></label>
+            <input id="asoRetorno_${t.id}" type="date" required min="${todayDate()}" value="${escapeHTML(t.dataRetornoAso || '')}" onchange="updateField('${t.id}','dataRetornoAso',this.value)" aria-describedby="asoRetornoAjuda_${t.id}">
+            <small id="asoRetornoAjuda_${t.id}" class="muted">Obrigatória para ASO em outra data. Escolha o dia previsto de retorno.</small>
+          </div>` : ''}` : ''}
         </div>
+        ${t.temAso && t.asoMesmoDia ? '<div class="aso-form-helper"><strong>Encaminhamento obrigatório:</strong> ASO hoje → Triagem / Anamnese. A triagem encaminhará aos exames pendentes antes da avaliação médica.</div>' : ''}
+        ${t.temAso && !t.asoMesmoDia ? '<div class="aso-form-helper warning"><strong>ASO em outra data:</strong> informe a data prevista de retorno. O campo só aparece nesta opção.</div>' : ''}
         <label>Exames novos ou pendentes</label>
         <div class="check-grid">${examChecks}</div>
         <div class="toolbar">
           <button class="btn" onclick="enviarFluxoOcupacional('${t.id}')">Encaminhar conforme regra</button>
-          <button class="btn secondary" onclick="transferTicket('${t.id}','triagem','Encaminhado manualmente para Triagem / Anamnese.')">Enviar Triagem</button>
-          <button class="btn secondary" onclick="transferTicket('${t.id}','exames_ocup','Encaminhado manualmente para Exames Ocupacionais.')">Enviar Exames</button>
+          ${t.temAso && t.asoMesmoDia && !t.triagemConcluidaAt ? '' : `<button class="btn secondary" onclick="transferTicket('${t.id}','exames_ocup','Encaminhado para Exames Ocupacionais.')">Enviar Exames</button>`}
           ${botaoSegundoAndar}
-          <button class="btn success" onclick="completeTicket('${t.id}','Atendimento ocupacional finalizado na ${origem === 'terreo' ? 'Recepção Térreo' : 'Recepção 2º andar'}.')">Finalizar</button>
+          ${t.temAso && t.asoMesmoDia ? '' : `<button class="btn success" onclick="completeTicket('${t.id}','Atendimento ocupacional finalizado na ${origem === 'terreo' ? 'Recepção Térreo' : 'Recepção 2º andar'}.')">Finalizar</button>`}
         </div>`;
     }
 
@@ -3557,6 +4094,16 @@
         </div>`;
     }
     function formRecepcao2(t) {
+      if (t.tipo === 'vacina') {
+        return `
+          <h3>Vacinação pela Empresa — 2º andar</h3>
+          <p class="subtitle">Atendimento de vacinação direcionado pelo totem. Confirme os dados do trabalhador e registre a conclusão do atendimento neste andar.</p>
+          <label for="obsVacina_${t.id}">Observações do atendimento (opcional)</label>
+          <textarea id="obsVacina_${t.id}" oninput="updateField('${t.id}','observacao',this.value)" placeholder="Informações sobre o atendimento de vacinação...">${escapeHTML(t.observacao || '')}</textarea>
+          <div class="toolbar">
+            <button class="btn success" onclick="completeTicket('${t.id}','Vacinação — atendimento finalizado no 2º andar.')">Finalizar atendimento de vacina</button>
+          </div>`;
+      }
       return ocupacionalClassificacaoHtml(t, 'segundo');
     }
 
@@ -3613,11 +4160,12 @@
     function formTriagem(t) {
       return `
         <h3>Triagem / Anamnese</h3>
-        <p class="subtitle">Registrar anamnese e encaminhar para médico ocupacional.</p>
+        <p class="subtitle">Registre a anamnese. Se houver exames ocupacionais pendentes, eles serão realizados antes do atendimento médico.</p>
+        ${pendingOccupationalExams(t).length ? `<div class="aso-form-helper warning"><strong>${pendingOccupationalExams(t).length} exame(s) pendente(s):</strong> ao finalizar a triagem, o paciente seguirá para Exames Ocupacionais e, após liberação, para Médico Ocupacional.</div>` : ''}
         <label>Resumo da anamnese</label>
         <textarea oninput="updateField('${t.id}','anamnese',this.value)">${escapeHTML(t.anamnese || '')}</textarea>
         <div class="toolbar">
-          <button class="btn success" onclick="transferTicket('${t.id}','medico_ocup','Anamnese realizada. Encaminhado para Médico Ocupacional.')">Finalizar triagem e enviar médico</button>
+          <button class="btn success" onclick="finalizarTriagemOcupacional('${t.id}')">Finalizar triagem e continuar fluxo</button>
           <button class="btn secondary" onclick="transferTicket('${t.id}','recepcao_2','Retorno à Recepção 2º andar após triagem.')">Retornar recepção</button>
         </div>`;
     }
@@ -3699,7 +4247,25 @@
         </div>`;
     }
 
-    function setBooleanField(id, field, value) { updateField(id, field, value === 'true'); renderTicketForm(); }
+    function setBooleanField(id, field, value) {
+      const t = getTicket(id); if (!t) return;
+      const flag = value === 'true';
+      t[field] = flag;
+      if (field === 'temAso' && !flag) {
+        t.asoMesmoDia = true;
+        t.retornoAso = false;
+        t.dataRetornoAso = '';
+        t.triagemConcluidaAt = '';
+      }
+      if (field === 'asoMesmoDia') {
+        t.retornoAso = !flag && !!t.temAso;
+        if (flag) { t.dataRetornoAso = ''; t.triagemConcluidaAt = ''; }
+      }
+      markTicketTouched(t);
+      saveState();
+      renderTicketForm();
+      renderDashboard();
+    }
     function groupedExamName(group, option) { return `${group} - ${option}`; }
     function isGroupedExam(group, name) { return name === group || String(name || '').startsWith(`${group} - `); }
     function hasExam(t, name) { return (t.exams || []).some(e => e.name === name); }
@@ -4044,26 +4610,60 @@
       addHistory(t, `Retorno automático para a fila após realização de ${completedName}. Próximo pendente: ${nextName}.`);
     }
 
+    function validarRetornoAso(t) {
+      if (!t.temAso || t.asoMesmoDia) return true;
+      const data = String(t.dataRetornoAso || '');
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(data)) {
+        toast('Informe a data de retorno para o ASO antes de continuar.');
+        const campo = document.getElementById(`asoRetorno_${t.id}`);
+        if (campo) campo.focus();
+        return false;
+      }
+      if (data <= todayDate()) {
+        toast('Para ASO em outra data, escolha uma data futura. Para hoje, selecione ASO no mesmo dia.');
+        const campo = document.getElementById(`asoRetorno_${t.id}`);
+        if (campo) campo.focus();
+        return false;
+      }
+      t.retornoAso = true;
+      return true;
+    }
     function enviarFluxoOcupacional(id) {
       const t = getTicket(id); if (!t) return;
+      // Todo ASO no mesmo dia inicia por Triagem, mesmo com exames pendentes.
+      if (t.temAso && t.asoMesmoDia && !t.triagemConcluidaAt) {
+        transferTicket(id, 'triagem', 'ASO no mesmo dia: encaminhado obrigatoriamente para Triagem / Anamnese.');
+        return;
+      }
+      if (!validarRetornoAso(t)) return;
       const pendingExams = pendingOccupationalExams(t).length;
       const pendingLabs = pendingLabExams(t).length;
       if (pendingExams > 0) {
-        const labNote = pendingLabs ? ` Exame(s) laboratorial(is) com prioridade automática: ${pendingLabs}.` : '';
-        toast('Fluxo protegido: paciente ocupacional com exames pendentes será enviado para Exames Ocupacionais antes de Triagem/Médico.');
+        const labNote = pendingLabs ? ` Exame(s) laboratorial(is): ${pendingLabs}.` : '';
         transferTicket(id, 'exames_ocup', `Encaminhado para Exames Ocupacionais com ${pendingExams} exame(s) pendente(s).${labNote}`);
         return;
       }
-      if (t.temAso) {
-        if (!t.asoMesmoDia && t.retornoAso && t.dataRetornoAso) {
-          addHistory(t, `ASO não será realizado no mesmo dia. Retorno ASO em ${t.dataRetornoAso}.`);
-          completeTicket(id, `Exames finalizados. ASO agendado para retorno em ${t.dataRetornoAso}.`);
-          return;
-        }
-        transferTicket(id, 'triagem', 'Encaminhado para Triagem / Anamnese por necessidade de ASO.');
+      if (t.temAso && t.asoMesmoDia) {
+        transferTicket(id, 'medico_ocup', 'Triagem e exames liberados. Encaminhado para Médico Ocupacional.');
+        return;
+      }
+      if (t.temAso && !t.asoMesmoDia) {
+        completeTicket(id, `Visita concluída. Retorno do ASO previsto para ${localDateLabel(t.dataRetornoAso)}.`);
         return;
       }
       completeTicket(id, 'Sem ASO e sem exames pendentes. Atendimento ocupacional finalizado.');
+    }
+    function finalizarTriagemOcupacional(id) {
+      const t = getTicket(id); if (!t) return;
+      if (!t.temAso) { toast('Este atendimento não possui ASO. Retorne à recepção para classificar.'); return; }
+      if (!t.asoMesmoDia) { toast('ASO em outra data. Confirme o retorno com a recepção.'); return; }
+      t.triagemConcluidaAt = nowISO();
+      addHistory(t, 'Triagem / Anamnese concluída.');
+      if (pendingOccupationalExams(t).length) {
+        transferTicket(id, 'exames_ocup', 'Triagem concluída. Exames ocupacionais pendentes devem ser realizados antes do médico.');
+      } else {
+        transferTicket(id, 'medico_ocup', 'Triagem concluída. Sem exames pendentes: encaminhado para Médico Ocupacional.');
+      }
     }
     function atualizarConclusaoExames(t) {
       if (!t) return;
@@ -4143,12 +4743,15 @@
       const t = getTicket(id); if (!t) return;
       const pending = pendingOccupationalExams(t).length;
       if (pending > 0) return toast('Ainda existem exames pendentes.');
-      if (t.temAso) {
-        if (!t.asoMesmoDia && t.retornoAso && t.dataRetornoAso) {
-          completeTicket(id, `Exames concluídos. ASO agendado para retorno em ${t.dataRetornoAso}.`);
+      if (t.temAso && t.asoMesmoDia) {
+        if (t.triagemConcluidaAt) {
+          transferTicket(id, 'medico_ocup', 'Triagem concluída e exames liberados: seguir ao Médico Ocupacional.');
         } else {
-          transferTicket(id, 'triagem', 'Exames concluídos. Encaminhado para Triagem / Anamnese.');
+          transferTicket(id, 'triagem', 'ASO no mesmo dia: Triagem / Anamnese obrigatória antes do médico.');
         }
+      } else if (t.temAso) {
+        if (!validarRetornoAso(t)) return;
+        completeTicket(id, `Exames concluídos. Retorno do ASO previsto para ${localDateLabel(t.dataRetornoAso)}.`);
       } else {
         completeTicket(id, 'Exames concluídos. Sem ASO. Atendimento finalizado.');
       }
@@ -4176,6 +4779,25 @@
     }
     function transferTicket(id, queue, note) {
       const t = getTicket(id); if (!t) return;
+      const ocupacional = ['ocupacional','retorno_ocupacional'].includes(t.tipo);
+      if (ocupacional && t.temAso && !t.asoMesmoDia &&
+          ['recepcao_terreo','recepcao_2'].includes(t.queue) && queue !== t.queue &&
+          !validarRetornoAso(t)) return;
+      if (ocupacional && t.temAso && t.asoMesmoDia) {
+        if (queue === 'recepcao_2' && ['recepcao_terreo','recepcao_2'].includes(t.queue) && !t.triagemConcluidaAt) {
+          queue = 'triagem';
+          note = 'ASO no mesmo dia: encaminhamento inicial obrigatório para Triagem / Anamnese.';
+        } else if (queue === 'medico_ocup' && !t.triagemConcluidaAt) {
+          queue = 'triagem';
+          note = 'ASO no mesmo dia: Triagem obrigatória antes do médico.';
+        } else if (queue === 'medico_ocup' && pendingOccupationalExams(t).length) {
+          queue = 'exames_ocup';
+          note = 'Exames ocupacionais pendentes: avaliação médica somente após liberação.';
+        } else if (queue === 'exames_ocup' && !t.triagemConcluidaAt) {
+          queue = 'triagem';
+          note = 'ASO no mesmo dia: Triagem obrigatória antes dos exames ocupacionais.';
+        }
+      }
       t.queue = queue;
       t.status = 'waiting';
       t.waitStart = nowISO();
@@ -4189,6 +4811,10 @@
     }
     function completeTicket(id, note) {
       const t = getTicket(id); if (!t) return;
+      if (['ocupacional','retorno_ocupacional'].includes(t.tipo) && t.temAso && t.asoMesmoDia && t.queue !== 'medico_ocup') {
+        toast('ASO no mesmo dia: finalize a triagem, os exames pendentes e o atendimento médico antes de encerrar.');
+        return;
+      }
       t.status = 'completed';
       t.completedAt = nowISO();
       t.statusText = note || 'Atendimento finalizado.';
@@ -4201,8 +4827,8 @@
 
     function imprimirResumo(id) {
       const t = getTicket(id); if (!t) return;
-      const examsTxt = (t.exams || []).map(e => `${e.name}: ${e.status}`).join('<br>') || 'Não informado';
-      const pfTxt = (t.pfExams || []).map(e => `${e.name}: ${e.status}`).join('<br>') || 'Não informado';
+      const examsTxt = (t.exams || []).map(e => `${escapeHTML(e.name)}: ${escapeHTML(e.status)}`).join('<br>') || 'Não informado';
+      const pfTxt = (t.pfExams || []).map(e => `${escapeHTML(e.name)}: ${escapeHTML(e.status)}`).join('<br>') || 'Não informado';
       document.getElementById('printArea').innerHTML = `
         <div style="font-family:Arial, sans-serif; max-width:760px; margin:auto; color:#111">
           <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid #0b76c8; padding-bottom:10px; margin-bottom:16px">
@@ -4276,7 +4902,12 @@
     }
 
     function addDateKeyFromValue(keys, value) {
-      const key = todayDate(value);
+      // Valores nulos/ausentes antes caíam no fallback "hoje" de todayDate(),
+      // fazendo fichas antigas aparecerem indevidamente em todos os painéis.
+      if (value == null || String(value).trim() === '') return;
+      const parsed = new Date(value);
+      if (Number.isNaN(parsed.getTime())) return;
+      const key = todayDate(parsed.toISOString());
       if (key) keys.add(key);
     }
 
@@ -4299,8 +4930,16 @@
 
     function tvStatusTickets(panel) {
       const today = todayDate(nowISO());
-      return state.tickets
-        .filter(t => ticketBelongsToTvOperationalDay(t, today) && (ticketVisibleInPanel(t, panel) || queuePanel(t.queue) === panel || ticketPanel(t) === panel))
+      return uniqueTicketsById(state.tickets)
+        .filter(t => {
+          if (!ticketBelongsToTvOperationalDay(t, today)) return false;
+          // Exibe cada ficha em um único andar: usa a sala da chamada atual
+          // ou da última etapa concluída; senão, o próximo exame pendente.
+          const useCallLocation = ['called','in_service','completed','absent','canceled'].includes(t.status) ||
+            (t.queue === 'exames_pf' && !pendingPfExams(t).length);
+          const call = useCallLocation ? latestCallForTicket(t.id) : null;
+          return ticketPanel(t, call?.local || '') === panel;
+        })
         .sort((a,b) => {
           const order = {andamento:0, pendente:1, nao_realizado:2, realizado:3};
           const ga = ticketStatusGroup(a).key;
@@ -4331,7 +4970,7 @@
       const g = ticketStatusGroup(t);
       const label = g.label || statusGroupLabels[g.key] || 'Pendente';
       const name = t.nome || 'Aguardando identificação';
-      return `<div class="tv-status-row ${g.key}">
+      return `<div class="tv-status-row ${g.key}" data-ticket-id="${escapeHTML(t.id || '')}">
         <div>
           <div class="tv-status-senha">${escapeHTML(t.senha || '-')}</div>
           ${t.priority ? '<span class="tv-status-sub">Atendimento preferencial</span>' : '<span class="tv-status-sub">Atendimento comum</span>'}
@@ -4345,6 +4984,18 @@
       </div>`;
     }
 
+    function configureTvStatusScroll() {
+      const viewport = document.querySelector('#tvContent .tv-status-viewport');
+      const scroller = viewport?.querySelector('.tv-status-scroller');
+      if (!viewport || !scroller) return;
+      scroller.classList.remove('is-scrolling');
+      const overflow = Math.max(0, Math.ceil(scroller.scrollHeight - viewport.clientHeight));
+      if (overflow <= 6) return; // poucos atendimentos: não movimentar desnecessariamente
+      scroller.style.setProperty('--tv-status-distance', `${overflow}px`);
+      scroller.style.setProperty('--tv-status-duration', `${Math.max(32, Math.ceil(overflow / 22))}s`);
+      scroller.classList.add('is-scrolling');
+    }
+
     function renderTvStatusPanel(panelId) {
       const tv = document.getElementById('tvContent');
       if (!tv) return;
@@ -4356,12 +5007,10 @@
       const counts = {pendente:0, andamento:0, realizado:0, nao_realizado:0};
       rows.forEach(t => { counts[ticketStatusGroup(t).key] += 1; });
       const rowMarkup = rows.map(tvStatusRowMarkup).join('');
-      const duplicatedRows = rows.length ? rowMarkup + rowMarkup : '';
-      const duration = Math.max(55, rows.length * 8);
       tv.innerHTML = `
         <div class="tv-status-screen">
           <div class="tv-status-top">
-            <div>${sesiLogoMarkup('tv-logo')}<div class="tv-heading-copy"><h2>${escapeHTML(meta.title)}</h2><p>${escapeHTML(meta.subtitle)} Exibindo somente os atendimentos do dia ${escapeHTML(todayLabel)}. As linhas sobem lentamente e reiniciam automaticamente em loop contínuo.</p></div></div>
+            <div>${sesiLogoMarkup('tv-logo')}<div class="tv-heading-copy"><h2>${escapeHTML(meta.title)}</h2><p>${escapeHTML(meta.subtitle)} Exibindo somente os atendimentos do dia ${escapeHTML(todayLabel)}. A lista rola automaticamente quando necessário, sem repetir atendimentos.</p></div></div>
             <div class="tv-status-toolbar">
               <span class="tv-clock" id="tvClock">${fmtDate(nowISO())}</span>
               <button class="btn ghost" onclick="syncFromStorage('manual'); renderTV()">Atualizar agora</button>
@@ -4384,9 +5033,10 @@
             </div>
           </div>
           <div class="tv-status-viewport">
-            ${rows.length ? `<div class="tv-status-scroller" style="--tv-status-duration:${duration}s">${duplicatedRows}</div>` : `<div class="tv-status-empty"><div><strong>Sem atendimentos de hoje</strong><p>Somente os atendimentos do dia ${escapeHTML(todayLabel)} para ${escapeHTML(meta.publico)} aparecerão aqui automaticamente.</p></div></div>`}
+            ${rows.length ? `<div class="tv-status-scroller" role="list" aria-label="Atendimentos únicos do painel">${rowMarkup}</div>` : `<div class="tv-status-empty"><div><strong>Sem atendimentos de hoje</strong><p>Somente os atendimentos do dia ${escapeHTML(todayLabel)} para ${escapeHTML(meta.publico)} aparecerão aqui automaticamente.</p></div></div>`}
           </div>
         </div>`;
+      requestAnimationFrame(configureTvStatusScroll);
       startClock();
     }
 
@@ -4576,6 +5226,11 @@
       window.addEventListener('storage', event => {
         if (event.key === STORAGE_KEY) syncFromStorage('storage');
       });
+      window.addEventListener('resize', () => {
+        if (['status_terreo','status_primeiro','status_segundo'].includes(activeTv)) {
+          requestAnimationFrame(configureTvStatusScroll);
+        }
+      });
 
       // Garante atualização do Painel TV mesmo quando o chamado é feito em outra aba/janela.
       setInterval(() => syncFromStorage('interval'), 1500);
@@ -4627,179 +5282,410 @@
 
 
 
-    function dashboardFilteredTickets() {
-      const start = document.getElementById('dashboardDataInicial')?.value || '';
-      const end = document.getElementById('dashboardDataFinal')?.value || '';
-      const queue = document.getElementById('dashboardFila')?.value || '';
-      const status = document.getElementById('dashboardStatus')?.value || '';
-      const term = normalizeText(document.getElementById('dashboardBusca')?.value || '').trim();
-      return state.tickets.filter(t => {
-        const d = todayDate(t.createdAt || nowISO());
-        if (start && d < start) return false;
-        if (end && d > end) return false;
-        if (queue && t.queue !== queue) return false;
-        if (status && t.status !== status) return false;
-        if (term) {
-          const bag = [t.senha, t.nome, t.cpf, t.empresa, t.servico, t.categoria, t.statusText, queueLabel(t.queue)].map(normalizeText).join(' ');
-          if (!bag.includes(term)) return false;
+    // Dashboard: recortes definidos pelo registro de criação da senha, não por transferências.
+    let dashboardPeriodoInicializado = false;
+    let dashboardPeriodoAtual = '7dias';
+    let dashboardUltimoResumo = null;
+
+    function dashboardDateOffset(days) {
+      const d = new Date();
+      d.setDate(d.getDate() - days);
+      return todayDate(d.toISOString());
+    }
+    function setDashboardPeriodo(periodo) {
+      dashboardPeriodoInicializado = true;
+      dashboardPeriodoAtual = periodo;
+      const inicio = document.getElementById('dashboardDataInicial');
+      const fim = document.getElementById('dashboardDataFinal');
+      if (!inicio || !fim) return;
+      if (periodo === 'hoje') { inicio.value = todayDate(nowISO()); fim.value = inicio.value; }
+      else if (periodo === '7dias') { inicio.value = dashboardDateOffset(6); fim.value = todayDate(nowISO()); }
+      else if (periodo === '30dias') { inicio.value = dashboardDateOffset(29); fim.value = todayDate(nowISO()); }
+      else if (periodo === 'todos') { inicio.value = ''; fim.value = ''; }
+      document.querySelectorAll('.dashboard-quick button').forEach(btn => {
+        const ativo = btn.dataset.periodo === periodo;
+        btn.classList.toggle('active', ativo);
+        btn.setAttribute('aria-pressed', String(ativo));
+      });
+      renderDashboard();
+    }
+    function dashboardPeriodoPersonalizado() {
+      dashboardPeriodoAtual = 'personalizado';
+      document.querySelectorAll('.dashboard-quick button').forEach(btn => { btn.classList.remove('active'); btn.setAttribute('aria-pressed','false'); });
+      renderDashboard();
+    }
+    function dashboardFiltroValores() {
+      return {
+        inicio: document.getElementById('dashboardDataInicial')?.value || '',
+        fim: document.getElementById('dashboardDataFinal')?.value || '',
+        fila: document.getElementById('dashboardFila')?.value || '',
+        status: document.getElementById('dashboardStatus')?.value || '',
+        publico: document.getElementById('dashboardPublico')?.value || '',
+        prioridade: document.getElementById('dashboardPrioridade')?.value || '',
+        busca: normalizeText(document.getElementById('dashboardBusca')?.value || '').trim()
+      };
+    }
+    function dashboardMeta() {
+      const campo = document.getElementById('dashboardMetaMin');
+      const entrada = Number(campo?.value);
+      return Number.isFinite(entrada) ? Math.min(240, Math.max(1, Math.floor(entrada))) : 20;
+    }
+    function dashboardBaseTickets(filtros=dashboardFiltroValores()) {
+      return uniqueTicketsById(state.tickets).filter(t => {
+        if (filtros.fila && t.queue !== filtros.fila) return false;
+        if (filtros.status && t.status !== filtros.status) return false;
+        if (filtros.publico && t.publico !== filtros.publico) return false;
+        if (filtros.prioridade === 'preferencial' && !t.priority) return false;
+        if (filtros.prioridade === 'comum' && t.priority) return false;
+        if (filtros.busca) {
+          const texto = [t.senha,t.servico,t.empresa,t.categoria,queueLabel(t.queue)].map(normalizeText).join(' ');
+          if (!texto.includes(filtros.busca)) return false;
         }
         return true;
       });
     }
-
+    function dashboardFilteredTickets() {
+      const f = dashboardFiltroValores();
+      return dashboardBaseTickets(f).filter(t => {
+        const d = todayDate(t.createdAt);
+        if (!d || (f.inicio && d < f.inicio) || (f.fim && d > f.fim)) return false;
+        return true;
+      });
+    }
     function ensureDashboardFilters() {
-      const sel = document.getElementById('dashboardFila');
-      if (!sel) return;
-      const current = sel.value;
-      sel.innerHTML = '<option value="">Todas as filas</option>' + Object.entries(queueDefs).map(([key, q]) => `<option value="${escapeHTML(key)}">${escapeHTML(q.label)}</option>`).join('');
-      if ([...sel.options].some(o => o.value === current)) sel.value = current;
+      const select = document.getElementById('dashboardFila');
+      if (!select) return;
+      const atual = select.value;
+      const options = '<option value="">Todas as filas</option>' + Object.entries(queueDefs)
+        .map(([id, obj]) => `<option value="${escapeHTML(id)}">${escapeHTML(obj.label)}</option>`).join('');
+      if (select.innerHTML !== options) select.innerHTML = options;
+      if ([...select.options].some(opt => opt.value === atual)) select.value = atual;
     }
-
-    function elapsedMinutesForDashboard(t) {
-      const start = new Date(t.createdAt || t.waitStart || nowISO()).getTime();
-      const isClosed = ['completed','canceled'].includes(t.status);
-      const end = isClosed ? new Date(t.updatedAt || t.createdAt || nowISO()).getTime() : Date.now();
-      return Math.max(0, Math.round((end - start) / 60000));
-    }
-
     function avgNumber(values) {
-      const nums = values.filter(v => Number.isFinite(v));
-      if (!nums.length) return 0;
-      return nums.reduce((sum, v) => sum + v, 0) / nums.length;
+      const validos = values.filter(Number.isFinite);
+      return validos.length ? validos.reduce((acc, v) => acc + v, 0) / validos.length : 0;
     }
-
-    function pctNumber(value, total) {
-      if (!total) return 0;
-      return Math.round((value / total) * 100);
-    }
-
+    function pctNumber(value, total) { return total > 0 ? Math.round(value * 100 / total) : 0; }
     function groupCount(items, getKey) {
       return items.reduce((acc, item) => {
-        const key = getKey(item) || 'Não informado';
+        const key = String(getKey(item) || 'Não informado');
         acc[key] = (acc[key] || 0) + 1;
         return acc;
-      }, {});
+      }, Object.create(null));
     }
-
     function topEntries(grouped, limit=8) {
-      return Object.entries(grouped).sort((a,b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, limit);
+      return Object.entries(grouped).sort((a,b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR')).slice(0, limit);
     }
-
+    function dashboardDateMs(iso) {
+      if (!iso) return NaN;
+      const time = new Date(iso).getTime();
+      return Number.isFinite(time) ? time : NaN;
+    }
+    function dashboardFirstCallAt(t) {
+      const events = Array.isArray(t.history) ? t.history : [];
+      const callDates = events.filter(h => /ficha chamada|chamad[oa] para/i.test(String(h.action || '')))
+        .map(h => dashboardDateMs(h.at)).filter(Number.isFinite);
+      if (callDates.length) return Math.min(...callDates);
+      return dashboardDateMs(t.calledAt);
+    }
+    function dashboardFirstCallWait(t) {
+      const start = dashboardDateMs(t.createdAt);
+      const end = dashboardFirstCallAt(t);
+      if (!Number.isFinite(start) || !Number.isFinite(end) || end < start) return null;
+      return Math.round((end - start) / 60000);
+    }
+    // Preserva o indicador de tempo da matriz operacional de Status dos Atendimentos.
+    function elapsedMinutesForDashboard(t) {
+      const start = dashboardDateMs(t.createdAt || t.waitStart);
+      const finished = ['completed','canceled'].includes(t.status);
+      const end = finished ? dashboardDateMs(t.completedAt || t.updatedAt || t.createdAt) : Date.now();
+      return Number.isFinite(start) && Number.isFinite(end) ? Math.max(0, Math.round((end - start) / 60000)) : 0;
+    }
+    function dashboardCurrentWait(t) {
+      const start = dashboardDateMs(t.waitStart || t.createdAt);
+      return Number.isFinite(start) ? Math.max(0, Math.floor((Date.now() - start) / 60000)) : 0;
+    }
+    function dashboardNumeric(value) { return Number(value || 0).toLocaleString('pt-BR'); }
+    function dashboardMinutes(value) { return Number.isFinite(value) ? `${Math.round(value)} min` : '—'; }
     function renderDashBars(containerId, entries, options={}) {
       const el = document.getElementById(containerId);
       if (!el) return;
-      if (!entries.length) {
-        el.innerHTML = '<div class="dashboard-empty">Sem dados para os filtros selecionados.</div>';
-        return;
-      }
-      const max = Math.max(...entries.map(e => Number(e[1]) || 0), 1);
+      if (!entries.length) { el.innerHTML = '<div class="dashboard-empty">Sem registros no período selecionado.</div>'; return; }
+      const max = Math.max(1,...entries.map(item => Number(item[1]) || 0));
       el.innerHTML = `<div class="dash-bar-list">${entries.map(([label, value]) => {
-        const percent = Math.max(3, Math.round((value / max) * 100));
-        const fillClass = options.fillClass || '';
-        return `<div class="dash-bar-row"><div class="dash-bar-head"><span>${escapeHTML(label)}</span><span>${value}</span></div><div class="dash-bar-track"><div class="dash-bar-fill ${fillClass}" style="width:${percent}%"></div></div></div>`;
+        const percent = value > 0 ? Math.max(3, value * 100 / max) : 0;
+        const klass = options.fillClass || '';
+        return `<div class="dash-bar-row"><div class="dash-bar-head"><span>${escapeHTML(label)}</span><span>${dashboardNumeric(value)}</span></div><div class="dash-bar-track" role="meter" aria-label="${escapeHTML(label)}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${value}"><div class="dash-bar-fill ${klass}" style="width:${percent.toFixed(1)}%"></div></div></div>`;
       }).join('')}</div>`;
     }
-
-    function renderDashboard() {
-      ensureDashboardFilters();
-      const rows = dashboardFilteredTickets();
-      const total = rows.length;
-      const completed = rows.filter(t => t.status === 'completed').length;
-      const open = rows.filter(t => !['completed','canceled'].includes(t.status)).length;
-      const priority = rows.filter(t => t.priority).length;
-      const lab = rows.filter(t => hasPendingLaboratoryExam(t) || (t.exams || []).some(e => isLaboratoryExamName(e.name)) || (t.pfExams || []).some(e => isLaboratoryExamName(e.name))).length;
-      const absent = rows.filter(t => t.status === 'absent').length;
-      const avgWait = Math.round(avgNumber(rows.map(elapsedMinutesForDashboard)));
-      const slaTarget = 20;
-      const withinSla = rows.filter(t => elapsedMinutesForDashboard(t) <= slaTarget).length;
-      const slaPct = pctNumber(withinSla, total);
-      const qualityFields = rows.flatMap(t => [t.senha, t.servico, t.queue, t.status, t.createdAt, t.priority ? 'prioridade' : 'comum']);
-      const requiredFilled = rows.reduce((sum, t) => sum + [t.senha, t.servico, t.queue, t.status, t.createdAt].filter(Boolean).length, 0);
-      const requiredTotal = Math.max(rows.length * 5, 1);
-      const qualityScore = rows.length ? pctNumber(requiredFilled, requiredTotal) : 0;
-
-      const kpis = [
-        ['Atendimentos', total, 'Total de fichas no período filtrado'],
-        ['Em aberto', open, 'Fichas que ainda exigem ação da operação'],
-        ['Finalizados', completed, `${pctNumber(completed, total)}% do total analisado`],
-        ['Preferenciais', priority, `${pctNumber(priority, total)}% do volume`],
-        ['Laboratoriais', lab, 'Fichas com exames laboratoriais identificados'],
-        ['Espera média', `${avgWait} min`, `Meta sugerida: até ${slaTarget} min`]
+    function dashboardChartDates(rows, start, end) {
+      const timestamps = rows.map(t => todayDate(t.createdAt)).filter(Boolean).sort();
+      let last = end || timestamps[timestamps.length-1] || todayDate(nowISO());
+      let first = start || timestamps[0] || last;
+      const span = Math.round((new Date(last + 'T12:00:00') - new Date(first + 'T12:00:00')) / 86400000);
+      // Um gráfico longo não deve criar centenas de marcas ilegíveis.
+      if (span > 30) {
+        const d = new Date(last + 'T12:00:00');
+        d.setDate(d.getDate() - 29);
+        first = todayDate(d.toISOString());
+      }
+      const days = [];
+      const current = new Date(first + 'T12:00:00');
+      const stop = new Date(last + 'T12:00:00');
+      if (!Number.isFinite(current.getTime()) || !Number.isFinite(stop.getTime()) || current > stop) return [];
+      while (current <= stop && days.length < 31) {
+        days.push(todayDate(current.toISOString()));
+        current.setDate(current.getDate() + 1);
+      }
+      return days;
+    }
+    function dashboardRenderTrend(rows, f) {
+      const el = document.getElementById('dashboardTendencia');
+      const info = document.getElementById('dashboardTendenciaInfo');
+      if (!el || !info) return;
+      if (!rows.length) { el.innerHTML = '<div class="dashboard-empty">Sem dados de emissão para este recorte.</div>'; info.innerHTML=''; return; }
+      const days = dashboardChartDates(rows, f.inicio, f.fim);
+      if (!days.length) { el.innerHTML = '<div class="dashboard-empty">Período inválido.</div>'; info.innerHTML=''; return; }
+      const counts = groupCount(rows, t => todayDate(t.createdAt));
+      const values = days.map(day => counts[day] || 0);
+      const max = Math.max(1,...values);
+      const left=32,right=750,top=22,bottom=173;
+      const x=i => left + i*(right-left)/Math.max(1,days.length-1);
+      const y=v => bottom - (v/max)*(bottom-top);
+      const path = values.map((v,i) => `${i?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+      const area = `${path} L${x(days.length-1)},${bottom} L${x(0)},${bottom} Z`;
+      const ticks = [0,Math.ceil(max/2),max];
+      const guides = [...new Set(ticks)].map(v => `<g><line x1="32" x2="750" y1="${y(v)}" y2="${y(v)}" stroke="#e1eaf4" stroke-dasharray="4 5"/><text x="25" y="${y(v)+4}" fill="#7a90a7" text-anchor="end" font-size="11">${v}</text></g>`).join('');
+      const stride = Math.max(1,Math.ceil(days.length/7));
+      const labels = days.map((day,i) => (i%stride===0 || i===days.length-1) ? `<text x="${x(i)}" y="198" fill="#76899e" font-size="11" text-anchor="middle">${day.slice(8)}/${day.slice(5,7)}</text>` : '').join('');
+      const points = days.map((day,i) => `<circle cx="${x(i)}" cy="${y(values[i])}" r="4.3" fill="#1a4b9f" stroke="white" stroke-width="2"><title>${day.slice(8)}/${day.slice(5,7)}: ${values[i]} senha(s)</title></circle>`).join('');
+      el.innerHTML = `<svg viewBox="0 0 778 215" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Evolução diária de ${rows.length} senhas emitidas nos últimos ${days.length} dias representados"><defs><linearGradient id="dashboardTrendFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0091d6" stop-opacity=".23"/><stop offset="100%" stop-color="#0091d6" stop-opacity=".02"/></linearGradient></defs>${guides}<path d="${area}" fill="url(#dashboardTrendFill)"/><path d="${path}" fill="none" stroke="#1a4b9f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>${points}${labels}</svg>`;
+      const peak = Math.max(...values), peakDate=days[values.indexOf(peak)];
+      info.innerHTML = `<span><strong>${days.length}</strong> dia(s) exibido(s)</span><span>Pico: <strong>${peak}</strong> senha(s) em ${peakDate.slice(8)}/${peakDate.slice(5,7)}</span>${days.length===30 && f.inicio && f.fim && (new Date(f.fim)-new Date(f.inicio))/86400000 > 29 ? '<span>Exibidos os últimos 30 dias do recorte</span>':''}`;
+    }
+    function dashboardRenderStatus(rows) {
+      const el = document.getElementById('dashboardStatusDistribuicao');
+      if (!el) return;
+      if (!rows.length) { el.innerHTML = '<div class="dashboard-empty">Não há status para apresentar.</div>'; return; }
+      const status = [
+        ['waiting','Aguardando','#e6a354'],['called','Chamado','#34a8d3'],
+        ['in_service','Em atendimento','#1a4b9f'],['completed','Finalizado','#168149'],
+        ['absent','Ausente','#b94c61'],['canceled','Cancelado','#95a4b7']
       ];
-      const kpiEl = document.getElementById('dashboardKpis');
-      if (kpiEl) kpiEl.innerHTML = kpis.map(([label, value, hint]) => `<div class="dashboard-kpi"><span>${escapeHTML(label)}</span><strong>${escapeHTML(value)}</strong><small>${escapeHTML(hint)}</small></div>`).join('');
-
-      const openByQueue = groupCount(rows.filter(t => !['completed','canceled'].includes(t.status)), t => queueLabel(t.queue));
-      renderDashBars('dashboardGargalos', topEntries(openByQueue, 8), {fillClass:'warn'});
-
-      const byService = groupCount(rows, t => t.servico || t.categoria || 'Não informado');
-      renderDashBars('dashboardServicos', topEntries(byService, 8));
-
-      const slaEl = document.getElementById('dashboardSla');
-      if (slaEl) {
-        const statusCounts = topEntries(groupCount(rows, t => statusLabels[t.status] || t.status || 'Não informado'), 8);
-        slaEl.innerHTML = `
-          <div class="sla-panel">
-            <div class="sla-card"><span>Atendimentos dentro da meta de espera</span><strong>${slaPct}%</strong><small>${withinSla} de ${total} ficha(s) com até ${slaTarget} minuto(s)</small></div>
-            <div class="sla-card"><span>Ausências registradas</span><strong>${absent}</strong><small>${pctNumber(absent, total)}% do volume filtrado</small></div>
-            <div class="sla-card"><span>Prioridade laboratorial</span><strong>${lab}</strong><small>Use este dado para dimensionar coleta, sala e chamada técnica.</small></div>
-            <div class="dash-bar-list">${statusCounts.map(([label, value]) => `<div class="dash-bar-row"><div class="dash-bar-head"><span>${escapeHTML(label)}</span><span>${value}</span></div><div class="dash-bar-track"><div class="dash-bar-fill ok" style="width:${Math.max(4, pctNumber(value, Math.max(...statusCounts.map(e => e[1]),1)))}%"></div></div></div>`).join('')}</div>
-          </div>`;
-      }
-
-      const unnamed = rows.filter(t => !t.nome).length;
-      const noCpf = rows.filter(t => !t.cpf).length;
-      const noCompany = rows.filter(t => ['Atendimento Ocupacional','Retorno Ocupacional'].includes(t.categoria) && !t.empresa).length;
-      const noService = rows.filter(t => !t.servico).length;
-      const qualityEl = document.getElementById('dashboardQualidade');
-      if (qualityEl) {
-        qualityEl.innerHTML = `
-          <div class="quality-score"><div><b>Índice de completude operacional</b><br><span class="muted">Campos essenciais preenchidos para análise gerencial.</span></div><strong>${qualityScore}%</strong></div>
-          <div class="quality-list">
-            <div class="quality-item"><b>Sem nome:</b> ${unnamed} ficha(s). Boa prática: nomear a ficha assim que a recepção iniciar o atendimento.</div>
-            <div class="quality-item"><b>Sem CPF:</b> ${noCpf} ficha(s). Boa prática: usar CPF quando necessário para rastreabilidade e evitar duplicidade.</div>
-            <div class="quality-item"><b>Ocupacionais sem empresa:</b> ${noCompany} ficha(s). Boa prática: preencher empresa/contrato para análise de demanda por cliente.</div>
-            <div class="quality-item"><b>Sem serviço:</b> ${noService} ficha(s). Boa prática: classificar corretamente para medir capacidade por área.</div>
-          </div>`;
-      }
-
-      const alerts = [];
-      if (open > 12) alerts.push(['warn', `Há ${open} ficha(s) em aberto. Avaliar reforço de equipe ou redistribuição por fila.`]);
-      if (avgWait > slaTarget) alerts.push(['danger', `Tempo médio de espera em ${avgWait} min, acima da meta de ${slaTarget} min. Verificar gargalos e salas críticas.`]);
-      if (lab > 0) alerts.push(['warn', `${lab} ficha(s) com exames laboratoriais. Confirmar priorização de coleta e acompanhamento técnico.`]);
-      if (absent > 0) alerts.push(['warn', `${absent} ausência(s) registrada(s). Avaliar rechamada e comunicação visual/sonora.`]);
-      if (qualityScore < 85 && total > 0) alerts.push(['danger', `Completude dos dados em ${qualityScore}%. Padronizar preenchimento para melhorar relatórios.`]);
-      if (!alerts.length) alerts.push(['ok', 'Sem alertas críticos para os filtros selecionados. Manter acompanhamento periódico.']);
-      const alertEl = document.getElementById('dashboardAlertas');
-      if (alertEl) alertEl.innerHTML = `<div class="alert-list">${alerts.map(([type, msg]) => `<div class="alert-item ${type}">${escapeHTML(msg)}</div>`).join('')}</div>`;
+      let pos=0;
+      const segments = status.map(([key,,color]) => {
+        const count = rows.filter(t => t.status===key).length;
+        const initial=pos;pos+=count/rows.length*100;
+        return `${color} ${initial.toFixed(3)}% ${pos.toFixed(3)}%`;
+      });
+      const legend = status.map(([key,label,color]) => {
+        const count = rows.filter(t=>t.status===key).length;
+        return `<div class="dashboard-legend-row"><span class="dashboard-legend-label"><i class="dashboard-legend-dot" style="background:${color}"></i>${label}</span><b>${count} <small>(${pctNumber(count,rows.length)}%)</small></b></div>`;
+      }).join('');
+      el.innerHTML = `<div class="dashboard-status-layout"><div class="dashboard-donut" role="img" aria-label="Distribuição dos atendimentos por status" style="background:conic-gradient(${segments.join(',')})"><span class="dashboard-donut-center"><strong>${dashboardNumeric(rows.length)}</strong><small>senhas</small></span></div><div class="dashboard-legend">${legend}</div></div>`;
     }
-
+    function dashboardRenderHours(rows) {
+      const el=document.getElementById('dashboardHorarios');
+      if (!el) return;
+      if (!rows.length) { el.innerHTML='<div class="dashboard-empty">Nenhuma emissão neste período.</div>'; return; }
+      const counts = Array.from({length:24}, (_,hour) => rows.filter(t => {
+        const date=new Date(t.createdAt); return Number.isFinite(date.getTime()) && date.getHours()===hour;
+      }).length);
+      const hourStart=7, hours=Array.from({length:12},(_,i)=>i+hourStart);
+      const max = Math.max(1,...hours.map(hour=>counts[hour]));
+      el.innerHTML = `<div class="dashboard-heatmap"><div class="dashboard-hour-bars">${hours.map(h => `<div class="dashboard-hour-column" title="${h}h: ${counts[h]} emissões"><b>${counts[h] || ''}</b><div class="dashboard-hour-track"><div class="dashboard-hour-fill" style="height:${(counts[h]/max*100).toFixed(1)}%"></div></div><small>${h}h</small></div>`).join('')}</div><p class="dashboard-panel-footnote">Emissões entre 7h e 18h. Outros horários, quando existirem, continuam incluídos nos KPIs gerais.</p></div>`;
+    }
+    function dashboardRenderProfiles(rows) {
+      const el=document.getElementById('dashboardPerfis');if(!el)return;
+      if(!rows.length){el.innerHTML='<div class="dashboard-empty">Nenhum registro disponível.</div>';return;}
+      const publicos=topEntries(groupCount(rows,t=>t.publico||'Não informado'),5);
+      const floors=topEntries(groupCount(rows,t=>({terreo:'Térreo',primeiro:'1º andar',segundo:'2º andar'}[queuePanel(t.queue)]||'Outro setor')),5);
+      el.innerHTML = `<div style="display:grid;gap:22px"><div><b style="font-size:.83rem;color:#4f6780">Público de atendimento</b><div style="margin-top:10px" id="dashboardPerfisPublico"></div></div><div><b style="font-size:.83rem;color:#4f6780">Andar associado à fila atual</b><div style="margin-top:10px" id="dashboardPerfisAndares"></div></div></div><p class="dashboard-panel-footnote">A classificação de andar segue a fila atual; não representa necessariamente onde todos os procedimentos do paciente ocorreram.</p>`;
+      renderDashBars('dashboardPerfisPublico',publicos);
+      renderDashBars('dashboardPerfisAndares',floors,{fillClass:'ok'});
+    }
+    function dashboardRenderQuality(rows) {
+      const el=document.getElementById('dashboardQualidade');if(!el)return;
+      if(!rows.length){el.innerHTML='<div class="dashboard-empty">Sem registros para avaliar.</div>';return;}
+      const core=t=>[t.id,t.senha,t.createdAt,t.status,t.queue,t.servico];
+      const filled=rows.reduce((sum,t)=>sum+core(t).filter(Boolean).length,0);
+      const score=pctNumber(filled,rows.length*6);
+      const missingService=rows.filter(t=>!t.servico).length;
+      const missingQueue=rows.filter(t=>!t.queue || !queueDefs[t.queue]).length;
+      const missingHistory=rows.filter(t=>!Array.isArray(t.history) || t.history.length===0).length;
+      const missingCompany=rows.filter(t=>t.publico==='Trabalhador' && !t.empresa).length;
+      el.innerHTML=`<div class="quality-score"><div><b>Completude operacional</b><p class="dashboard-card-desc">ID, senha, criação, status, fila e serviço</p></div><strong>${score}%</strong></div><div class="dashboard-quality-grid"><div class="dashboard-quality-item"><strong>${missingService}</strong><span>Sem serviço</span></div><div class="dashboard-quality-item"><strong>${missingQueue}</strong><span>Fila não informada/inválida</span></div><div class="dashboard-quality-item"><strong>${missingHistory}</strong><span>Sem histórico de eventos</span></div><div class="dashboard-quality-item"><strong>${missingCompany}</strong><span>Trabalhadores sem empresa informada</span></div></div><p class="dashboard-panel-footnote">Ausência de CPF ou nome no momento da emissão não é tratada como erro, por respeito à minimização de dados.</p>`;
+    }
+    function dashboardRenderSla(rows,meta) {
+      const el=document.getElementById('dashboardSla');if(!el)return;
+      const waiting=rows.filter(t=>t.status==='waiting');
+      const overdue=waiting.filter(t=>dashboardCurrentWait(t)>meta).length;
+      const within=waiting.length-overdue;
+      const calls=rows.map(dashboardFirstCallWait).filter(v=>v!==null);
+      const callSla=calls.filter(v=>v<=meta).length;
+      const pct=pctNumber(within,waiting.length);
+      if (!waiting.length && !calls.length) { el.innerHTML='<div class="dashboard-empty">Sem filas em espera ou chamadas com histórico para calcular este indicador.</div>';return; }
+      el.innerHTML=`<div><div style="display:flex;align-items:end;justify-content:space-between;gap:12px"><div><span class="dashboard-card-desc">Aguardando dentro da referência de ${meta} min</span><div style="font-size:2.25rem;color:#168149;font-weight:900">${waiting.length ? pct+'%' : '—'}</div></div><span class="tag blue">${within} de ${waiting.length} aguardando</span></div><div class="dashboard-progress" role="progressbar" aria-label="Percentual de aguardando dentro da referência" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div><div class="dashboard-sla-stats"><div><strong>${overdue}</strong><small>Esperas acima da referência</small></div><div><strong>${calls.length ? pctNumber(callSla,calls.length)+'%' : '—'}</strong><small>Primeiras chamadas dentro da referência (${calls.length} registradas)</small></div><div><strong>${calls.length ? dashboardMinutes(avgNumber(calls)) : '—'}</strong><small>Tempo médio até a primeira chamada</small></div></div><p class="dashboard-panel-footnote">A espera atual começa na entrada da fila atual (após eventuais transferências). A primeira chamada considera a emissão da senha. Registros sem chamada não entram no tempo médio.</p></div>`;
+    }
+    function dashboardFilaResumo(rows,meta) {
+      const grouped=new Map();
+      for(const t of rows){
+        const id=t.queue||'sem_fila';
+        if(!grouped.has(id))grouped.set(id,{id,label:queueLabel(id),total:0,waiting:0,overdue:0,called:0,servicing:0,completed:0,absent:0,maxWait:0});
+        const g=grouped.get(id);g.total++;
+        if(t.status==='waiting'){g.waiting++;const mins=dashboardCurrentWait(t);g.maxWait=Math.max(g.maxWait,mins);if(mins>meta)g.overdue++;}
+        if(t.status==='called')g.called++;
+        if(t.status==='in_service')g.servicing++;
+        if(t.status==='completed')g.completed++;
+        if(t.status==='absent')g.absent++;
+      }
+      return [...grouped.values()].sort((a,b)=>b.overdue-a.overdue||b.waiting-a.waiting||b.total-a.total||a.label.localeCompare(b.label));
+    }
+    function dashboardRenderQueueTable(queueRows){
+      const el=document.getElementById('dashboardTabelaFilas');if(!el)return;
+      if(!queueRows.length){el.innerHTML='<div class="dashboard-empty">Nenhuma fila encontrada para o período e filtros atuais.</div>';return;}
+      el.innerHTML=`<div class="dashboard-table-wrap"><table class="dashboard-table"><thead><tr><th>Fila / setor</th><th class="numeric">Emissões</th><th class="numeric">Aguardando</th><th class="numeric">Acima ref.</th><th class="numeric">Chamados</th><th class="numeric">Em atendimento</th><th class="numeric">Finalizados</th><th class="numeric">Ausentes</th><th class="numeric">Maior espera atual</th></tr></thead><tbody>${queueRows.map(r=>`<tr><td><strong>${escapeHTML(r.label)}</strong></td><td class="numeric">${r.total}</td><td class="numeric">${r.waiting}</td><td class="numeric">${r.overdue ? `<span class="dashboard-severity critical">${r.overdue}</span>`:'0'}</td><td class="numeric">${r.called}</td><td class="numeric">${r.servicing}</td><td class="numeric">${r.completed}</td><td class="numeric">${r.absent}</td><td class="numeric">${r.waiting ? dashboardMinutes(r.maxWait) : '—'}</td></tr>`).join('')}</tbody></table></div><p class="dashboard-panel-footnote">Cada ficha aparece uma vez, na fila em que se encontra agora. Transferências não são contadas como novas emissões.</p>`;
+    }
+    function dashboardRenderCritical(rows,meta) {
+      const el=document.getElementById('dashboardCriticos');if(!el)return;
+      const waiting=rows.filter(t=>t.status==='waiting').sort((a,b)=>dashboardCurrentWait(b)-dashboardCurrentWait(a)).slice(0,8);
+      if(!waiting.length){el.innerHTML='<div class="dashboard-empty">Nenhuma senha aguardando neste recorte.</div>';return;}
+      el.innerHTML=`<div class="dashboard-table-wrap"><table class="dashboard-table" style="min-width:480px"><thead><tr><th>Senha</th><th>Fila / setor</th><th class="numeric">Espera</th><th>Prioridade</th></tr></thead><tbody>${waiting.map(t=>{const time=dashboardCurrentWait(t);return `<tr><td><strong>${escapeHTML(t.senha||'—')}</strong></td><td>${escapeHTML(queueLabel(t.queue))}</td><td class="numeric"><span class="dashboard-severity ${time>meta?'critical':''}">${time} min</span></td><td>${t.priority?'Preferencial':'Comum'}</td></tr>`;}).join('')}</tbody></table></div><p class="dashboard-panel-footnote">Ordenado pelo maior tempo desde a entrada na fila atual.</p>`;
+    }
+    function dashboardRenderAlerts(rows,queueRows,meta,quality) {
+      const el=document.getElementById('dashboardAlertas');if(!el)return;
+      const waiting=rows.filter(t=>t.status==='waiting');
+      const critical=waiting.filter(t=>dashboardCurrentWait(t)>meta);
+      const preferred=critical.filter(t=>t.priority).length;
+      const laboratory=waiting.filter(hasPendingLaboratoryExam).length;
+      const absent=rows.filter(t=>t.status==='absent').length;
+      const worst=queueRows.find(q=>q.overdue>0);
+      const alerts=[];
+      if(critical.length)alerts.push(['critical','Atrasos em fila',`${critical.length} senha(s) acima de ${meta} min de espera${preferred ? `, incluindo ${preferred} preferencial(is)` : ''}. Verificar a capacidade de chamada.`]);
+      if(worst)alerts.push(['warn','Fila sob maior pressão',`${worst.label}: ${worst.overdue} espera(s) acima da referência, ${worst.waiting} aguardando.`]);
+      if(laboratory)alerts.push(['warn','Exames laboratoriais pendentes',`${laboratory} senha(s) aguardando com exame laboratorial pendente. Conferir recursos disponíveis para coleta.`]);
+      if(absent)alerts.push(['warn','Ausências',`${absent} ficha(s) marcadas como ausentes no recorte. Avaliar fluxos de rechamada.`]);
+      if(rows.length && quality<95)alerts.push(['warn','Cadastro operacional',`Completude dos registros em ${quality}%. Verificar campos essenciais nas fichas.`]);
+      if(!alerts.length)alerts.push(['ok','Sem alertas nos critérios configurados','Não foram identificados atrasos, ausências ou lacunas operacionais relevantes neste recorte.']);
+      el.innerHTML=`<div class="dashboard-alert-list">${alerts.slice(0,6).map(([tone,title,detail])=>`<div class="dashboard-alert ${tone}"><div><strong>${escapeHTML(title)}</strong><small>${escapeHTML(detail)}</small></div></div>`).join('')}</div>`;
+    }
+    function dashboardRenderAso(rows) {
+      const el = document.getElementById('dashboardGraficoAso');
+      if (!el) return;
+      const ocupacionais = rows.filter(t => ['ocupacional','retorno_ocupacional'].includes(t.tipo));
+      if (!ocupacionais.length) {
+        el.innerHTML = '<div class="dashboard-empty">Não há atendimentos ocupacionais nos filtros selecionados. O gráfico será preenchido com novas fichas.</div>';
+        return;
+      }
+      const series = [
+        {label:'ASO no mesmo dia', count:ocupacionais.filter(t=>t.temAso && t.asoMesmoDia).length, cls:'dia'},
+        {label:'ASO em outra data', count:ocupacionais.filter(t=>t.temAso && !t.asoMesmoDia).length, cls:'retorno'},
+        {label:'Sem ASO', count:ocupacionais.filter(t=>!t.temAso).length, cls:'sem-aso'}
+      ];
+      const max = Math.max(1,...series.map(s=>s.count));
+      const triagem = ocupacionais.filter(t => t.temAso && t.asoMesmoDia && (t.queue === 'triagem' || !!t.triagemConcluidaAt)).length;
+      const datas = ocupacionais.filter(t=>t.temAso&&!t.asoMesmoDia&&!!t.dataRetornoAso).length;
+      const retornoPendente = ocupacionais.filter(t=>t.temAso&&!t.asoMesmoDia&&!t.dataRetornoAso).length;
+      el.innerHTML = `<div class="dashboard-aso-graph" role="img" aria-label="Gráfico de ASO: ${series.map(s=>s.label+': '+s.count).join(', ')}">
+        ${series.map(s=>`<div class="dashboard-aso-row"><span class="dashboard-aso-label">${escapeHTML(s.label)}</span><div class="dashboard-aso-track"><div class="dashboard-aso-bar ${s.cls}" style="width:${(s.count*100/max).toFixed(1)}%"></div></div><span class="dashboard-aso-total">${dashboardNumeric(s.count)}</span></div>`).join('')}
+      </div><div class="dashboard-aso-insights">
+        <div><strong>${dashboardNumeric(triagem)}</strong><small>ASOs no mesmo dia já enviados ou concluídos na triagem</small></div>
+        <div><strong>${dashboardNumeric(datas)}</strong><small>Retornos ASO com data registrada</small></div>
+        <div><strong>${dashboardNumeric(retornoPendente)}</strong><small>Retornos ainda sem data — ação necessária</small></div>
+      </div><p class="dashboard-panel-footnote">Considera a configuração atual das fichas ocupacionais do período e dos filtros escolhidos. Senhas emitidas sem classificação de ASO são contabilizadas em “Sem ASO”.</p>`;
+    }
+    function renderDashboard() {
+      if(!dashboardPeriodoInicializado){setDashboardPeriodo('7dias');return;}
+      ensureDashboardFilters();
+      const filtros=dashboardFiltroValores();
+      const rows=dashboardFilteredTickets();
+      const meta=dashboardMeta();
+      const completed=rows.filter(t=>t.status==='completed').length;
+      const waiting=rows.filter(t=>t.status==='waiting');
+      const inService=rows.filter(t=>t.status==='in_service').length;
+      const absent=rows.filter(t=>t.status==='absent').length;
+      const overdue=waiting.filter(t=>dashboardCurrentWait(t)>meta);
+      const firstCalls=rows.map(dashboardFirstCallWait).filter(v=>v!==null);
+      const firstCallsOnTime=firstCalls.filter(v=>v<=meta).length;
+      const avgFirstCall=firstCalls.length ? avgNumber(firstCalls) : NaN;
+      const qualityFilled=rows.reduce((sum,t)=>sum+[t.id,t.senha,t.createdAt,t.status,t.queue,t.servico].filter(Boolean).length,0);
+      const quality=pctNumber(qualityFilled,rows.length*6);
+      const labPending=waiting.filter(hasPendingLaboratoryExam).length;
+      const queueRows=dashboardFilaResumo(rows,meta);
+      const periodLabel={hoje:'Hoje', '7dias':'Últimos 7 dias','30dias':'Últimos 30 dias',todos:'Todo o histórico',personalizado:'Personalizado'}[dashboardPeriodoAtual];
+      const range=[filtros.inicio||'início',filtros.fim||'hoje'].join(' até ');
+      const periodEl=document.getElementById('dashboardPeriodoRotulo');
+      if(periodEl)periodEl.textContent=`Período: ${periodLabel || 'Personalizado'} (${range})`;
+      const updated=document.getElementById('dashboardAtualizado');
+      if(updated)updated.textContent=`Atualização: ${new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}`;
+      let comparison='';
+      if(filtros.inicio && filtros.fim && filtros.inicio<=filtros.fim){
+        const from=new Date(filtros.inicio+'T12:00:00'),to=new Date(filtros.fim+'T12:00:00');
+        const days=Math.round((to-from)/86400000)+1;
+        if(days>0 && days<=366){
+          const prevStart=new Date(from),prevEnd=new Date(from);
+          prevStart.setDate(prevStart.getDate()-days);prevEnd.setDate(prevEnd.getDate()-1);
+          const start=todayDate(prevStart.toISOString()),end=todayDate(prevEnd.toISOString());
+          const previous=dashboardBaseTickets(filtros).filter(t=>{const d=todayDate(t.createdAt);return d>=start&&d<=end;}).length;
+          const delta=rows.length-previous;
+          comparison=`${previous ? `${delta>=0?'+':''}${pctNumber(Math.abs(delta),previous)}% ${delta>=0?'acima':'abaixo'}` : 'Sem registros'} no período anterior de igual duração`;
+        }
+      }
+      const kpis=[
+        {label:'Senhas emitidas',value:dashboardNumeric(rows.length),hint:comparison||'Volume total do período',tone:'blue'},
+        {label:'Aguardando',value:dashboardNumeric(waiting.length),hint:'Senhas na fila neste momento',tone:'orange'},
+        {label:'Em atendimento',value:dashboardNumeric(inService),hint:'Fichas em execução neste momento',tone:'blue'},
+        {label:'Finalizados',value:dashboardNumeric(completed),hint:`${pctNumber(completed,rows.length)}% das senhas emitidas no recorte`,tone:'green'},
+        {label:'Até a 1ª chamada',value:dashboardMinutes(avgFirstCall),hint:`Média de ${firstCalls.length} chamada(s) com histórico`,tone:'blue'},
+        {label:'Chamadas na referência',value:firstCalls.length?`${pctNumber(firstCallsOnTime,firstCalls.length)}%`:'—',hint:`Referência gerencial: ${meta} min • ${firstCalls.length} chamada(s)`,tone:'green'},
+        {label:'Ausentes',value:dashboardNumeric(absent),hint:`${pctNumber(absent,rows.length)}% do período`,tone:absent?'orange':'blue'},
+        {label:'Espera acima da referência',value:dashboardNumeric(overdue.length),hint:`De ${waiting.length} aguardando agora`,tone:overdue.length?'red':'green'}
+      ];
+      const kpiEl=document.getElementById('dashboardKpis');
+      if(kpiEl)kpiEl.innerHTML=kpis.map(k=>`<article class="dashboard-kpi tone-${k.tone}"><span>${escapeHTML(k.label)}</span><strong>${escapeHTML(k.value)}</strong><small>${escapeHTML(k.hint)}</small></article>`).join('');
+      const note=document.getElementById('dashboardNotaMetodologica');
+      if(note)note.textContent=`Critério: senhas emitidas de ${filtros.inicio||'todo o histórico'} até ${filtros.fim||'hoje'}, com status atual. A referência de ${meta} min é configurável, não é um SLA contratual. ${rows.length?`Existem ${labPending} senha(s) aguardando com exames laboratoriais pendentes.`:'Não há fichas para os filtros atuais.'}`;
+      dashboardRenderTrend(rows,filtros);
+      dashboardRenderStatus(rows);
+      dashboardRenderAso(rows);
+      renderDashBars('dashboardGargalos',topEntries(groupCount(rows.filter(t=>!['completed','canceled'].includes(t.status)),t=>queueLabel(t.queue)),8),{fillClass:'warn'});
+      renderDashBars('dashboardServicos',topEntries(groupCount(rows,t=>t.servico||t.categoria),8));
+      dashboardRenderSla(rows,meta);
+      dashboardRenderHours(rows);
+      dashboardRenderProfiles(rows);
+      dashboardRenderQuality(rows);
+      dashboardRenderQueueTable(queueRows);
+      dashboardRenderAlerts(rows,queueRows,meta,quality);
+      dashboardRenderCritical(rows,meta);
+      dashboardUltimoResumo={filtros,meta,rows,queueRows,kpis,labPending,quality};
+    }
     function exportarDashboardCSV() {
-      const rows = dashboardFilteredTickets();
-      const headers = ['senha','nome','cpf','empresa','servico','categoria','fila','status','prioridade','laboratorial','espera_min','criado_em','atualizado_em'];
-      const csvRows = [headers.join(';')].concat(rows.map(t => [
-        t.senha,
-        t.nome || '',
-        t.cpf || '',
-        t.empresa || '',
-        t.servico || '',
-        t.categoria || '',
-        queueLabel(t.queue),
-        statusLabels[t.status] || t.status || '',
-        t.priority ? 'Preferencial' : 'Comum',
-        hasPendingLaboratoryExam(t) ? 'Sim' : 'Não',
-        elapsedMinutesForDashboard(t),
-        fmtDate(t.createdAt),
-        fmtDate(t.updatedAt)
-      ].map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(';')));
-      const blob = new Blob([csvRows.join('\n')], {type:'text/csv;charset=utf-8'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `dashboard-papa-fila-sesi-saude-${new Date().toISOString().slice(0,10)}.csv`;
-      a.click();
-      URL.revokeObjectURL(a.href);
+      // Exportação gerencial agregada e anonimizada; não inclui nome, CPF ou dados de saúde individuais.
+      if (!dashboardUltimoResumo) renderDashboard();
+      const data=dashboardUltimoResumo;
+      if (!data) return;
+      const records=[['Grupo','Indicador','Segmento','Valor','Observação']];
+      for(const k of data.kpis)records.push(['KPI',k.label,'Geral',k.value,k.hint]);
+      const status=topEntries(groupCount(data.rows,t=>statusLabels[t.status]||t.status),50);
+      for(const [label,value] of status)records.push(['Status','Atendimentos',label,value,'']);
+      const occ=data.rows.filter(t=>['ocupacional','retorno_ocupacional'].includes(t.tipo));
+      for (const [label,count] of [['ASO no mesmo dia',occ.filter(t=>t.temAso&&t.asoMesmoDia).length],['ASO em outra data',occ.filter(t=>t.temAso&&!t.asoMesmoDia).length],['Sem ASO',occ.filter(t=>!t.temAso).length],['Retornos sem data',occ.filter(t=>t.temAso&&!t.asoMesmoDia&&!t.dataRetornoAso).length]])records.push(['ASO','Distribuição',label,count,'']);
+      const services=topEntries(groupCount(data.rows,t=>t.servico||t.categoria),100);
+      for(const [label,value] of services)records.push(['Serviço','Senhas emitidas',label,value,'']);
+      for(const q of data.queueRows){
+        for(const [label,value] of [['Emissões',q.total],['Aguardando',q.waiting],['Acima da referência',q.overdue],['Em atendimento',q.servicing],['Finalizados',q.completed],['Ausentes',q.absent],['Maior espera atual (min)',q.maxWait]])records.push(['Fila',label,q.label,value,'']);
+      }
+      records.push(['Metodologia','Referência de espera','Minutos',data.meta,'Gerencial, não contratual']);
+      records.push(['Metodologia','Data inicial','Filtro',data.filtros.inicio||'Todo o histórico','']);
+      records.push(['Metodologia','Data final','Filtro',data.filtros.fim||'Hoje','']);
+      records.push(['Metodologia','Origem','Dados locais','Navegador atual','Não consolida diferentes computadores']);
+      const quote=value=>`"${String(value??'').replace(/"/g,'""')}"`;
+      const csv='\ufeff'+records.map(row=>row.map(quote).join(';')).join('\r\n');
+      const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+      const url=URL.createObjectURL(blob);const a=document.createElement('a');
+      a.href=url;a.download=`sesi-pe-dashboard-gerencial-${todayDate(nowISO())}.csv`;
+      document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
     }
-
 
     function ticketStatusGroup(t) {
       const hasNonRealized = nonRealizedOccExams(t).length > 0 || (t.pfExams || []).some(e => e.status === 'nao_realizado');
@@ -4836,9 +5722,9 @@
       const tipo = normalizeText(t.tipo || '');
       const servico = normalizeText(t.servico || '');
       if (categoria.includes('resultado') || tipo.includes('resultado') || servico.includes('resultado')) return 'resultado';
-      if (categoria.includes('retorno') || tipo.includes('retorno')) return 'retorno';
       if (categoria.includes('pessoa fisica') || tipo.includes('dentista') || tipo.includes('exames_pf') || tipo.includes('ultrassom') || tipo.includes('medico_especialista')) return 'pf';
-      if (categoria.includes('ocupacional') || tipo.includes('ocupacional')) return 'ocupacional';
+      if (categoria.includes('retorno') || tipo.includes('retorno')) return 'retorno';
+      if (categoria.includes('ocupacional') || tipo.includes('ocupacional') || tipo === 'vacina') return 'ocupacional';
       return '';
     }
 
@@ -4888,6 +5774,8 @@
       if (!matrix) return;
       ensureStatusFilters();
       const rows = statusFilteredTickets();
+      const resultSummary = document.getElementById('statusResultSummary');
+      if (resultSummary) resultSummary.textContent = `${rows.length} atendimento${rows.length === 1 ? '' : 's'} único${rows.length === 1 ? '' : 's'}`;
       const counts = {pendente:0, andamento:0, realizado:0, nao_realizado:0};
       rows.forEach(t => { counts[ticketStatusGroup(t).key] += 1; });
       const kpiEl = document.getElementById('statusKpis');
@@ -4926,7 +5814,7 @@
                 t.retornoAso ? 'Retorno ASO: Sim' : 'Retorno ASO: Não',
                 t.dataRetornoAso ? `Data retorno: ${t.dataRetornoAso}` : ''
               ].filter(Boolean).join('<br>');
-              return `<tr class="status-row-${g.key}">
+              return `<tr class="status-row-${g.key}" data-ticket-id="${escapeHTML(t.id || '')}">
                 <td><b>${escapeHTML(t.senha)}</b><br><small>${escapeHTML(t.prefix || '')}</small></td>
                 <td><b>${escapeHTML(t.nome || 'Ficha ainda não nomeada')}</b><br><small>CPF: ${escapeHTML(t.cpf || '-')}</small><br><small>Tel.: ${escapeHTML(t.telefone || '-')}</small>${t.empresa ? `<br><small>Empresa: ${escapeHTML(t.empresa)}</small>` : ''}${t.contrato ? `<br><small>Contrato: ${escapeHTML(t.contrato)}</small>` : ''}</td>
                 <td>${escapeHTML(t.servico || '-')}<br><small>${escapeHTML(t.categoria || '-')}</small>${t.especialidade ? `<br><small>Especialidade: ${escapeHTML(t.especialidade)}</small>` : ''}${t.profissional ? `<br><small>Profissional: ${escapeHTML(t.profissional)}</small>` : ''}</td>
@@ -4973,7 +5861,9 @@
         ['Resultado de Exames','Totem','ERE/EREP','Recepção Térreo','Consultar Genesis X / Arquivo de Exames','Entregar resultado','Finalização'],
         ['Pessoa Física — Dentista','Totem','ODT/ODTP','Recepção 1º andar','Odontologia','Pagamento, se necessário','Finalização'],
         ['Pessoa Física — Exames PF','Totem','PFE/USG','Recepção 1º andar','Exames PF','Registro dos exames','Finalização'],
-        ['Pessoa Física — Especialidades','Totem','ESP/ESPP','Recepção 1º andar','Especialidade médica','Finalização']
+        ['Pessoa Física — Especialidades (primeiro atendimento)','Totem','ESP/ESPP','Recepção 1º andar','Especialidade médica','Finalização'],
+        ['Pessoa Física — Especialidades (retorno em até 30 dias)','Totem','ESR/ESRP','Recepção 1º andar','Especialidade médica','Finalização'],
+        ['Empresa — Vacina','Totem','VAC/VACP','Recepção 2º andar','Vacinação no 2º andar','Finalização']
       ];
       document.getElementById('flowBoard').innerHTML = flows.map(([title, ...steps]) => `
         <div class="flow-card"><h3>${escapeHTML(title)}</h3><div class="flow-steps">${steps.map((s,i) => `<span class="step">${escapeHTML(s)}</span>${i<steps.length-1?'<span class="arrow">→</span>':''}`).join('')}</div></div>`).join('');
@@ -4997,7 +5887,7 @@
         try {
           const parsed = JSON.parse(reader.result);
           if (!parsed.tickets || !Array.isArray(parsed.tickets)) throw new Error('Arquivo inválido');
-          state = {...parsed, version:2};
+          state = normalizeState({...parsed, version:2});
           saveState();
           selectedTicketId = null;
           renderAll();
@@ -5056,6 +5946,8 @@
       renderUsuarios();
     }
 
+    document.getElementById('totemScreen')?.addEventListener('pointerdown', registrarInteracaoTotem);
+    document.getElementById('totemScreen')?.addEventListener('keydown', registrarInteracaoTotem);
     renderTabs();
     initAuthGate();
     initRealtimeSync();
